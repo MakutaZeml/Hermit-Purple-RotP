@@ -1,0 +1,21 @@
+{
+  "entity.rotp_zhp.hermito_purple": "Hermit Purple",
+  "stand.rotp_zhp.hermito_purple": "Hermit Purple",
+
+  "action.rotp_zhp.hp_vine_attack": "Vine attack",
+  "action.rotp_zhp.hp_vine_shift": "Vine binding attack",
+
+  "action.rotp_zhp.hp_breath": "Hamon Breath",
+  "action.rotp_zhp.hp_block": "Hermito Thorns",
+  "action.rotp_zhp.hp_vine":"Vine",
+  "action.rotp_zhp.hp_vine_entity": "Vine Grapple",
+
+  "rotp_zhp.subtitle.hp_summon": "Hermit Purple Summon",
+  "rotp_zhp.subtitle.hp_user": "\"Hermito Purple\"",
+  "rotp_zhp.subtitle.hp_grapple": "Hermito Purple vine grapple",
+  "rotp_zhp.subtitle.hp_throw": "Hermito Purple throw vine",
+  "rotp_zhp.subtitle.hp_grp_ent": "Hermito Purple entity catched",
+
+  "jojo.message.action_condition.no_hamon": "You need to learn Hamon",
+  "jojo.message.action_condition.no_binded": "Yo need to bind an entity"
+}

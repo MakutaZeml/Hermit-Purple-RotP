@@ -1,0 +1,31 @@
+{
+  "hp_summon": {
+    "subtitle": "rotp_zhp.subtitle.hp_summon",
+    "sounds": [ "rotp_zhp:stand/hp_summon_1","rotp_zhp:stand/hp_summon_2","rotp_zhp:stand/hp_summon_3"]
+  },
+  "hp_grap": {
+    "subtitle": "rotp_zhp.subtitle.hp_grapple",
+    "sounds": [ "rotp_zhp:stand/hp_grapple_1","rotp_zhp:stand/hp_grapple_2"]
+  },
+  "hp_grp_ent": {
+    "subtitle": "rotp_zhp.subtitle.hp_grp_ent",
+    "sounds": [ "rotp_zhp:stand/hp_grapple_3","rotp_zhp:stand/hp_grapple_1"]
+  },
+
+  "hp_throw": {
+    "subtitle": "rotp_zhp.subtitle.hp_throw",
+    "sounds": [ "rotp_zhp:stand/hp_vine_trhow","rotp_zhp:stand/hp_vine_trhow_2"]
+  },
+  "joseph_hp": {
+    "subtitle": "rotp_zhp.subtitle.hp_user",
+    "sounds": [ "rotp_zhp:user/joseph_hp_1", "rotp_zhp:user/joseph_hp_2"]
+  },
+  "joseph_od": {
+    "subtitle": "rotp_zhp.subtitle.hp_user",
+    "sounds": [ "rotp_zhp:user/joseph_od"]
+  },
+
+  "void":{
+    "sounds": [ "rotp_zhp:void"]
+  }
+}

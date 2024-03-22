@@ -31,7 +31,6 @@ public class InitSounds {
     public static final RegistryObject<SoundEvent> HERMITO_PURPLE_UNSUMMON = ModSounds.STAND_UNSUMMON_DEFAULT;
 
 
-
     public static final RegistryObject<SoundEvent> USER_HP = SOUNDS.register("joseph_hp",
             ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "joseph_hp"))
             );

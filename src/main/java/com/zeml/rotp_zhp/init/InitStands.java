@@ -5,6 +5,7 @@ import com.github.standobyte.jojo.entity.stand.StandPose;
 import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.power.impl.stand.StandInstance;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
+import com.zeml.rotp_zhp.action.stand.HPDoxx;
 import com.zeml.rotp_zhp.action.stand.HPThorns;
 import com.zeml.rotp_zhp.action.stand.HamonBreath;
 import com.zeml.rotp_zhp.action.stand.projectile.HPGrapple;
@@ -71,6 +72,10 @@ public class InitStands {
             ()-> new HamonBreath(new StandEntityAction.Builder().heldWalkSpeed(0.0F).holdType()
                     .standSound(ModSounds.BREATH_DEFAULT).standSound(ModSounds.HAMON_CONCENTRATION)));
 
+    public static final RegistryObject<StandEntityAction> HP_DOXX =ACTIONS.register("hp_doxx",
+            ()-> new HPDoxx(new StandEntityAction.Builder().standWindupDuration(10).cooldown(20)
+                    ));
+
 
 
 
@@ -85,8 +90,10 @@ public class InitStands {
                             )
                             .rightClickHotbar(
                                     HP_BREATH.get(),
+                                    HP_DOXX.get(),
                                     HP_GRAPPLE.get(),
                                     HP_BLOCK.get()
+
                             )
                             .defaultStats(StandStats.class, new StandStats.Builder()
                                     .tier(2)

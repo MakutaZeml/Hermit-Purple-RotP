@@ -50,9 +50,11 @@ public class HPGrapple extends StandEntityAction {
                         HamonData hamon = hamonOp.get();
                         if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get()) && ipower.getEnergy()>0){
                             float cost = (float) hamon.getHamonStrengthLevel()/4;
+                            hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,cost);
+                            hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,cost);
                             float hamonEfficiency = hamon.getActionEfficiency(cost, true);
                             user.playSound(ModSounds.HAMON_CONCENTRATION.get(),1,1);
-                            standEntity.playSound(InitSounds.USER_OVER.get(),0.5F,1);
+                            standEntity.playSound(InitSounds.USER_OVER.get(),1F,1);
                             vine.isCharged(true);
                             vine.setHamonDamageOnHit(hamonEfficiency,cost);
                         }

@@ -57,6 +57,15 @@ public class HPVineAttack extends StandEntityAction {
             }
             addProjectile(world, standPower, standEntity, 0, 0, shift);
         }
+        INonStandPower.getNonStandPowerOptional(standPower.getUser()).ifPresent(ipower->{
+            Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+            if(hamonOp.isPresent()){
+                HamonData hamon = hamonOp.get();
+                if ((hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get())||(hamon.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get()))) && ipower.getEnergy()>0){
+                    standEntity.playSound(InitSounds.USER_OVER.get(),1F,1);
+                }
+            }
+        });
     }
 
 
@@ -81,9 +90,10 @@ public class HPVineAttack extends StandEntityAction {
                 }
                 if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get()) && ipower.getEnergy()>0){
                     float cost = 30+ (float) hamon.getHamonStrengthLevel()/2;
+                    hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,cost);
+                    hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,cost);
                     float hamonEfficiency = hamon.getActionEfficiency(cost, true);
                     standEntity.playSound(ModSounds.HAMON_CONCENTRATION.get(),0.5F,1);
-                    standEntity.playSound(InitSounds.USER_OVER.get(),0.5F,1);
                     vine.isCharged(true);
                     vine.setHamonDamageOnHit(2.0F*hamonEfficiency, cost, ipower.getEnergy() <= 0);
                     vine.setBaseUsageStatPoints(Math.min(30, ipower.getEnergy()) * hamonEfficiency);

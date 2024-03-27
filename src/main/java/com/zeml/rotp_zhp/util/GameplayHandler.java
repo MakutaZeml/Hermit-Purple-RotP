@@ -1,15 +1,19 @@
 package com.zeml.rotp_zhp.util;
 
 import com.github.standobyte.jojo.JojoMod;
+import com.github.standobyte.jojo.JojoModConfig;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.non_stand.NonStandAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
+import com.github.standobyte.jojo.init.ModParticles;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
+import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
+import com.github.standobyte.jojo.util.mc.damage.StandDamageSource;
 import com.github.standobyte.jojo.util.mc.reflection.CommonReflection;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineEntity;
@@ -43,8 +47,28 @@ public class GameplayHandler {
                             if(ent instanceof LivingEntity){
                                 LivingEntity liv = (LivingEntity) ent;
                                 liv.hurt(DamageSource.GENERIC,1);
+
+                                INonStandPower.getNonStandPowerOptional(target).ifPresent(ipower->{
+                                    Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                                    if(hamonOp.isPresent()){
+                                        HamonData hamon = hamonOp.get();
+
+                                        float hamonDamage = hamon.getHamonStrengthLevel()/30F;
+
+                                        if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get()) && ipower.getEnergy()>0){
+                                            DamageUtil.dealHamonDamage(ent, hamonDamage, ent , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
+                                        }
+                                    }
+                                });
+
                             }
-                            event.setAmount(Math.max(event.getAmount() - 14.F / 4F, 0));
+                            if(dmgSource instanceof StandDamageSource){
+                                double conf = JojoModConfig.getCommonConfigInstance(false).standDamageMultiplier.get();
+                                event.setAmount(Math.max(event.getAmount() - (float) conf*14.F / 4F, 0));
+                            } else{
+                                event.setAmount(Math.max(event.getAmount() - 14.F / 4F, 0));
+                            }
+
                         }
                     }
             );

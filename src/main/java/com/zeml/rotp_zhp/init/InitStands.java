@@ -5,6 +5,7 @@ import com.github.standobyte.jojo.entity.stand.StandPose;
 import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.power.impl.stand.StandInstance;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
+import com.zeml.rotp_zhp.action.stand.HPCamera;
 import com.zeml.rotp_zhp.action.stand.HPDoxx;
 import com.zeml.rotp_zhp.action.stand.HPThorns;
 import com.zeml.rotp_zhp.action.stand.HamonBreath;
@@ -76,6 +77,8 @@ public class InitStands {
             ()-> new HPDoxx(new StandEntityAction.Builder().standWindupDuration(10).cooldown(20)
                     ));
 
+    public static final RegistryObject<StandEntityAction> HP_CAMERA = ACTIONS.register("hp_camera",
+            ()->new HPCamera(new StandEntityAction.Builder().standWindupDuration(10).cooldown(20)));
 
 
 

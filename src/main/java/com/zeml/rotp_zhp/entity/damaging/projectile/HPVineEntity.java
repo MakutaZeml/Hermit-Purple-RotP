@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.entity.damaging.projectile;
 
+import com.github.standobyte.jojo.JojoModConfig;
 import com.github.standobyte.jojo.entity.damaging.projectile.ownerbound.OwnerBoundProjectileEntity;
 import com.github.standobyte.jojo.init.ModParticles;
 import com.github.standobyte.jojo.init.ModStatusEffects;
@@ -58,7 +59,8 @@ public class HPVineEntity extends OwnerBoundProjectileEntity {
 
     @Override
     public float getBaseDamage() {
-        return isBinding ? 1.5F : 2F;
+        double mult = JojoModConfig.getCommonConfigInstance(false).standDamageMultiplier.get();
+        return isBinding ? 1.5F * (float) mult  : 2F * (float) mult;
     }
 
     public void addKnockback(float knockback) {

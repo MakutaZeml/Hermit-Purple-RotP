@@ -1,12 +1,18 @@
 package com.zeml.rotp_zhp.action.stand;
 
+import com.github.standobyte.jojo.action.Action;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
+import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.init.InitSounds;
+import com.zeml.rotp_zhp.init.InitStands;
+import de.maxhenkel.camera.Main;
+import de.maxhenkel.camera.items.CameraItem;
+import javafx.scene.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,6 +39,15 @@ import java.util.stream.Stream;
 public class HPDoxx extends StandEntityAction {
     public HPDoxx(Builder builder){
         super(builder);
+    }
+
+    @Override
+    protected Action<IStandPower> replaceAction(IStandPower power, ActionTarget target){
+        ItemStack itemStack = power.getUser().getItemInHand(Hand.OFF_HAND);
+        if(itemStack.getItem()==Main.CAMERA.getItem()){
+            return InitStands.HP_CAMERA.get();
+        }
+        return super.replaceAction(power, target);
     }
 
 
@@ -104,6 +119,11 @@ public class HPDoxx extends StandEntityAction {
 
         }
         return HPojectives(user);
+    }
+
+    @Override
+    public StandAction[] getExtraUnlockable(){
+        return new StandAction[] {InitStands.HP_CAMERA.get()};
     }
 
 }

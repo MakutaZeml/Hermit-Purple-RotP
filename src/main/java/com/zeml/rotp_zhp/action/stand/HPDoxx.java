@@ -87,7 +87,7 @@ public class HPDoxx extends StandEntityAction {
         }
     }
 
-    public LivingEntity HPojectives(LivingEntity user){
+    public static LivingEntity HPojectives(LivingEntity user){
         World world =user.level;
         List<LivingEntity> lista =  world.getEntitiesOfClass(LivingEntity.class,user.getBoundingBox().inflate(1000), EntityPredicates.ENTITY_STILL_ALIVE).stream()
                 .filter(entity -> entity != user)
@@ -101,7 +101,7 @@ public class HPDoxx extends StandEntityAction {
         return fin;
     }
 
-    public LivingEntity hpObj(LivingEntity user){
+    public static LivingEntity hpObj(LivingEntity user){
         if(user instanceof ServerPlayerEntity){
             ServerPlayerEntity player = Objects.requireNonNull(user.getServer()).getPlayerList().getPlayer(user.getUUID());
             ServerWorld world= player.getLevel();

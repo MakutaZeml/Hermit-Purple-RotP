@@ -21,6 +21,7 @@
 
   "jojo.message.action_condition.no_hamon": "You need to learn Hamon",
   "jojo.message.action_condition.no_map": "You need an empty map in your offhand",
+  "jojo.message.action_condition.no_paper": "You need paper",
 
   "filled_map.divination": "Divination of "
 }

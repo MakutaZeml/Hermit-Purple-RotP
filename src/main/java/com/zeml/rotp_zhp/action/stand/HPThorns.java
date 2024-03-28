@@ -46,7 +46,6 @@ public class HPThorns extends StandEntityAction {
                 if(hamonOp.isPresent()){
                     HamonData hamon = hamonOp.get();
                     if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get()) && ipower.getEnergy()>0){
-                        user.playSound(ModSounds.HAMON_CONCENTRATION.get(),1,1);
                         float hamonEfficiency = hamon.getActionEfficiency(20, true);
                         user.getCapability(EntityHamonChargeCapProvider.CAPABILITY).ifPresent(cap ->
                                 cap.setHamonCharge(0.2F * hamon.getHamonDamageMultiplier() * hamonEfficiency, 20, user, 20)

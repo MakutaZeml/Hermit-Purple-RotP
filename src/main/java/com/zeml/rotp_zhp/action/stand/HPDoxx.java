@@ -1,12 +1,16 @@
 package com.zeml.rotp_zhp.action.stand;
 
+import com.github.standobyte.jojo.action.Action;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
+import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.init.InitSounds;
+import com.zeml.rotp_zhp.init.InitStands;
+import de.maxhenkel.camera.Main;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -31,8 +35,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class HPDoxx extends StandEntityAction {
+    boolean once = true;
     public HPDoxx(Builder builder){
         super(builder);
+    }
+
+    @Override
+    protected Action<IStandPower> replaceAction(IStandPower power, ActionTarget target){
+        ItemStack itemStack = power.getUser().getItemInHand(Hand.OFF_HAND);
+        if(itemStack.getItem()==Main.CAMERA.getItem()){
+            return InitStands.HP_CAMERA.get();
+        }
+        return super.replaceAction(power, target);
     }
 
 
@@ -65,14 +79,26 @@ public class HPDoxx extends StandEntityAction {
                 stackMap.setHoverName(new TranslationTextComponent("filled_map.divination").append(ent.getName()));
                 userPower.getUser().setItemInHand(Hand.OFF_HAND,itemStack);
                 userPower.getUser().setItemInHand(Hand.MAIN_HAND,stackMap);
-                standEntity.playSound(InitSounds.HERMITO_PURPLE_SUMMON.get(),1,1);
-                standEntity.playSound(InitSounds.USER_HP.get(),1,1);
             }
 
         }
+        once = true;
     }
 
-    public LivingEntity HPojectives(LivingEntity user){
+    @Override
+    public void standTickWindup(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
+        if(once){
+            LivingEntity ent = HPDoxx.hpObj(userPower.getUser());
+            if (ent != null) {
+                standEntity.playSound(InitSounds.HERMITO_PURPLE_SUMMON.get(), 1, 1);
+                standEntity.playSound(InitSounds.USER_HP.get(), 1, 1);
+                once=false;
+            }
+        }
+
+    }
+
+    public static LivingEntity HPojectives(LivingEntity user){
         World world =user.level;
         List<LivingEntity> lista =  world.getEntitiesOfClass(LivingEntity.class,user.getBoundingBox().inflate(1000), EntityPredicates.ENTITY_STILL_ALIVE).stream()
                 .filter(entity -> entity != user)
@@ -86,7 +112,7 @@ public class HPDoxx extends StandEntityAction {
         return fin;
     }
 
-    public LivingEntity hpObj(LivingEntity user){
+    public static LivingEntity hpObj(LivingEntity user){
         if(user instanceof ServerPlayerEntity){
             ServerPlayerEntity player = Objects.requireNonNull(user.getServer()).getPlayerList().getPlayer(user.getUUID());
             ServerWorld world= player.getLevel();
@@ -104,6 +130,11 @@ public class HPDoxx extends StandEntityAction {
 
         }
         return HPojectives(user);
+    }
+
+    @Override
+    public StandAction[] getExtraUnlockable(){
+        return new StandAction[] {InitStands.HP_CAMERA.get()};
     }
 
 }

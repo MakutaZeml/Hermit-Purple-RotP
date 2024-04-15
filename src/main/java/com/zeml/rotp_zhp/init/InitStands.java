@@ -76,6 +76,11 @@ public class InitStands {
             ()-> new HPDoxx(new StandEntityAction.Builder().standWindupDuration(10).cooldown(20)
                     ));
 
+    public static final RegistryObject<StandEntityAction> HP_DOXX_S =ACTIONS.register("hp_doxx_s",
+            ()-> new HPDoxx(new StandEntityAction.Builder().standWindupDuration(10).cooldown(20)
+                    .shiftVariationOf(HP_DOXX)
+            ));
+
 
 
 

@@ -36,19 +36,21 @@ public class HPGrabOverdrive extends StandEntityAction {
                 Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
                 if(hamonOp.isPresent()){
                     HamonData hamon = hamonOp.get();
-                    if(hamon.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get())){
+                    if(hamon.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get())&& ipower.getEnergy()>49){
                         float hamomlevel = hamon.getHamonStrengthLevel();
                         hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,5);
                         DamageUtil.dealDamageAndSetOnFire(target,
                                 entity -> DamageUtil.dealHamonDamage(entity, 5, userPower.getUser() , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK_RED.get())),
                                 MathHelper.floor(2 + 8F *  hamomlevel / (float) HamonData.MAX_STAT_LEVEL *2), false);
-                    } else if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get())) {
+                    } else if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get())&&ipower.getEnergy()>49) {
                         hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,5);
                         DamageUtil.dealHamonDamage(target, 5,userPower.getUser() , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
+                        ipower.consumeEnergy(50);
                     }
-                    if(hamon.isSkillLearned(ModHamonSkills.HAMON_SPREAD.get())){
+                    if(hamon.isSkillLearned(ModHamonSkills.HAMON_SPREAD.get())&&ipower.getEnergy()>0){
                         hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,5);
                         target.addEffect(new EffectInstance(ModStatusEffects.HAMON_SPREAD.get(),200,6));
+                        ipower.consumeEnergy(50);
                     }
                 }
             });

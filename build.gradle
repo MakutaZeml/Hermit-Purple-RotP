@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = 'beta 1.1.1'
+version = 'beta 1.2'
 group = 'com.archlunatic.rotp_zhp' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'RotP-Hermit Purple'
 
@@ -151,7 +151,6 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     implementation fg.deobf("standobyte.jojo:JJBA-RipplesOfThePast:${main_mod_version}")
-    implementation fg.deobf("curse.maven:camera-mod-289310:3169776")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

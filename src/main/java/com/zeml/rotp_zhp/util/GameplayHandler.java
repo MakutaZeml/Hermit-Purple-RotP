@@ -1,26 +1,26 @@
 package com.zeml.rotp_zhp.util;
 
-import com.github.standobyte.jojo.JojoMod;
 import com.github.standobyte.jojo.JojoModConfig;
-import com.github.standobyte.jojo.action.ActionTarget;
-import com.github.standobyte.jojo.action.non_stand.NonStandAction;
-import com.github.standobyte.jojo.entity.stand.StandEntity;
+import com.github.standobyte.jojo.init.ModItems;
 import com.github.standobyte.jojo.init.ModParticles;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
+import com.github.standobyte.jojo.init.power.stand.ModStands;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
-import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mc.damage.StandDamageSource;
-import com.github.standobyte.jojo.util.mc.reflection.CommonReflection;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
-import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineEntity;
+import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,12 +28,11 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.Optional;
 
-import static com.github.standobyte.jojo.action.non_stand.HamonAction.addPointsForAction;
-
 
 @Mod.EventBusSubscriber(modid = RotpHermitPurpleAddon.MOD_ID)
 public class GameplayHandler {
-    private static final float energyCost = 0;
+
+
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void blockDamage(LivingHurtEvent event){

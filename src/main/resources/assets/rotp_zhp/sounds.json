@@ -21,8 +21,12 @@
     "sounds": [ "rotp_zhp:user/joseph_hp_1", "rotp_zhp:user/joseph_hp_2"]
   },
   "joseph_od": {
-    "subtitle": "rotp_zhp.subtitle.hp_ora",
     "sounds": ["rotp_zhp:user/joseph_at_1", "rotp_zhp:user/joseph_od","rotp_zhp:user/joseph_at_2","rotp_zhp:user/joseph_at_3"]
+  },
+
+  "joseph_over_drive": {
+    "subtitle": "rotp_zhp.subtitle.hp_ora",
+    "sounds": ["rotp_zhp:user/joseph_od"]
   },
 
   "void":{

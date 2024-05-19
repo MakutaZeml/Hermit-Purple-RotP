@@ -9,6 +9,8 @@ import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.init.InitEntities;
 import com.zeml.rotp_zhp.init.InitSounds;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.RedstoneWireBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -123,6 +125,7 @@ public class HPVineEntity extends OwnerBoundProjectileEntity {
             }
         }
     }
+
 
     @Override
     protected float knockbackMultiplier() {

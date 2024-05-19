@@ -6,8 +6,10 @@ import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.power.impl.stand.StandInstance;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.action.stand.HPDoxx;
+import com.zeml.rotp_zhp.action.stand.HPGrabOverdrive;
 import com.zeml.rotp_zhp.action.stand.HPThorns;
 import com.zeml.rotp_zhp.action.stand.HamonBreath;
+import com.zeml.rotp_zhp.action.stand.projectile.HPGrabCommand;
 import com.zeml.rotp_zhp.action.stand.projectile.HPGrapple;
 import com.zeml.rotp_zhp.action.stand.projectile.HPVineAttack;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
@@ -35,7 +37,7 @@ public class InitStands {
 
 
     public static final RegistryObject<StandEntityAction> HP_VINE_ATTACK = ACTIONS.register("hp_vine_attack",
-            () -> new HPVineAttack(new StandEntityAction.Builder().staminaCost(40).standPerformDuration(10).cooldown(20,10,0.5F)
+            () -> new HPVineAttack(new StandEntityAction.Builder().staminaCost(40).standPerformDuration(10).cooldown(10,5,0.5F)
                     .partsRequired(StandInstance.StandPart.ARMS).standOffsetFromUser(0,0).standUserWalkSpeed(1.0F)
                     .swingHand().standSound(StandEntityAction.Phase.WINDUP,InitSounds.VINE_TRHOW)
                     .standPose(StandPose.RANGED_ATTACK)
@@ -47,6 +49,20 @@ public class InitStands {
                     .partsRequired(StandInstance.StandPart.ARMS).standOffsetFromUser(0,0).standUserWalkSpeed(1.0F)
                     .swingHand().standSound(StandEntityAction.Phase.WINDUP,InitSounds.VINE_TRHOW)
                     .standPose(StandPose.RANGED_ATTACK).shiftVariationOf(HP_VINE_ATTACK)
+            ));
+
+
+    public static final RegistryObject<StandEntityAction> HP_GRAB_COMMAND = ACTIONS.register("hp_grab",
+            () -> new HPGrabCommand(new StandEntityAction.Builder().staminaCost(40)
+                    .resolveLevelToUnlock(2).swingHand().holdType().standUserWalkSpeed(1.0F)
+                    .cooldown(100)
+                    .standPose(StandPose.RANGED_ATTACK).standSound(InitSounds.VINE_TRHOW)
+                    .partsRequired(StandInstance.StandPart.ARMS)
+                    ));
+    public static final RegistryObject<StandEntityAction> HP_GRAB_OVERDRIVE = ACTIONS.register("hp_grab_od",
+            () -> new HPGrabOverdrive(new StandEntityAction.Builder().staminaCost(100).standSound(ModSounds.HAMON_CONCENTRATION)
+                    .standUserWalkSpeed(1.0F).shout(InitSounds.USER_OVER_DRIVE)
+                    .partsRequired(StandInstance.StandPart.ARMS)
             ));
 
     public static final RegistryObject<StandEntityAction> HP_BLOCK = ACTIONS.register("hp_block",
@@ -62,7 +78,7 @@ public class InitStands {
 
     public static final RegistryObject<StandEntityAction> HP_GRAPPLE_ENTITY = ACTIONS.register("hp_vine_entity",
             () -> new HPGrapple(new StandEntityAction.Builder().staminaCostTick(1).holdType().standUserWalkSpeed(1.0F)
-                    .resolveLevelToUnlock(2).shiftVariationOf(HP_GRAPPLE).swingHand()
+                    .resolveLevelToUnlock(1).shiftVariationOf(HP_GRAPPLE).swingHand()
                     .standPose(StandPose.RANGED_ATTACK).standSound(InitSounds.VINE_TRHOW)
                     .partsRequired(StandInstance.StandPart.ARMS)
                     .shiftVariationOf(HP_GRAPPLE)));
@@ -76,10 +92,12 @@ public class InitStands {
             ()-> new HPDoxx(new StandEntityAction.Builder().standWindupDuration(10).cooldown(20)
                     ));
 
+    /*
     public static final RegistryObject<StandEntityAction> HP_DOXX_S =ACTIONS.register("hp_doxx_s",
             ()-> new HPDoxx(new StandEntityAction.Builder().standWindupDuration(10).cooldown(20)
                     .shiftVariationOf(HP_DOXX)
             ));
+*/
 
 
 
@@ -91,7 +109,8 @@ public class InitStands {
                             .color(0xF070D0)
                             .storyPartName(ModStandsInit.PART_3_NAME)
                             .leftClickHotbar(
-                                    HP_VINE_ATTACK.get()
+                                    HP_VINE_ATTACK.get(),
+                                    HP_GRAB_COMMAND.get()
                             )
                             .rightClickHotbar(
                                     HP_BREATH.get(),

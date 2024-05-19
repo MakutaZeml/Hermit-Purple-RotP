@@ -10,7 +10,6 @@ import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
-import de.maxhenkel.camera.Main;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -63,7 +62,7 @@ public class HPDoxx extends StandEntityAction {
             LivingEntity ent = hpObj(userPower.getUser());
             if(ent != null){
 
-                byte scale = isShiftVariation()?(byte) 0:(byte) 2;
+                byte scale = userPower.getUser().isShiftKeyDown()?(byte) 0:(byte) 2;
 
                 ItemStack itemStack = userPower.getUser().getItemInHand(Hand.OFF_HAND);
                 itemStack.setCount(itemStack.getCount()-1);

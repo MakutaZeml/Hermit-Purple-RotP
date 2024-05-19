@@ -5,11 +5,13 @@ import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
+import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.network.packets.fromserver.TrHamonEnergyTicksPacket;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
 
@@ -18,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class HamonBreath extends StandEntityAction {
 
-    public HamonBreath(Builder builder){
+    public HamonBreath(StandEntityAction.Builder builder){
         super(builder);
     }
 
@@ -40,6 +42,7 @@ public class HamonBreath extends StandEntityAction {
         }
         return conditionMessage("no_hamon");
     }
+
 
 
     @Override

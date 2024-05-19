@@ -38,6 +38,10 @@ public class InitSounds {
     public static final RegistryObject<SoundEvent> USER_OVER = SOUNDS.register("joseph_od",
             ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "joseph_od"))
     );
+
+    public static final RegistryObject<SoundEvent> USER_OVER_DRIVE = SOUNDS.register("joseph_over_drive",
+            ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "joseph_over_drive"))
+    );
 	
     static final OstSoundList JOSEPH_OST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_ost"), SOUNDS);
 }

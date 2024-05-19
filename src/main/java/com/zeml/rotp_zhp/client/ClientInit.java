@@ -5,9 +5,11 @@ import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.client.render.entity.model.stand.HermitoUserModel;
 import com.zeml.rotp_zhp.client.render.entity.renderer.HermitoThorns;
 import com.zeml.rotp_zhp.client.render.entity.renderer.damaging.projectile.HPGrapplingVineRenderer;
+import com.zeml.rotp_zhp.client.render.entity.renderer.damaging.projectile.HPVineGrabRenderer;
 import com.zeml.rotp_zhp.client.render.entity.renderer.damaging.projectile.HPVineRenderer;
 import com.zeml.rotp_zhp.client.render.entity.renderer.stand.HermitPurpleRenderer;
 import com.zeml.rotp_zhp.client.render.entity.renderer.HermitoUserLayer;
+import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineGrabEntity;
 import com.zeml.rotp_zhp.init.AddonStands;
 
 import com.zeml.rotp_zhp.init.InitEntities;
@@ -36,6 +38,7 @@ public class ClientInit {
         RenderingRegistry.registerEntityRenderingHandler(AddonStands.HERMITOPURLE.getEntityType(), HermitPurpleRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(InitEntities.HP_GRAPPLING_VINE.get(), HPGrapplingVineRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(InitEntities.HP_VINE.get(), HPVineRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(InitEntities.HP_GRAB_ENTITY.get(), HPVineGrabRenderer::new);
 
 
         event.enqueueWork(() -> {

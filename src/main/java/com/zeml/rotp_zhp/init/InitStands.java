@@ -61,7 +61,7 @@ public class InitStands {
                     ));
     public static final RegistryObject<StandEntityAction> HP_GRAB_OVERDRIVE = ACTIONS.register("hp_grab_od",
             () -> new HPGrabOverdrive(new StandEntityAction.Builder().staminaCost(100).standSound(ModSounds.HAMON_CONCENTRATION)
-                    .standUserWalkSpeed(1.0F).shout(InitSounds.USER_OVER_DRIVE)
+                    .standUserWalkSpeed(1.0F).shout(InitSounds.USER_OVER_DRIVE).holdToFire(40,false)
                     .partsRequired(StandInstance.StandPart.ARMS)
             ));
 

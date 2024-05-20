@@ -4,6 +4,7 @@ import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.init.ModParticles;
+import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
@@ -29,9 +30,10 @@ public class HPGrabOverdrive extends StandEntityAction {
     }
 
 
+    @Override
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
         if (!world.isClientSide()) {
-            LivingEntity target = Objects.requireNonNull(getLandedVineStand(standEntity).get().getEntityAttachedTo());
+            LivingEntity target = getLandedVineStand(standEntity).get().getEntityAttachedTo();
             INonStandPower.getNonStandPowerOptional(userPower.getUser()).ifPresent(ipower->{
                 Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
                 if(hamonOp.isPresent()){

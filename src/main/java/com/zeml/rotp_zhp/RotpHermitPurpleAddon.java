@@ -1,6 +1,8 @@
 package com.zeml.rotp_zhp;
 
 import com.zeml.rotp_zhp.init.InitEntities;
+import com.zeml.rotp_zhp.init.InitTags;
+import com.zeml.rotp_zhp.network.ModNetwork;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +26,10 @@ public class RotpHermitPurpleAddon {
         InitSounds.SOUNDS.register(modEventBus);
         InitStands.ACTIONS.register(modEventBus);
         InitStands.STANDS.register(modEventBus);
+
+        InitTags.iniTags();
+
+        ModNetwork.init();
 
     }
 

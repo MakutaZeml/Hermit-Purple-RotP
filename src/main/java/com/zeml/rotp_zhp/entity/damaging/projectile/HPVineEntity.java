@@ -3,20 +3,21 @@ package com.zeml.rotp_zhp.entity.damaging.projectile;
 import com.github.standobyte.jojo.JojoModConfig;
 import com.github.standobyte.jojo.entity.damaging.projectile.ownerbound.OwnerBoundProjectileEntity;
 import com.github.standobyte.jojo.init.ModParticles;
+import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.init.InitEntities;
 import com.zeml.rotp_zhp.init.InitSounds;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.RedstoneWireBlock;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -124,6 +125,19 @@ public class HPVineEntity extends OwnerBoundProjectileEntity {
                 setIsRetracting(true);
             }
         }
+    }
+
+
+    private static final BlockState LAMP = Blocks.REDSTONE_LAMP.defaultBlockState().setValue(RedstoneLampBlock.LIT,true);
+    @Override
+    protected void afterBlockHit(BlockRayTraceResult blockRayTraceResult, boolean brokenBlock) {
+        if(!level.isClientSide){
+            if(level.getBlockState(blockRayTraceResult.getBlockPos()).getBlock()==Blocks.REDSTONE_LAMP){
+                level.setBlockAndUpdate(blockRayTraceResult.getBlockPos(),LAMP);
+            }
+        }
+
+
     }
 
 

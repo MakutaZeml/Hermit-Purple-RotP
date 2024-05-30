@@ -25,6 +25,9 @@ public class InitSounds {
     public static final RegistryObject<SoundEvent> VINE_TRHOW =SOUNDS.register("hp_throw",
             ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"hp_throw")));
 
+    public static final RegistryObject<SoundEvent> HERMITO_PURPLE_SPARK = SOUNDS.register("hp_spark",
+            () -> new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_spark")));
+
     public static final RegistryObject<SoundEvent> VOID =SOUNDS.register("void",
             ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"void")));
 
@@ -41,6 +44,10 @@ public class InitSounds {
 
     public static final RegistryObject<SoundEvent> USER_OVER_DRIVE = SOUNDS.register("joseph_over_drive",
             ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "joseph_over_drive"))
+    );
+
+    public static final RegistryObject<SoundEvent> USER_BREATH = SOUNDS.register("joseph_breath",
+            ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "joseph_breath"))
     );
 	
     static final OstSoundList JOSEPH_OST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_ost"), SOUNDS);

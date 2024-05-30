@@ -9,6 +9,7 @@
   "action.rotp_zhp.hp_doxx": "Position divination",
   "action.rotp_zhp.hp_doxx_s": "Position divination (Zoom)",
   "action.rotp_zhp.hp_camera": "Photo divination",
+  "action.rotp_zhp.hp_target": "Target selection",
 
   "action.rotp_zhp.hp_breath": "Hamon Breath",
   "action.rotp_zhp.hp_block": "Hermito Thorns",
@@ -21,10 +22,20 @@
   "rotp_zhp.subtitle.hp_throw": "Hermito Purple throw vine",
   "rotp_zhp.subtitle.hp_grp_ent": "Hermito Purple entity catched",
   "rotp_zhp.subtitle.hp_ora": "\"OVER DRIVE\"",
+  "rotp_zhp.subtitle.hp_spark": "Hermit Purple spark",
+  "rotp_zhp.subtitle.joseph_breath": "Breathing",
 
   "jojo.message.action_condition.no_hamon": "You need to learn Hamon",
   "jojo.message.action_condition.no_map": "You need an empty map in your offhand",
   "jojo.message.action_condition.no_paper": "You need paper",
 
-  "filled_map.divination": "Divination of "
+  "filled_map.divination": "Divination of ",
+
+  "gui.hermitpurpletarget.title": "Hermit Purple target select",
+  "gui.hermitpurpletarget.tab_all": "Players",
+  "gui.hermitpurpletarget.tab_hidden": "Entities",
+  "gui.hermitpurpletarget.tab_blocked": "Structures",
+  "gui.hermitpurpletarget.search_empty": "Couldn't find any target with that name",
+  "gui.hermitpurpletarget.random": "Random"
+
 }

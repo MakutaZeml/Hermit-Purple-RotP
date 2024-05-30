@@ -1,31 +1,35 @@
 package com.zeml.rotp_zhp.util;
 
 import com.github.standobyte.jojo.JojoModConfig;
-import com.github.standobyte.jojo.init.ModItems;
+import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.init.ModParticles;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
-import com.github.standobyte.jojo.init.power.stand.ModStands;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
-import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mc.damage.StandDamageSource;
+import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
-import com.zeml.rotp_zhp.init.InitSounds;
+import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
 import com.zeml.rotp_zhp.init.InitStands;
+import com.zeml.rotp_zhp.init.InitTags;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -73,6 +77,12 @@ public class GameplayHandler {
             );
 
         }
+    }
+
+    public static Optional<HPGrapplingVineEntity> getLandedVineUser(LivingEntity user) {
+        List<HPGrapplingVineEntity> vineLanded = user.level.getEntitiesOfClass(HPGrapplingVineEntity.class,
+                user.getBoundingBox().inflate(16), redBind -> user.is(Objects.requireNonNull(((StandEntity) redBind.getOwner()).getUser())) && redBind.isAttachedToAnEntity());
+        return !vineLanded.isEmpty() ? Optional.of(vineLanded.get(0)) : Optional.empty();
     }
 
 }

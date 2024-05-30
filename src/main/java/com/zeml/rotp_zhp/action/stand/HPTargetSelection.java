@@ -19,7 +19,7 @@ public class HPTargetSelection extends StandEntityAction {
     @OnlyIn(Dist.CLIENT)
     @Override
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task){
-        if(world.isClientSide){
+        if(world.isClientSide && userPower.getUser() == com.github.standobyte.jojo.client.ClientUtil.getClientPlayer()){
             ClientUtil.openTargetSelection();
         }
     }

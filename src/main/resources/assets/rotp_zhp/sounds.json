@@ -16,6 +16,12 @@
     "subtitle": "rotp_zhp.subtitle.hp_throw",
     "sounds": [ "rotp_zhp:stand/hp_vine_trhow","rotp_zhp:stand/hp_vine_trhow_2"]
   },
+
+  "hp_spark": {
+    "subtitle": "rotp_zhp.subtitle.hp_spark",
+    "sounds": [ "rotp_zhp:stand/hp_summon_2","rotp_zhp:stand/hp_summon_3"]
+  },
+
   "joseph_hp": {
     "subtitle": "rotp_zhp.subtitle.hp_user",
     "sounds": [ "rotp_zhp:user/joseph_hp_1", "rotp_zhp:user/joseph_hp_2"]
@@ -27,6 +33,11 @@
   "joseph_over_drive": {
     "subtitle": "rotp_zhp.subtitle.hp_ora",
     "sounds": ["rotp_zhp:user/joseph_od"]
+  },
+
+  "joseph_breath": {
+    "subtitle": "rotp_zhp.subtitle.joseph_breath",
+    "sounds": ["rotp_zhp:user/joseph_breath"]
   },
 
   "void":{

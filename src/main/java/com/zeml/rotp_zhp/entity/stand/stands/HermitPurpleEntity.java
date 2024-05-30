@@ -17,11 +17,20 @@ import java.util.Optional;
 
 public class HermitPurpleEntity extends StandEntity {
 
+    private static final DataParameter<Integer> MODE = EntityDataManager.defineId(HermitPurpleEntity.class,DataSerializers.INT);
+    private static final DataParameter<String> TARGET = EntityDataManager.defineId(HermitPurpleEntity.class,DataSerializers.STRING);
 
 
     public HermitPurpleEntity(StandEntityType<HermitPurpleEntity> type, World world){
         super(type, world);
         unsummonOffset = getDefaultOffsetFromUser().copy();
+    }
+
+    @Override
+    protected void defineSynchedData(){
+        super.defineSynchedData();
+        entityData.define(MODE,0);
+        entityData.define(TARGET,"random");
     }
     private final StandRelativeOffset offsetDefault = StandRelativeOffset.withYOffset(0, 0, 0);
 
@@ -31,8 +40,20 @@ public class HermitPurpleEntity extends StandEntity {
 	public StandRelativeOffset getDefaultOffsetFromUser() {return offsetDefault;}
 
 
+    public void setMode(int mode){
+        entityData.set(MODE,mode);
+    }
 
+    public int getMode(){
+        return entityData.get(MODE);
+    }
 
+    public void setTarget(String target){
+        entityData.set(TARGET,target);
+    }
 
+    public String getTarget(){
+        return entityData.get(TARGET);
+    }
 
 }

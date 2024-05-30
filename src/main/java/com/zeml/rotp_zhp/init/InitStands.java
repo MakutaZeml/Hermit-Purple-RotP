@@ -5,10 +5,7 @@ import com.github.standobyte.jojo.entity.stand.StandPose;
 import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.power.impl.stand.StandInstance;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
-import com.zeml.rotp_zhp.action.stand.HPDoxx;
-import com.zeml.rotp_zhp.action.stand.HPGrabOverdrive;
-import com.zeml.rotp_zhp.action.stand.HPThorns;
-import com.zeml.rotp_zhp.action.stand.HamonBreath;
+import com.zeml.rotp_zhp.action.stand.*;
 import com.zeml.rotp_zhp.action.stand.projectile.HPGrabCommand;
 import com.zeml.rotp_zhp.action.stand.projectile.HPGrapple;
 import com.zeml.rotp_zhp.action.stand.projectile.HPVineAttack;
@@ -55,7 +52,7 @@ public class InitStands {
     public static final RegistryObject<StandEntityAction> HP_GRAB_COMMAND = ACTIONS.register("hp_grab",
             () -> new HPGrabCommand(new StandEntityAction.Builder().staminaCost(40)
                     .resolveLevelToUnlock(2).swingHand().holdType().standUserWalkSpeed(1.0F)
-                    .cooldown(100)
+                    .cooldown(100,0,0.5F)
                     .standPose(StandPose.RANGED_ATTACK).standSound(InitSounds.VINE_TRHOW)
                     .partsRequired(StandInstance.StandPart.ARMS)
                     ));
@@ -86,21 +83,17 @@ public class InitStands {
 
     public static final RegistryObject<StandEntityAction> HP_BREATH =ACTIONS.register("hp_breath",
             ()-> new HamonBreath(new StandEntityAction.Builder().heldWalkSpeed(0.0F).holdType()
-                    .standSound(ModSounds.BREATH_DEFAULT).standSound(ModSounds.HAMON_CONCENTRATION)));
+                    .standSound(InitSounds.USER_BREATH).standSound(ModSounds.HAMON_CONCENTRATION)));
 
     public static final RegistryObject<StandEntityAction> HP_DOXX =ACTIONS.register("hp_doxx",
-            ()-> new HPDoxx(new StandEntityAction.Builder().standWindupDuration(10).cooldown(20)
+            ()-> new HPDoxx(new StandEntityAction.Builder().standWindupDuration(10).cooldown(200)
+                    .standSound(InitSounds.HERMITO_PURPLE_SUMMON).standSound(InitSounds.USER_HP)
+                    .staminaCost(30)
                     ));
 
-    /*
-    public static final RegistryObject<StandEntityAction> HP_DOXX_S =ACTIONS.register("hp_doxx_s",
-            ()-> new HPDoxx(new StandEntityAction.Builder().standWindupDuration(10).cooldown(20)
-                    .shiftVariationOf(HP_DOXX)
+    public static final RegistryObject<StandEntityAction> HP_TARGET =ACTIONS.register("hp_target",
+            ()-> new HPTargetSelection(new StandEntityAction.Builder()
             ));
-*/
-
-
-
 
     public static final EntityStandRegistryObject<EntityStandType<StandStats>, StandEntityType<HermitPurpleEntity>> STAND_HERMITO_PURPLE =
             new EntityStandRegistryObject<>("hermito_purple",
@@ -115,6 +108,7 @@ public class InitStands {
                             .rightClickHotbar(
                                     HP_BREATH.get(),
                                     HP_DOXX.get(),
+                                    HP_TARGET.get(),
                                     HP_GRAPPLE.get(),
                                     HP_BLOCK.get()
 

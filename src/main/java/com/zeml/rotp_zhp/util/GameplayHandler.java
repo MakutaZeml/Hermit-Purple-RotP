@@ -1,44 +1,42 @@
 package com.zeml.rotp_zhp.util;
 
-import com.github.standobyte.jojo.JojoMod;
 import com.github.standobyte.jojo.JojoModConfig;
-import com.github.standobyte.jojo.action.ActionTarget;
-import com.github.standobyte.jojo.action.non_stand.NonStandAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.init.ModParticles;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
-import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mc.damage.StandDamageSource;
-import com.github.standobyte.jojo.util.mc.reflection.CommonReflection;
-import com.zeml.rotp_zhp.ImageTaker;
+import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
-import com.zeml.rotp_zhp.action.stand.HPDoxx;
-import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineEntity;
+import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
+import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
+import com.zeml.rotp_zhp.init.InitTags;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
-
-import static com.github.standobyte.jojo.action.non_stand.HamonAction.addPointsForAction;
 
 
 @Mod.EventBusSubscriber(modid = RotpHermitPurpleAddon.MOD_ID)
 public class GameplayHandler {
-    private static final float energyCost = 0;
 
 
 
@@ -82,5 +80,31 @@ public class GameplayHandler {
 
         }
     }
+
+    @SubscribeEvent(priority =  EventPriority.LOW)
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event){
+        PlayerEntity player = event.player;
+            if(!player.level.isClientSide)
+            {
+                IStandPower.getStandPowerOptional(player).ifPresent(
+                        power -> {
+                            StandType<?> hp = InitStands.STAND_HERMITO_PURPLE.getStandType();
+                            if(power.getType() == hp){
+                                INonStandPower.getNonStandPowerOptional(player).ifPresent(ipower->{
+                                    Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                                    if(hamonOp.isPresent()){
+                                        HamonData hamon = hamonOp.get();
+                                        if(hamon.isSkillLearned(ModHamonSkills.ROPE_TRAP.get())){
+                                            power.unlockAction(InitStands.HP_BARRIER.get());
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                );
+            }
+
+    }
+
 
 }

@@ -14,6 +14,8 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.world.World;
 
@@ -22,7 +24,7 @@ import java.util.Optional;
 public class HPThorns extends StandEntityAction {
 
     private EffectInstance hamonthorns = null;
-    public HPThorns(Builder builder){
+    public HPThorns(StandEntityAction.Builder builder){
         super(builder);
     }
 
@@ -51,11 +53,14 @@ public class HPThorns extends StandEntityAction {
                                 cap.setHamonCharge(0.2F * hamon.getHamonDamageMultiplier() * hamonEfficiency, 20, user, 20)
                         );
                         hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,1);
+
+
                     }
                 }
             });
         }
     }
+
 
 
 }

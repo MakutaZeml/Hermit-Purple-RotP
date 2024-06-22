@@ -1,6 +1,7 @@
 package com.zeml.rotp_zhp.client.render.entity.renderer;
 
 import com.github.standobyte.jojo.capability.entity.power.StandCapProvider;
+import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.client.playeranim.PlayerAnimationHandler;
 import com.github.standobyte.jojo.client.render.entity.layerrenderer.GlovesLayer;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
@@ -44,6 +45,10 @@ public class HermitoUserLayer<T extends LivingEntity, M extends PlayerModel<T>> 
     @Override
     public void render(MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight, T entity,
                        float limbSwing, float limbSwingAmount, float partialTick, float ticks, float yRot, float xRot){
+        if (!ClientUtil.canSeeStands()) {
+            return;
+        }
+
         if (!playerAnimHandled) {
             PlayerAnimationHandler.getPlayerAnimator().onArmorLayerInit(this);
             playerAnimHandled = true;

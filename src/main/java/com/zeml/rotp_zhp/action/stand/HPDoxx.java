@@ -8,9 +8,9 @@ import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
-import de.maxhenkel.camera.Main;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,12 +18,16 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
@@ -36,17 +40,8 @@ import java.util.stream.Stream;
 
 public class HPDoxx extends StandEntityAction {
     boolean once = true;
-    public HPDoxx(Builder builder){
+    public HPDoxx(StandEntityAction.Builder builder){
         super(builder);
-    }
-
-    @Override
-    protected Action<IStandPower> replaceAction(IStandPower power, ActionTarget target){
-        ItemStack itemStack = power.getUser().getItemInHand(Hand.OFF_HAND);
-        if(itemStack.getItem()==Main.CAMERA.getItem()){
-            return InitStands.HP_CAMERA.get();
-        }
-        return super.replaceAction(power, target);
     }
 
 
@@ -66,75 +61,50 @@ public class HPDoxx extends StandEntityAction {
     @Override
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task){
         if(!world.isClientSide){
-
-            LivingEntity ent = hpObj(userPower.getUser());
-            if(ent != null){
-                ItemStack itemStack = userPower.getUser().getItemInHand(Hand.OFF_HAND);
+            byte scale = userPower.getUser().isShiftKeyDown()?(byte) 0:(byte) 2;
+            BlockPos blockPos = null;
+            String target = null;
+            ItemStack itemStack = userPower.getUser().getItemInHand(Hand.OFF_HAND);
+            if(((HermitPurpleEntity) standEntity).getMode() < 3){
+                LivingEntity ent = HPHelperDox.HPGeneralObjectives(userPower.getUser(),(HermitPurpleEntity) standEntity);
+                if(ent != null){
+                    blockPos= ent.blockPosition();
+                    target = ent.getName().getString();
+                }
+            }else {
+                Structure<?> structure = HPHelperDox.HPStructure(userPower.getUser(),(HermitPurpleEntity) standEntity);
+                if(structure != null){
+                    ServerWorld serverWorld = (ServerWorld) world;
+                    blockPos = serverWorld.getLevel().findNearestMapFeature(structure,standEntity.blockPosition(),100,false);
+                    target = structure.getFeatureName();
+                }
+            }
+            if(blockPos != null){
                 itemStack.setCount(itemStack.getCount()-1);
-                BlockPos blockPos= ent.blockPosition();
                 ServerWorld serverWorld = (ServerWorld) world;
-                ItemStack stackMap = FilledMapItem.create(serverWorld, blockPos.getX(), blockPos.getZ(), (byte)2, true, true);
+                ItemStack stackMap = FilledMapItem.create(serverWorld, blockPos.getX(), blockPos.getZ(), scale , true, true);
                 FilledMapItem.renderBiomePreviewMap(serverWorld, stackMap);
                 MapData.addTargetDecoration(stackMap, blockPos, "+", MapDecoration.Type.RED_X);
-                stackMap.setHoverName(new TranslationTextComponent("filled_map.divination").append(ent.getName()));
+                stackMap.setHoverName(new TranslationTextComponent("filled_map.divination").append(target));
+                CompoundNBT nbt =stackMap.getOrCreateTagElement("display");
+                nbt.putInt("MapColor",0x9E69CB);
                 userPower.getUser().setItemInHand(Hand.OFF_HAND,itemStack);
                 userPower.getUser().setItemInHand(Hand.MAIN_HAND,stackMap);
             }
+
+
+
 
         }
         once = true;
     }
 
-    @Override
-    public void standTickWindup(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
-        if(once){
-            LivingEntity ent = HPDoxx.hpObj(userPower.getUser());
-            if (ent != null) {
-                standEntity.playSound(InitSounds.HERMITO_PURPLE_SUMMON.get(), 1, 1);
-                standEntity.playSound(InitSounds.USER_HP.get(), 1, 1);
-                once=false;
-            }
-        }
 
-    }
 
-    public static LivingEntity HPojectives(LivingEntity user){
-        World world =user.level;
-        List<LivingEntity> lista =  world.getEntitiesOfClass(LivingEntity.class,user.getBoundingBox().inflate(1000), EntityPredicates.ENTITY_STILL_ALIVE).stream()
-                .filter(entity -> entity != user)
-                .filter(entity -> entity instanceof  PlayerEntity || entity.getMaxHealth()>100).collect(Collectors.toList());
-        LivingEntity fin = null;
-        if(!lista.isEmpty()){
-            int n = lista.size();
-            int i = MathHelper.floor(n*Math.random());
-            fin = lista.get(i);
-        }
-        return fin;
-    }
 
-    public static LivingEntity hpObj(LivingEntity user){
-        if(user instanceof ServerPlayerEntity){
-            ServerPlayerEntity player = Objects.requireNonNull(user.getServer()).getPlayerList().getPlayer(user.getUUID());
-            ServerWorld world= player.getLevel();
 
-            List<Entity> lista =  world.getEntities().filter(entity -> entity instanceof LivingEntity)
-                    .filter(entity -> entity != user)
-                    .filter(entity -> entity instanceof  PlayerEntity || ((LivingEntity)entity).getMaxHealth()>100).collect(Collectors.toList());
-            LivingEntity fin = null;
-            if(!lista.isEmpty()){
-                int n = lista.size();
-                int i = MathHelper.floor(n*Math.random());
-                fin = (LivingEntity) lista.get(i);
-            }
-            return fin;
 
-        }
-        return HPojectives(user);
-    }
 
-    @Override
-    public StandAction[] getExtraUnlockable(){
-        return new StandAction[] {InitStands.HP_CAMERA.get()};
-    }
+
 
 }

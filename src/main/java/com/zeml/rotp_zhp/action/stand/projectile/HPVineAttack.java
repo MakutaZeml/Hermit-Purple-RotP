@@ -25,6 +25,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector2f;
@@ -70,7 +71,7 @@ public class HPVineAttack extends StandEntityAction {
 
 
 
-    private void addProjectile(World world, IStandPower standPower, StandEntity standEntity, float yRotDelta, float xRotDelta, boolean shift) {
+    public void addProjectile(World world, IStandPower standPower, StandEntity standEntity, float yRotDelta, float xRotDelta, boolean shift) {
         HPVineEntity vine = new HPVineEntity(world, standEntity, yRotDelta, xRotDelta, shift);
         if (!shift) {
             vine.addKnockback(standEntity.guardCounter());
@@ -95,7 +96,7 @@ public class HPVineAttack extends StandEntityAction {
                     float hamonEfficiency = hamon.getActionEfficiency(cost, true);
                     standEntity.playSound(ModSounds.HAMON_CONCENTRATION.get(),0.5F,1);
                     vine.isCharged(true);
-                    vine.setHamonDamageOnHit(2.0F*hamonEfficiency, cost, ipower.getEnergy() <= 0);
+                    vine.setHamonDamageOnHit(hamonEfficiency, cost, ipower.getEnergy() <= 0);
                     vine.setBaseUsageStatPoints(Math.min(30, ipower.getEnergy()) * hamonEfficiency);
 
                 }
@@ -109,6 +110,7 @@ public class HPVineAttack extends StandEntityAction {
             }
         });
     }
+
 
     @Override
     protected boolean standKeepsTarget(ActionTarget target) {

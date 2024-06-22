@@ -3,7 +3,9 @@ package com.zeml.rotp_zhp.init;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
+import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineBarrierEntity;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineEntity;
+import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineGrabEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -22,5 +24,12 @@ public class InitEntities {
             () -> EntityType.Builder.<HPGrapplingVineEntity>of(HPGrapplingVineEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).noSummon().noSave().setUpdateInterval(20)
                     .build(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_grappling_vine").toString()));
 
+    public static final RegistryObject<EntityType<HPVineGrabEntity>> HP_GRAB_ENTITY = ENTITIES.register("hp_grab_vine",
+            () -> EntityType.Builder.<HPVineGrabEntity>of(HPVineGrabEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).noSummon().noSave().setUpdateInterval(20)
+                    .build(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_grab_vine").toString()));
+
+    public static final RegistryObject<EntityType<HPVineBarrierEntity>> HP_BARRIER = ENTITIES.register("sf_barrier",
+            () -> EntityType.Builder.<HPVineBarrierEntity>of(HPVineBarrierEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).noSummon().noSave().setShouldReceiveVelocityUpdates(false).setUpdateInterval(Integer.MAX_VALUE)
+                    .build(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "sf_barrier").toString()));
 
 }

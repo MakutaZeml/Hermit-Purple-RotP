@@ -1,28 +1,36 @@
 package com.zeml.rotp_zhp.entity.damaging.projectile;
 
 import com.github.standobyte.jojo.capability.entity.hamonutil.EntityHamonChargeCapProvider;
+import com.github.standobyte.jojo.entity.HamonBlockChargeEntity;
 import com.github.standobyte.jojo.entity.damaging.projectile.ownerbound.OwnerBoundProjectileEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.init.ModParticles;
+import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.ModStatusEffects;
+import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
+import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonActions;
+import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
+import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
+import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonUtil;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.init.InitEntities;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -78,33 +86,38 @@ import java.util.UUID;
             LivingEntity bound = getEntityAttachedTo();
             if (bound != null) {
                 LivingEntity owner = getOwner();
-                if(this.ischarge){
-                    DamageUtil.dealHamonDamage(bound, 0.15F, this, owner);
-                }
-                if(spreed){
-                    this.n+=1;
-                    int eff = Math.floorDiv(n,10);
-                    bound.addEffect(new EffectInstance(ModStatusEffects.HAMON_SPREAD.get(),100,eff));
-                }
-                if (!bound.isAlive()) {
-                    if (!level.isClientSide()) {
-                        remove();
+                if(owner != null){
+                    if(this.ischarge){
+                        DamageUtil.dealHamonDamage(bound, 0.15F, this, owner);
                     }
-                }
-                else {
-                    Vector3d vecToOwner = owner.position().subtract(bound.position());
-
-                    double length = vecToOwner.length();
-                    if (length < 2) {
+                    if(spreed){
+                        this.n+=1;
+                        int eff = Math.floorDiv(n,10);
+                        bound.addEffect(new EffectInstance(ModStatusEffects.HAMON_SPREAD.get(),100,eff));
+                    }
+                    if (!bound.isAlive()) {
                         if (!level.isClientSide()) {
                             remove();
                         }
                     }
                     else {
-                        dragTarget(bound, vecToOwner.normalize().scale(1));
-                        bound.fallDistance = 0;
+                        Vector3d vecToOwner = owner.position().subtract(bound.position());
+
+                        double length = vecToOwner.length();
+                        if (length < 2) {
+                            if (!level.isClientSide()) {
+                                remove();
+                            }
+                        }
+                        else {
+                            dragTarget(bound, vecToOwner.normalize().scale(1));
+                            bound.fallDistance = 0;
+                        }
                     }
+                }else {
+                    this.remove();
                 }
+
             }
         }
 
@@ -204,6 +217,8 @@ import java.util.UUID;
         @Override
         protected void updateMotionFlags() {}
 
+
+        private static final BlockState LAMP = Blocks.REDSTONE_LAMP.defaultBlockState().setValue(RedstoneLampBlock.LIT,true);
         @Override
         protected void afterBlockHit(BlockRayTraceResult blockRayTraceResult, boolean brokenBlock) {
             if (!brokenBlock && !bindEntities) {
@@ -211,8 +226,37 @@ import java.util.UUID;
                     playSound(InitSounds.HP_GRAPPLE_CATCH.get(), 1.0F, 1.0F);
                     attachToBlockPos(blockRayTraceResult.getBlockPos());
                 }
+            }
+            if(!level.isClientSide){
+                if(level.getBlockState(blockRayTraceResult.getBlockPos()).getBlock()==Blocks.REDSTONE_LAMP &&
+                        !level.getBlockState(blockRayTraceResult.getBlockPos()).getBlockState().getValue(RedstoneLampBlock.LIT)
+                ){
+                    level.playSound(null,blockRayTraceResult.getBlockPos(),InitSounds.HERMITO_PURPLE_SPARK.get(),SoundCategory.BLOCKS,.5F,1F);
+                    level.setBlockAndUpdate(blockRayTraceResult.getBlockPos(),LAMP);
+                }
+            }
+            if(level.getBlockState(blockRayTraceResult.getBlockPos()).getBlock()==Blocks.IRON_BLOCK){
+                if(stand.getUser() != null){
+                    BlockPos blockPos = blockRayTraceResult.getBlockPos();
+                    LivingEntity user = stand.getUser();
+                    INonStandPower.getNonStandPowerOptional(user).ifPresent(ipower->{
+                        Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                        if(hamonOp.isPresent()){
+                            HamonData hamon = hamonOp.get();
+                            if(hamon.isSkillLearned(ModHamonSkills.METAL_SILVER_OVERDRIVE.get())){
+                                level.getEntitiesOfClass(HamonBlockChargeEntity.class,
+                                        new AxisAlignedBB(Vector3d.atCenterOf(blockPos), Vector3d.atCenterOf(blockPos))).forEach(Entity::remove);
+                                HamonBlockChargeEntity charge = new HamonBlockChargeEntity(level, blockRayTraceResult.getBlockPos());
+                                charge.setCharge(0.02F * hamon.getHamonDamageMultiplier() * 60, 200, user, 200F);
+                                level.addFreshEntity(charge);
+                            }
+                        }
+                    });
+                }
 
-
+            }
+            if(!brokenBlock && bindEntities){
+                this.remove();
             }
         }
 
@@ -238,13 +282,6 @@ import java.util.UUID;
             this.userU = additionalData.readUUID();
         }
 
-        public UUID ownerUUID(){
-            return this.userU;
-        }
-
-        public LivingEntity getBou(){
-            return getEntityAttachedTo();
-        }
         public void isCharged(boolean charg){
             this.ischarge=charg;
         }

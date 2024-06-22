@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.client.render.entity.renderer;
 
+import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.client.playeranim.PlayerAnimationHandler;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
@@ -41,6 +42,10 @@ public class HermitoThorns <T extends LivingEntity, M extends PlayerModel<T>> ex
     @Override
     public void render(MatrixStack matrixStack, IRenderTypeBuffer buffer, int packedLight, T entity,
                        float limbSwing, float limbSwingAmount, float partialTick, float ticks, float yRot, float xRot){
+        if (!ClientUtil.canSeeStands()) {
+            return;
+        }
+
         if (!playerAnimHandled) {
             PlayerAnimationHandler.getPlayerAnimator().onArmorLayerInit(this);
             playerAnimHandled = true;

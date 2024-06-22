@@ -1,23 +1,33 @@
 package com.zeml.rotp_zhp.entity.damaging.projectile;
 
 import com.github.standobyte.jojo.JojoModConfig;
+import com.github.standobyte.jojo.entity.HamonBlockChargeEntity;
 import com.github.standobyte.jojo.entity.damaging.projectile.ownerbound.OwnerBoundProjectileEntity;
+import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.init.ModParticles;
+import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.ModStatusEffects;
+import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
+import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
+import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.init.InitEntities;
 import com.zeml.rotp_zhp.init.InitSounds;
+import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+
+import java.util.Optional;
 
 public class HPVineEntity extends OwnerBoundProjectileEntity {
     private float yRotOffset;
@@ -61,6 +71,14 @@ public class HPVineEntity extends OwnerBoundProjectileEntity {
     public float getBaseDamage() {
         double mult = JojoModConfig.getCommonConfigInstance(false).standDamageMultiplier.get();
         return isBinding ? 1.5F * (float) mult  : 2F * (float) mult;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if(getOwner() != null){
+
+        }
     }
 
     public void addKnockback(float knockback) {
@@ -123,6 +141,44 @@ public class HPVineEntity extends OwnerBoundProjectileEntity {
             }
         }
     }
+
+
+    private static final BlockState LAMP = Blocks.REDSTONE_LAMP.defaultBlockState().setValue(RedstoneLampBlock.LIT,true);
+    @Override
+    protected void afterBlockHit(BlockRayTraceResult blockRayTraceResult, boolean brokenBlock) {
+        if(level.getBlockState(blockRayTraceResult.getBlockPos()).getBlock()==Blocks.REDSTONE_LAMP &&
+                !level.getBlockState(blockRayTraceResult.getBlockPos()).getBlockState().getValue(RedstoneLampBlock.LIT)
+        ){
+            level.playSound(null,blockRayTraceResult.getBlockPos(),InitSounds.HERMITO_PURPLE_SPARK.get(),SoundCategory.BLOCKS,.5F,1F);
+            level.setBlockAndUpdate(blockRayTraceResult.getBlockPos(),LAMP);
+        }
+        if(level.getBlockState(blockRayTraceResult.getBlockPos()).getBlock()==Blocks.IRON_BLOCK){
+            if(this.getOwner() != null){
+                BlockPos blockPos = blockRayTraceResult.getBlockPos();
+                LivingEntity user = this.getOwner();
+                if(this.getOwner() instanceof StandEntity){
+                    user = ((StandEntity) this.getOwner()).getUser();
+                }
+                LivingEntity finalUser = user;
+                INonStandPower.getNonStandPowerOptional(user).ifPresent(ipower->{
+                    Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                    if(hamonOp.isPresent()){
+                        HamonData hamon = hamonOp.get();
+                        if(hamon.isSkillLearned(ModHamonSkills.METAL_SILVER_OVERDRIVE.get())){
+                            level.getEntitiesOfClass(HamonBlockChargeEntity.class,
+                                    new AxisAlignedBB(Vector3d.atCenterOf(blockPos), Vector3d.atCenterOf(blockPos))).forEach(Entity::remove);
+                            HamonBlockChargeEntity charge = new HamonBlockChargeEntity(level, blockRayTraceResult.getBlockPos());
+                            charge.setCharge(0.02F * hamon.getHamonDamageMultiplier() * 60, 200, finalUser, 200F);
+                            level.addFreshEntity(charge);
+                        }
+                    }
+                });
+            }
+
+        }
+
+    }
+
 
     @Override
     protected float knockbackMultiplier() {

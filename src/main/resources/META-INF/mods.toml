@@ -15,29 +15,29 @@ license="GNU GPL v3.0"
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
-modId="rotp_zhp" #mandatory
+modId="rotp_mih" #mandatory
 # The version number of the mod - there's a few well known ${} variables useable here or just hardcode it
 # ${file.jarVersion} will substitute the value of the Implementation-Version as read from the mod's JAR file metadata
 # see the associated build.gradle script for how to populate this completely automatically during a build
-version="Beta 1.1.1" #mandatory
+version="${file.jarVersion}" #mandatory
  # A display name for the mod
-displayName="RotP Hermit Purple" #mandatory
+displayName="RotP MadeInHeaven" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
-logoFile="logo.png" #optional
+logoFile="examplemod.png" #optional
 # A text field displayed in the mod UI
-# credits="Thanks for this example mod goes to Java" #optional
+credits="StandoByte" #optional
 # A text field displayed in the mod UI
-authors="Makuta Zeml, StandoByte" #optional
+authors="Weever" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-An addon for Ripples of the Past mod, adding a new Stand - Hermit Purple.
+An addon for Ripples of the Past mod, adding a new Stand of Whitesnake.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.rotp_zhp]] #optional
+[[dependencies.rotp_mih]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
     # Does this dependency have to exist - if not, ordering below must be specified
@@ -49,22 +49,16 @@ An addon for Ripples of the Past mod, adding a new Stand - Hermit Purple.
     # Side this dependency is applied on - BOTH, CLIENT or SERVER
     side="BOTH"
 # Here's another dependency
-[[dependencies.rotp_zhp]]
+[[dependencies.rotp_mih]]
     modId="minecraft"
     mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.16.5,1.17)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.rotp_zhp]]
+[[dependencies.rotp_mih]]
     modId="jojo"
     mandatory=true
     versionRange="[0.2.2,0.3)"
     ordering="AFTER"
-    side="BOTH"
-[[dependencies.rotp_zhp]]
-    modId="camera"
-    mandatory=false
-    versionRange="[1.16.5-1.0.0,)"
-    ordering="NONE"
     side="BOTH"

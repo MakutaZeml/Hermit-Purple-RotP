@@ -24,7 +24,7 @@ import net.minecraft.world.World;
 
 public class HPVineGrabEntity extends OwnerBoundProjectileEntity {
 
-    protected static final DataParameter<Boolean> OVER_DRIVE = EntityDataManager.defineId(MRRedBindEntity.class, DataSerializers.BOOLEAN);
+    protected static final DataParameter<Boolean> OVER_DRIVE = EntityDataManager.defineId(HPVineGrabEntity.class, DataSerializers.BOOLEAN);
 
     private StandEntity ownerStand;
     private EffectInstance immobilizedEffect = null;

@@ -2,6 +2,7 @@ package com.zeml.rotp_zhp.client.render.entity.renderer;
 
 import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.client.playeranim.PlayerAnimationHandler;
+import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
@@ -20,10 +21,13 @@ import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@OnlyIn(Dist.CLIENT)
 public class HermitoThorns <T extends LivingEntity, M extends PlayerModel<T>> extends LayerRenderer<T, M> {
     private static final Map<PlayerRenderer, HermitoThorns<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>>> RENDERER_LAYERS = new HashMap<>();
     private final M thornsModel;
@@ -64,6 +68,8 @@ public class HermitoThorns <T extends LivingEntity, M extends PlayerModel<T>> ex
                 thornsModel.rightArm.visible = playerModel.rightArm.visible;
                 thornsModel.rightSleeve.visible = playerModel.rightArm.visible;
                 ResourceLocation texture = new  ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"/textures/entity/stand/hermito_torns"+(slim ? "_slim" : "") + ".png");
+                texture = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
+                        .getStandSkin(stand.getStandInstance().get()), texture);
                 IVertexBuilder vertexBuilder = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(texture), false, false);
                 thornsModel.renderToBuffer(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
             }

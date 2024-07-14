@@ -4,6 +4,7 @@ import com.github.standobyte.jojo.capability.entity.power.StandCapProvider;
 import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.client.playeranim.PlayerAnimationHandler;
 import com.github.standobyte.jojo.client.render.entity.layerrenderer.GlovesLayer;
+import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.power.impl.stand.IStandManifestation;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
@@ -23,10 +24,13 @@ import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@OnlyIn(Dist.CLIENT)
 public class HermitoUserLayer<T extends LivingEntity, M extends PlayerModel<T>> extends LayerRenderer<T, M> {
     private static final Map<PlayerRenderer, HermitoUserLayer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>>> RENDERER_LAYERS = new HashMap<>();
     private final M glovesModel;
@@ -53,7 +57,6 @@ public class HermitoUserLayer<T extends LivingEntity, M extends PlayerModel<T>> 
             PlayerAnimationHandler.getPlayerAnimator().onArmorLayerInit(this);
             playerAnimHandled = true;
         }
-
         IStandPower.getStandPowerOptional(entity).ifPresent((stand)->{
             StandType<?>  hm = InitStands.STAND_HERMITO_PURPLE.getStandType();
             if(stand.getType() == hm && stand.getStandManifestation()instanceof StandEntity){
@@ -67,6 +70,8 @@ public class HermitoUserLayer<T extends LivingEntity, M extends PlayerModel<T>> 
                 glovesModel.rightArm.visible = playerModel.rightArm.visible;
                 glovesModel.rightSleeve.visible = playerModel.rightArm.visible;
                 ResourceLocation texture = new  ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"/textures/entity/stand/hermito_purple"+(slim ? "_slim" : "") + ".png");
+                texture = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
+                        .getStandSkin(stand.getStandInstance().get()), texture);
                 IVertexBuilder vertexBuilder = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(texture), false, false);
                 glovesModel.renderToBuffer(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
             }

@@ -46,19 +46,6 @@ public class HermitPurpleEntity extends StandEntity {
         return placedBarriers;
     }
 
-    public void createUserString() {
-        if (!level.isClientSide()) {
-            if (stringToUser == null || !stringToUser.isAlive()) {
-                stringToUser = new HPVineBarrierEntity(level, this);
-                if (stringFromStand != null && stringFromStand.isAlive()) {
-                    stringFromStand.remove();
-                }
-                stringFromStand = stringToUser;
-                level.addFreshEntity(stringFromStand);
-            }
-        }
-    }
-
     public boolean canPlaceBarrier() {
         return getPlacedBarriersCount() < HPAttachBarrier.getMaxBarriersPlaceable(getUserPower());
     }
@@ -81,7 +68,7 @@ public class HermitPurpleEntity extends StandEntity {
                 placedBarriers.add(stringFromStand);
                 setPlacedBarriersCount(placedBarriers.getSize());
             }
-            stringFromStand = new HPVineBarrierEntity(level, this);
+            stringFromStand = new HPVineBarrierEntity(level, this, this.getUserPower());
             stringFromStand.setOriginBlockPos(blockPos);
             level.addFreshEntity(stringFromStand);
             playSound(InitSounds.HP_GRAPPLE_CATCH.get(), 1.0F, 1.0F);

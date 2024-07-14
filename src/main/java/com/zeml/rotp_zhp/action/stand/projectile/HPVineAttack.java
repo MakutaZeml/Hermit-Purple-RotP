@@ -51,7 +51,7 @@ public class HPVineAttack extends StandEntityAction {
         super.onTaskSet(world, standEntity, standPower, phase, task, ticks);
         if (!world.isClientSide()) {
             boolean shift = isShiftVariation();
-            int n = shift ? 2: 5;
+            int n = shift ? 3: 7;
             for (int i = 0; i < n; i++) {
                 Vector2f rotOffsets = MathUtil.xRotYRotOffsets(Math.random()*1.5/ (double) n * Math.PI * 2, 10);
                 addProjectile(world, standPower, standEntity, rotOffsets.y, rotOffsets.x, shift);
@@ -90,7 +90,7 @@ public class HPVineAttack extends StandEntityAction {
                    vine.isSpread(true);
                 }
                 if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get()) && ipower.getEnergy()>0){
-                    float cost = 30+ (float) hamon.getHamonStrengthLevel()/2;
+                    float cost = 200 + (float) hamon.getHamonStrengthLevel();
                     hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,cost);
                     hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,cost);
                     float hamonEfficiency = hamon.getActionEfficiency(cost, true);

@@ -10,11 +10,13 @@ import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
+import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.StandUtil;
 import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitEntities;
+import com.zeml.rotp_zhp.init.InitStands;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -42,13 +44,15 @@ public class HPVineBarrierEntity extends OwnerBoundProjectileEntity {
             (IDataSerializer<Optional<Vector3d>>) ModDataSerializers.OPTIONAL_VECTOR3D.get().getSerializer());
     private boolean rippedHurtOwner = false;
     private LivingEntity standUser;
+    private IStandPower userPower;
     private BlockPos originBlockPos;
     private int rippedTicks = -1;
     private boolean timeStop = false;
 
-    public HPVineBarrierEntity(World world, StandEntity entity) {
+    public HPVineBarrierEntity(World world, StandEntity entity, IStandPower power) {
         super(InitEntities.HP_BARRIER.get(), entity, world);
         this.standUser = entity.getUser();
+        this.userPower = power;
     }
 
     public HPVineBarrierEntity(EntityType<? extends HPVineBarrierEntity> entityType, World world) {
@@ -75,14 +79,27 @@ public class HPVineBarrierEntity extends OwnerBoundProjectileEntity {
                 }
                 if (!level.isClientSide() && !rippedHurtOwner) {
                     DamageUtil.hurtThroughInvulTicks(standUser, DamageSource.GENERIC, 0.0F);
-                    rippedHurtOwner = true;
+                    rippedHurtOwner = false;
                 }
             }
             else {
+                if(userPower != null){
+                    if(userPower.getHeldAction() == InitStands.HP_UNBARRIER.get()){
+                        remove();
+                        return;
+                    }
+                }
+
                 if (standUser == null) {
                     remove();
                     return;
                 }
+                if(this.distanceTo(standUser)>50){
+                    remove();
+                    return;
+                }
+
+
                 super.tick();
                 if (!isAlive()) {
                     return;
@@ -268,5 +285,4 @@ public class HPVineBarrierEntity extends OwnerBoundProjectileEntity {
             originBlockPos = additionalData.readBlockPos();
         }
     }
-
 }

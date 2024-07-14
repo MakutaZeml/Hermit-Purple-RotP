@@ -15,13 +15,14 @@
   "action.rotp_zhp.hp_vine":"Vine",
   "action.rotp_zhp.hp_vine_entity": "Vine Grapple",
   "action.rotp_zhp.hp_doxx": "Position divination",
-  "action.rotp_zhp.hp_doxx_s": "Position divination (Zoom)",
+  "action.rotp_zhp.hp_doxx.s": "Position divination of ",
   "action.rotp_zhp.hp_camera": "Photo divination",
   "action.rotp_zhp.hp_target": "Target selection",
   "action.rotp_zhp.hp_barrier": "Hermit Purple String (%s/%s)",
-
+  "action.rotp_zhp.hp_unbarrier": "Unsummon barriers",
 
   "rotp_zhp.subtitle.hp_summon": "Hermit Purple Summon",
+  "rotp_zhp.subtitle.hp_unsummon": "Hermit Purple unsummon",
   "rotp_zhp.subtitle.hp_user": "\"Hermito Purple\"",
   "rotp_zhp.subtitle.hp_grapple": "Hermito Purple vine grapple",
   "rotp_zhp.subtitle.hp_throw": "Hermito Purple throw vine",

@@ -3,6 +3,10 @@
     "subtitle": "rotp_zhp.subtitle.hp_summon",
     "sounds": [ "rotp_zhp:stand/hp_summon_1","rotp_zhp:stand/hp_summon_2","rotp_zhp:stand/hp_summon_3"]
   },
+  "hp_unsummon": {
+    "subtitle": "rotp_zhp.subtitle.hp_unsummon",
+    "sounds": [ "rotp_zhp:stand/hp_unsummon_1"]
+  },
   "hp_grap": {
     "subtitle": "rotp_zhp.subtitle.hp_grapple",
     "sounds": [ "rotp_zhp:stand/hp_grapple_1","rotp_zhp:stand/hp_grapple_2"]

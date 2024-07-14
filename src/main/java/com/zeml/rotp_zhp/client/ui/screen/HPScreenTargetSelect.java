@@ -268,6 +268,7 @@ public class HPScreenTargetSelect extends Screen {
         searchString = searchString.toLowerCase(Locale.ROOT);
         if (!searchString.equals(this.lastSearch)) {
             this.HPTargetsList.setFilter(searchString);
+            this.HPTargetsList.setScrollAmount(0);
             this.lastSearch = searchString;
             this.showPage(this.page);
         }

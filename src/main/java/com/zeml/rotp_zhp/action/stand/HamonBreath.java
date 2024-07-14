@@ -69,25 +69,6 @@ public class HamonBreath extends StandEntityAction {
 
     }
 
-/*
-    @Override
-    public void stoppedHolding(World world, LivingEntity user, IStandPower power, int ticksHeld, boolean willFire) {
-        if(getHermitPurple(user).isPresent()){
-            INonStandPower.getNonStandPowerOptional(user).ifPresent(ipower->{
-                getHermitPurple(user).get().hamon(ticksHeld);
-                ipower.getTypeSpecificData(ModPowers.HAMON.get()).map(
-                        hamonData -> {
-                            return null;
-                        }
-                );
-
-            });
-        }
-        invokeForStand(power, StandEntity::stopTaskWithRecovery);
-    }
-
- */
-
     @Override
     public boolean enabledInHudDefault() {
         return false;

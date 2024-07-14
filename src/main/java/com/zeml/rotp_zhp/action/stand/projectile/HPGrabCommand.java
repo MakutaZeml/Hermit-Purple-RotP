@@ -11,7 +11,9 @@ import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineGrabEntity;
+import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitStands;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
@@ -38,8 +40,11 @@ public class HPGrabCommand extends StandEntityAction {
                 }
             }
         });
-        if(getLandedVineUser(power.getUser()).isPresent()&& hm.get()){
-            return InitStands.HP_GRAB_OVERDRIVE.get();
+        HermitPurpleEntity HP = MCUtil.entitiesAround(HermitPurpleEntity.class,power.getUser(),3,false, stand ->stand.getUser() == power.getUser()).stream().findAny().orElse(null);
+        if(HP != null){
+            if(getLandedVineStand(HP).isPresent() && hm.get()){
+                return InitStands.HP_GRAB_OVERDRIVE.get();
+            }
         }
         return super.replaceAction(power,target);
     }
@@ -70,11 +75,14 @@ public class HPGrabCommand extends StandEntityAction {
         return !vineLanded.isEmpty() ? Optional.of(vineLanded.get(0)) : Optional.empty();
     }
 
+    /*
     public static Optional<HPVineGrabEntity> getLandedVineUser(LivingEntity user) {
         List<HPVineGrabEntity> vineLanded = user.level.getEntitiesOfClass(HPVineGrabEntity.class,
                 user.getBoundingBox().inflate(16), redBind -> user.is(Objects.requireNonNull(((StandEntity) redBind.getOwner()).getUser())) && redBind.isAttachedToAnEntity());
         return !vineLanded.isEmpty() ? Optional.of(vineLanded.get(0)) : Optional.empty();
     }
+     */
+
 
     @Override
     public boolean noFinisherDecay() {

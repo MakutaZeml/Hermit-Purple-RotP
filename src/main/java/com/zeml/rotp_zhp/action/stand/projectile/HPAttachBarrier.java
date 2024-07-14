@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.action.stand.projectile;
 
+import com.github.standobyte.jojo.action.Action;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
@@ -14,6 +15,7 @@ import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,8 +37,8 @@ public class HPAttachBarrier extends StandEntityAction {
 
         if(string.get()){
             if (stand instanceof HermitPurpleEntity) {
-                HermitPurpleEntity spoderman = (HermitPurpleEntity) stand;
-                if (!spoderman.canPlaceBarrier()) {
+                HermitPurpleEntity hermitPurple = (HermitPurpleEntity) stand;
+                if (!hermitPurple.canPlaceBarrier()) {
                     return conditionMessage("barrier");
                 }
                 return ActionConditionResult.POSITIVE;
@@ -47,6 +49,7 @@ public class HPAttachBarrier extends StandEntityAction {
 
     }
 
+
     @Override
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
         if (!world.isClientSide()) {
@@ -56,7 +59,7 @@ public class HPAttachBarrier extends StandEntityAction {
     }
 
     public static int getMaxBarriersPlaceable(IStandPower power) {
-        return 5;
+        return 15;
     }
 
     @Override

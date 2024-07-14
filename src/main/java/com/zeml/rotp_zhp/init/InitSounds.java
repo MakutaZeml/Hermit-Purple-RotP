@@ -31,7 +31,8 @@ public class InitSounds {
     public static final RegistryObject<SoundEvent> VOID =SOUNDS.register("void",
             ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"void")));
 
-    public static final RegistryObject<SoundEvent> HERMITO_PURPLE_UNSUMMON = ModSounds.STAND_UNSUMMON_DEFAULT;
+    public static final RegistryObject<SoundEvent> HERMITO_PURPLE_UNSUMMON = SOUNDS.register("hp_unsummon",
+            () -> new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_unsummon")));
 
 
     public static final RegistryObject<SoundEvent> USER_HP = SOUNDS.register("joseph_hp",
@@ -54,5 +55,5 @@ public class InitSounds {
             ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "joseph_cringe"))
     );
 	
-    static final OstSoundList JOSEPH_OST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_ost"), SOUNDS);
+        static final OstSoundList JOSEPH_OST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_ost"), SOUNDS);
 }

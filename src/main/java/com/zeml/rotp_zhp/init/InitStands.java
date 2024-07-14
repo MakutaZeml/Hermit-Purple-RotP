@@ -33,7 +33,7 @@ public class InitStands {
 
     public static final RegistryObject<StandEntityAction> HP_VINE_ATTACK = ACTIONS.register("hp_vine_attack",
             () -> new HPVineAttack(new StandEntityAction.Builder().staminaCost(40).standPerformDuration(10).cooldown(10,5,0.5F)
-                    .partsRequired(StandInstance.StandPart.ARMS).standOffsetFromUser(0,0).standUserWalkSpeed(1.0F)
+                    .standOffsetFromUser(0,0).standUserWalkSpeed(1.0F)
                     .swingHand().standSound(StandEntityAction.Phase.WINDUP,InitSounds.VINE_TRHOW)
                     .standPose(StandPose.RANGED_ATTACK)
                     ));
@@ -41,7 +41,7 @@ public class InitStands {
     public static final RegistryObject<StandEntityAction> HP_VINE_SHIFT = ACTIONS.register("hp_vine_shift",
             () -> new HPVineAttack(new StandEntityAction.Builder().staminaCost(40).standPerformDuration(10)
                     .cooldown(30,35,0.5F)
-                    .partsRequired(StandInstance.StandPart.ARMS).standOffsetFromUser(0,0).standUserWalkSpeed(1.0F)
+                    .standOffsetFromUser(0,0).standUserWalkSpeed(1.0F)
                     .swingHand().standSound(StandEntityAction.Phase.WINDUP,InitSounds.VINE_TRHOW)
                     .standPose(StandPose.RANGED_ATTACK).shiftVariationOf(HP_VINE_ATTACK)
             ));
@@ -52,12 +52,10 @@ public class InitStands {
                     .resolveLevelToUnlock(2).swingHand().holdType().standUserWalkSpeed(1.0F)
                     .cooldown(100,0,0.5F)
                     .standPose(StandPose.RANGED_ATTACK).standSound(InitSounds.VINE_TRHOW)
-                    .partsRequired(StandInstance.StandPart.ARMS)
                     ));
     public static final RegistryObject<StandEntityAction> HP_GRAB_OVERDRIVE = ACTIONS.register("hp_grab_od",
             () -> new HPGrabOverdrive(new StandEntityAction.Builder().staminaCost(100).standSound(ModSounds.HAMON_CONCENTRATION)
                     .standUserWalkSpeed(1.0F).shout(InitSounds.USER_OVER_DRIVE)
-                    .partsRequired(StandInstance.StandPart.ARMS)
             ));
 
 
@@ -72,17 +70,21 @@ public class InitStands {
             () -> new HPGrapple(new StandEntityAction.Builder().staminaCostTick(1).holdType().standUserWalkSpeed(1.0F)
                     .resolveLevelToUnlock(1).swingHand()
                     .standPose(StandPose.RANGED_ATTACK).standSound(InitSounds.VINE_TRHOW)
-                    .partsRequired(StandInstance.StandPart.ARMS)));
+            ));
 
     public static final RegistryObject<StandEntityAction> HP_GRAPPLE_ENTITY = ACTIONS.register("hp_vine_entity",
             () -> new HPGrapple(new StandEntityAction.Builder().staminaCostTick(1).holdType().standUserWalkSpeed(1.0F)
                     .resolveLevelToUnlock(1).shiftVariationOf(HP_GRAPPLE).swingHand()
                     .standPose(StandPose.RANGED_ATTACK).standSound(InitSounds.VINE_TRHOW)
-                    .partsRequired(StandInstance.StandPart.ARMS)
                     .shiftVariationOf(HP_GRAPPLE)));
 
     public static final RegistryObject<StandEntityAction> HP_BARRIER = ACTIONS.register("hp_barrier",
             ()->new HPAttachBarrier(new StandEntityAction.Builder().staminaCost(50)
+                    .noResolveUnlock()
+            ));
+
+    public static final RegistryObject<StandEntityAction> HP_UNBARRIER = ACTIONS.register("hp_unbarrier",
+            ()->new HPUnattachBarrier(new StandEntityAction.Builder().shiftVariationOf(HP_BARRIER)
                     .noResolveUnlock()
             ));
     public static final RegistryObject<StandEntityAction> HP_OH_NO = ACTIONS.register("cringe",

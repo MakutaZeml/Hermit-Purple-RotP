@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.entity.damaging.projectile;
 
+import com.github.standobyte.jojo.action.non_stand.HamonOrganismInfusion;
 import com.github.standobyte.jojo.capability.entity.hamonutil.EntityHamonChargeCapProvider;
 import com.github.standobyte.jojo.entity.HamonBlockChargeEntity;
 import com.github.standobyte.jojo.entity.damaging.projectile.ownerbound.OwnerBoundProjectileEntity;
@@ -234,29 +235,58 @@ import java.util.UUID;
                     level.playSound(null,blockRayTraceResult.getBlockPos(),InitSounds.HERMITO_PURPLE_SPARK.get(),SoundCategory.BLOCKS,.5F,1F);
                     level.setBlockAndUpdate(blockRayTraceResult.getBlockPos(),LAMP);
                 }
-            }
-            if(level.getBlockState(blockRayTraceResult.getBlockPos()).getBlock()==Blocks.IRON_BLOCK){
-                if(stand.getUser() != null){
-                    BlockPos blockPos = blockRayTraceResult.getBlockPos();
-                    LivingEntity user = stand.getUser();
-                    INonStandPower.getNonStandPowerOptional(user).ifPresent(ipower->{
-                        Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
-                        if(hamonOp.isPresent()){
-                            HamonData hamon = hamonOp.get();
-                            if(hamon.isSkillLearned(ModHamonSkills.METAL_SILVER_OVERDRIVE.get())){
-                                level.getEntitiesOfClass(HamonBlockChargeEntity.class,
-                                        new AxisAlignedBB(Vector3d.atCenterOf(blockPos), Vector3d.atCenterOf(blockPos))).forEach(Entity::remove);
-                                HamonBlockChargeEntity charge = new HamonBlockChargeEntity(level, blockRayTraceResult.getBlockPos());
-                                charge.setCharge(0.02F * hamon.getHamonDamageMultiplier() * 60, 200, user, 200F);
-                                level.addFreshEntity(charge);
+                if(level.getBlockState(blockRayTraceResult.getBlockPos()).getBlock()==Blocks.IRON_BLOCK){
+                    if(stand.getUser() != null){
+                        BlockPos blockPos = blockRayTraceResult.getBlockPos();
+                        LivingEntity user = stand.getUser();
+                        INonStandPower.getNonStandPowerOptional(user).ifPresent(ipower->{
+                            Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                            if(hamonOp.isPresent()){
+                                HamonData hamon = hamonOp.get();
+                                if(hamon.isSkillLearned(ModHamonSkills.METAL_SILVER_OVERDRIVE.get())){
+                                    level.getEntitiesOfClass(HamonBlockChargeEntity.class,
+                                            new AxisAlignedBB(Vector3d.atCenterOf(blockPos), Vector3d.atCenterOf(blockPos))).forEach(Entity::remove);
+                                    HamonBlockChargeEntity charge = new HamonBlockChargeEntity(level, blockRayTraceResult.getBlockPos());
+                                    charge.setCharge(0.02F * hamon.getHamonDamageMultiplier() * 60, 200, user, 200F);
+                                    level.addFreshEntity(charge);
+                                }
                             }
-                        }
-                    });
-                }
+                        });
+                    }
 
-            }
-            if(!brokenBlock && bindEntities){
-                this.remove();
+                }
+                if(HamonOrganismInfusion.isBlockLiving(level.getBlockState(blockRayTraceResult.getBlockPos()))){
+                    if(this.getOwner() != null){
+                        BlockPos blockPos = blockRayTraceResult.getBlockPos();
+                        LivingEntity user = this.getOwner();
+                        if(this.getOwner() instanceof StandEntity){
+                            user = ((StandEntity) this.getOwner()).getUser();
+                        }
+                        LivingEntity finalUser = user;
+                        INonStandPower.getNonStandPowerOptional(user).ifPresent(ipower->{
+                            Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                            if(hamonOp.isPresent()) {
+                                HamonData hamon = hamonOp.get();
+                                if(hamon.isSkillLearned(ModHamonSkills.PLANT_BLOCK_INFUSION.get())&& finalUser.hasEffect(ModStatusEffects.RESOLVE.get())){
+                                    {
+                                        float hamonEfficiency = hamon.getActionEfficiency(200, true);
+                                        int chargeTicks = 100 + MathHelper.floor((float) (1100 * hamon.getHamonStrengthLevel())
+                                                / (float) HamonData.MAX_STAT_LEVEL * hamonEfficiency * hamonEfficiency);
+                                        level.getEntitiesOfClass(HamonBlockChargeEntity.class,
+                                                new AxisAlignedBB(Vector3d.atCenterOf(blockPos), Vector3d.atCenterOf(blockPos))).forEach(Entity::remove);
+                                        HamonBlockChargeEntity charge = new HamonBlockChargeEntity(level, blockPos);
+                                        charge.setCharge(0.02F * hamon.getHamonDamageMultiplier() * hamonEfficiency, chargeTicks, finalUser, 200);
+                                        level.addFreshEntity(charge);
+                                    }
+                                }
+                            }
+
+                        });
+                    }
+                }
+                if(!brokenBlock && bindEntities){
+                    this.remove();
+                }
             }
         }
 

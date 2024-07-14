@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.action.stand;
 
+import com.github.standobyte.jojo.action.Action;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
@@ -53,14 +54,18 @@ public class HPThorns extends StandEntityAction {
                                 cap.setHamonCharge(0.2F * hamon.getHamonDamageMultiplier() * hamonEfficiency, 20, user, 20)
                         );
                         hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,1);
-
-
                     }
                 }
             });
         }
     }
 
-
-
+    @Override
+    public boolean heldAllowsOtherAction(IStandPower standPower, Action<IStandPower> action) {
+        return true;
+    }
+    @Override
+    public boolean cancelsVanillaClick() {
+        return true;
+    }
 }

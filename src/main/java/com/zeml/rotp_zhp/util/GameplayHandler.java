@@ -9,11 +9,13 @@ import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
+import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mc.damage.StandDamageSource;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
+import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineBarrierEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
 import com.zeml.rotp_zhp.init.InitTags;
@@ -96,6 +98,7 @@ public class GameplayHandler {
                                         HamonData hamon = hamonOp.get();
                                         if(hamon.isSkillLearned(ModHamonSkills.ROPE_TRAP.get())){
                                             power.unlockAction(InitStands.HP_BARRIER.get());
+                                            power.unlockAction(InitStands.HP_UNBARRIER.get());
                                         }
                                     }
                                 });

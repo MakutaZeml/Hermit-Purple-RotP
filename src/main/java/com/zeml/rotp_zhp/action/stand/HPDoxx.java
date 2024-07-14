@@ -7,7 +7,13 @@ import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
+import com.github.standobyte.jojo.init.ModStatusEffects;
+import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
+import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
+import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
+import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
@@ -19,11 +25,14 @@ import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -31,10 +40,12 @@ import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,6 +81,19 @@ public class HPDoxx extends StandEntityAction {
                 if(ent != null){
                     blockPos= ent.blockPosition();
                     target = ent.getName().getString();
+                    if(userPower.getUser().hasEffect(ModStatusEffects.RESOLVE.get())){
+                        INonStandPower.getNonStandPowerOptional(userPower.getUser()).ifPresent(ipower ->{
+                            if (ipower.getType() == ModPowers.HAMON.get()){
+                                Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                                HamonData hamon = hamonOp.get();
+                                if(hamon.isSkillLearned(ModHamonSkills.DETECTOR.get())){
+                                    int seconds = Objects.requireNonNull(userPower.getUser().getEffect(ModStatusEffects.RESOLVE.get())).getDuration();
+                                    ent.addEffect(new EffectInstance(Effects.GLOWING,seconds/4));
+                                }
+                            }
+                        });
+
+                    }
                 }
             }else {
                 Structure<?> structure = HPHelperDox.HPStructure(userPower.getUser(),(HermitPurpleEntity) standEntity);
@@ -91,20 +115,37 @@ public class HPDoxx extends StandEntityAction {
                 userPower.getUser().setItemInHand(Hand.OFF_HAND,itemStack);
                 userPower.getUser().setItemInHand(Hand.MAIN_HAND,stackMap);
             }
-
-
-
-
         }
         once = true;
     }
 
 
+    @Override
+    public IFormattableTextComponent getTranslatedName(IStandPower power, String key) {
+        HermitPurpleEntity hm = getStand((PlayerEntity) power.getUser());
+        if(hm != null) {
+            if(hm.getMode() == 1){
+                return new TranslationTextComponent(key+".s").append(hm.getTarget());
 
+            }else if(hm.getMode() > 1){
+                String target = giveString(hm);
+                return new TranslationTextComponent(key+".s").append(target);
+            }
+        }
+        return super.getTranslatedName(power, key);
+    }
 
+    private HermitPurpleEntity getStand(PlayerEntity player){
+        Optional<HermitPurpleEntity> hm = MCUtil.entitiesAround(HermitPurpleEntity.class, player, 5, false, HermitPurpleEntity::isAlive).stream()
+                .filter(entity -> entity.getUser() == player).findAny();
+        return hm.orElse(null);
+    }
 
-
-
-
-
+    public static String giveString(HermitPurpleEntity hermitPurple){
+        if(hermitPurple.getMode() == 2){
+            return ForgeRegistries.ENTITIES.getValues().stream().filter(entityType -> entityType.getRegistryName().toString().equals(hermitPurple.getTarget())).findAny().get().getDescription().getString();
+        }else {
+            return ForgeRegistries.STRUCTURE_FEATURES.getValues().stream().filter(structure -> structure.getRegistryName().toString().equals(hermitPurple.getTarget())).findAny().get().getFeatureName();
+        }
+    }
 }

@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
@@ -28,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
-public class HermitoThorns <T extends LivingEntity, M extends PlayerModel<T>> extends LayerRenderer<T, M> {
+public class HermitoThorns<T extends LivingEntity, M extends BipedModel<T>> extends LayerRenderer<T, M>{
     private static final Map<PlayerRenderer, HermitoThorns<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>>> RENDERER_LAYERS = new HashMap<>();
     private final M thornsModel;
     private final boolean slim;
@@ -64,9 +65,7 @@ public class HermitoThorns <T extends LivingEntity, M extends PlayerModel<T>> ex
                 thornsModel.setupAnim(entity, limbSwing, limbSwingAmount, ticks, yRot, xRot);
 
                 thornsModel.leftArm.visible = playerModel.leftArm.visible;
-                thornsModel.leftSleeve.visible = playerModel.leftArm.visible;
                 thornsModel.rightArm.visible = playerModel.rightArm.visible;
-                thornsModel.rightSleeve.visible = playerModel.rightArm.visible;
                 ResourceLocation texture = new  ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"/textures/entity/stand/hermito_torns"+(slim ? "_slim" : "") + ".png");
                 texture = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
                         .getStandSkin(stand.getStandInstance().get()), texture);

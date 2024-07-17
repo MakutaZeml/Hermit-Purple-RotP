@@ -1,0 +1,12 @@
+{
+  "required": false,
+  "package": "com.zeml.rotp_zhp.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "MixinPPlayerRenderer"
+  ],
+  "injector": {
+    "defaultRequire": 1
+  },
+  "refmap": "rotp_zhp.mixins-refmap.json"
+}

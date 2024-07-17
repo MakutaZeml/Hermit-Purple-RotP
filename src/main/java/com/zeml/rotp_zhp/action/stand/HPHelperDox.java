@@ -124,7 +124,7 @@ public class HPHelperDox {
 
             return  world.players().stream()
                     .filter(entity -> entity.getName().getString().equals(ent))
-                    .collect(Collectors.toList()).stream().findFirst().get();
+                    .collect(Collectors.toList()).stream().findFirst().orElse(null);
 
         }
         return HPPlayers(user,ent);

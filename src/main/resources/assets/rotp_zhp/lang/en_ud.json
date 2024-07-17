@@ -1,0 +1,47 @@
+{
+  "entity.rotp_zhp.hermito_purple": "ǝldɹnԀ oʇᴉɯɹǝH",
+  "stand.rotp_zhp.hermito_purple": "ǝldɹnԀ oʇᴉɯɹǝH",
+
+  "action.rotp_zhp.hp_vine_attack": "ʞɔɐʇʇɐ ǝuᴉΛ",
+  "action.rotp_zhp.hp_vine_shift": "ʞɔɐʇʇɐ ƃuᴉpuᴉq ǝuᴉΛ",
+  "action.rotp_zhp.hp_grab": "ʎʇᴉʇuƎ qɐɹפ",
+  "action.rotp_zhp.hp_grab_od": "ʎʇᴉʇuǝ pǝqqɐɹƃ ǝʌᴉɹpɹǝʌO",
+  "action.rotp_zhp.cringe": "ƎפNIɹƆ ON HO",
+
+  "action.rotp_zhp.hp_breath": "ɥʇɐǝɹq uoɯɐH",
+  "action.rotp_zhp.hp_block": "suɹoɥ┴ oʇᴉɯɹǝH",
+  "action.rotp_zhp.hp_vine":"ǝuᴉΛ",
+  "action.rotp_zhp.hp_vine_entity": "ǝlddɐɹפ ǝuᴉΛ",
+  "action.rotp_zhp.hp_doxx": "uoᴉʇɐuᴉʌᴉp uoᴉʇᴉsoԀ",
+  "action.rotp_zhp.hp_doxx.s": "uoᴉʇɐuᴉʌᴉp uoᴉʇᴉsoԀ s, ",
+  "action.rotp_zhp.hp_camera": "uoᴉʇɐuᴉʌᴉp oʇoɥԀ",
+  "action.rotp_zhp.hp_target": "uoᴉʇɔǝlǝs ʇǝƃɹɐ┴",
+  "action.rotp_zhp.hp_barrier": "ǝldɹnԀ oʇᴉɯɹǝH ƃuᴉɹʇS (%s/%s)",
+  "action.rotp_zhp.hp_unbarrier": "sɹǝᴉɹɹɐq uoɯɯnsu∩",
+
+  "rotp_zhp.subtitle.hp_summon": "uoɯɯnS ǝldɹnԀ oʇᴉɯɹǝH",
+  "rotp_zhp.subtitle.hp_unsummon": "uoɯɯnsun ǝldɹnԀ oʇᴉɯɹǝH",
+  "rotp_zhp.subtitle.hp_user": "\"ǝldɹnԀ oʇᴉɯɹǝH\"",
+  "rotp_zhp.subtitle.hp_grapple": "ǝlddɐɹƃ ǝuᴉʌ ǝldɹnԀ oʇᴉɯɹǝH",
+  "rotp_zhp.subtitle.hp_throw": "ǝuᴉʌ ʍoɹɥʇ ǝldɹnԀ oʇᴉɯɹǝH",
+  "rotp_zhp.subtitle.hp_grp_ent": "pǝɥɔʇɐɔ ʎʇᴉʇuǝ ǝldɹnԀ oʇᴉɯɹǝH",
+  "rotp_zhp.subtitle.hp_ora": "\"ƎΛIɹp ɹƎΛO\"",
+  "rotp_zhp.subtitle.hp_spark": "ʞɹɐds ǝldɹnԀ oʇᴉɯɹǝH",
+  "rotp_zhp.subtitle.joseph_breath": "Breathing",
+  "rotp_zhp.subtitle.joseph_cringe": "OH NO CRINGE",
+
+  "jojo.message.action_condition.no_hamon": "uoɯɐH uɹɐǝl oʇ pǝǝu no⅄",
+  "jojo.message.action_condition.no_map": "puɐɥɟɟo ɹnoʎ uᴉ dɐɯ ʎʇdɯǝ uɐ pǝǝu no⅄",
+  "jojo.message.action_condition.no_paper": "ɹǝdɐd pǝǝu no⅄",
+  "jojo.message.action_condition.strings_learn": "llᴉʞs dɐɹ┴ ǝdoɹ uɹɐǝl oʇ pǝǝu no⅄",
+
+  "filled_map.divination": "uoᴉʇɐuᴉʌᴉp s,",
+
+  "gui.hermitpurpletarget.title": "ʇɔǝlǝs ʇǝƃɹɐʇ ǝldɹnԀ oʇᴉɯɹǝH",
+  "gui.hermitpurpletarget.tab_all": "sɹǝʎɐlԀ",
+  "gui.hermitpurpletarget.tab_hidden": "sǝᴉʇᴉʇuƎ",
+  "gui.hermitpurpletarget.tab_blocked": "sǝɹnʇɔnɹʇS",
+  "gui.hermitpurpletarget.search_empty": "ǝɯɐu ʇɐɥʇ ɥʇᴉʍ ʇǝƃɹɐʇ ʎuɐ puᴉɟ ʇ,uplnoƆ",
+  "gui.hermitpurpletarget.random": "ɯopuɐɹ"
+
+}

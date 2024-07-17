@@ -3,6 +3,7 @@ package com.zeml.rotp_zhp;
 import com.zeml.rotp_zhp.init.InitEntities;
 import com.zeml.rotp_zhp.init.InitTags;
 import com.zeml.rotp_zhp.network.ModNetwork;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,11 +29,13 @@ public class RotpHermitPurpleAddon {
         InitStands.STANDS.register(modEventBus);
 
         InitTags.iniTags();
-
         ModNetwork.init();
+        modEventBus.addListener(this::doClientStuff);
 
     }
 
+    private void doClientStuff(final FMLClientSetupEvent event){
+    }
     public static Logger getLogger() {
         return LOGGER;
     }

@@ -4,13 +4,12 @@ import com.github.standobyte.jojo.client.render.entity.layerrenderer.HamonBurnLa
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.client.render.entity.model.stand.HermitoUserModel;
 import com.zeml.rotp_zhp.client.render.entity.renderer.HermitoThorns;
+import com.zeml.rotp_zhp.client.render.entity.renderer.HermitoUserLayer;
 import com.zeml.rotp_zhp.client.render.entity.renderer.damaging.projectile.HPGrapplingVineRenderer;
 import com.zeml.rotp_zhp.client.render.entity.renderer.damaging.projectile.HPVineBarrierRrnderer;
 import com.zeml.rotp_zhp.client.render.entity.renderer.damaging.projectile.HPVineGrabRenderer;
 import com.zeml.rotp_zhp.client.render.entity.renderer.damaging.projectile.HPVineRenderer;
 import com.zeml.rotp_zhp.client.render.entity.renderer.stand.HermitPurpleRenderer;
-import com.zeml.rotp_zhp.client.render.entity.renderer.HermitoUserLayer;
-import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineGrabEntity;
 import com.zeml.rotp_zhp.init.AddonStands;
 
 import com.zeml.rotp_zhp.init.InitEntities;
@@ -23,6 +22,7 @@ import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -53,12 +53,16 @@ public class ClientInit {
 
     }
 
+
     private static void addLayers(PlayerRenderer renderer, boolean slim){
         renderer.addLayer(new HermitoUserLayer<>(renderer,new HermitoUserModel<>(0.35F,slim),slim));
         renderer.addLayer(new HermitoThorns<>(renderer,new HermitoUserModel<>(0.35F,slim),slim));
+
         addLivingLayers(renderer);
         addBipedLayers(renderer);
     }
+
+
 
     private static <T extends LivingEntity, M extends BipedModel<T>> void addLayersToEntities(EntityRenderer<?> renderer) {
         if (renderer instanceof LivingRenderer<?, ?>) {
@@ -75,8 +79,7 @@ public class ClientInit {
     }
 
     private static <T extends LivingEntity, M extends BipedModel<T>> void addBipedLayers(LivingRenderer<T, M> renderer) {
+    }
 
 
     }
-
-}

@@ -1,0 +1,49 @@
+{
+  "entity.rotp_zhp.hermito_purple": "紫色隐者",
+  "stand.rotp_zhp.hermito_purple": "紫色隐者",
+
+  "action.rotp_zhp.hp_vine_attack": "藤蔓攻击",
+  "action.rotp_zhp.hp_vine_shift": "藤蔓缠绕攻击",
+  "action.rotp_zhp.hp_grab": "捆绑生物",
+  "action.rotp_zhp.hp_grab_od": "传导波纹疾走",
+  "action.rotp_zhp.cringe": "OH NO CRINGE",
+
+
+
+  "action.rotp_zhp.hp_breath": "波纹呼吸",
+  "action.rotp_zhp.hp_block": "藤蔓护体",
+  "action.rotp_zhp.hp_vine":"拉动自身",
+  "action.rotp_zhp.hp_vine_entity": "拉向自己",
+  "action.rotp_zhp.hp_doxx": "位置念写",
+  "action.rotp_zhp.hp_doxx.s": "念写 ",
+  "action.rotp_zhp.hp_camera": "照片念写",
+  "action.rotp_zhp.hp_target": "选择目标",
+  "action.rotp_zhp.hp_barrier": "藤蔓陷阱 (%s/%s)",
+  "action.rotp_zhp.hp_unbarrier": "收回藤蔓陷阱",
+
+  "rotp_zhp.subtitle.hp_summon": "Hermit Purple Summon",
+  "rotp_zhp.subtitle.hp_unsummon": "Hermit Purple unsummon",
+  "rotp_zhp.subtitle.hp_user": "\"Hermito Purple\"",
+  "rotp_zhp.subtitle.hp_grapple": "Hermito Purple vine grapple",
+  "rotp_zhp.subtitle.hp_throw": "Hermito Purple throw vine",
+  "rotp_zhp.subtitle.hp_grp_ent": "Hermito Purple entity catched",
+  "rotp_zhp.subtitle.hp_ora": "\"OVER DRIVE\"",
+  "rotp_zhp.subtitle.hp_spark": "Hermit Purple spark",
+  "rotp_zhp.subtitle.joseph_breath": "Breathing",
+  "rotp_zhp.subtitle.joseph_cringe": "OH NO CRINGE",
+
+  "jojo.message.action_condition.no_hamon": "你需要学会波纹",
+  "jojo.message.action_condition.no_map": "你需要将空地图放在你的副手",
+  "jojo.message.action_condition.no_paper": "你需要纸",
+  "jojo.message.action_condition.strings_learn": "你需要解锁波纹丝线结界",
+
+  "filled_map.divination": "念写目标",
+
+  "gui.hermitpurpletarget.title": "选择念写目标",
+  "gui.hermitpurpletarget.tab_all": "玩家",
+  "gui.hermitpurpletarget.tab_hidden": "实体",
+  "gui.hermitpurpletarget.tab_blocked": "结构",
+  "gui.hermitpurpletarget.search_empty": "找不到目标",
+  "gui.hermitpurpletarget.random": "随机"
+
+}

@@ -12,11 +12,18 @@ import java.util.Optional;
 
 public class ModNetwork {
     private static final String PROTOCOL_VERSION = "1";
+    private static SimpleChannel serverChannel;
+
     private static SimpleChannel clientChannel;
     private static int packetIndex = 0;
 
     public static void init(){
-
+        serverChannel = NetworkRegistry.ChannelBuilder
+                .named(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "server_channel"))
+                .clientAcceptedVersions(PROTOCOL_VERSION::equals)
+                .serverAcceptedVersions(PROTOCOL_VERSION::equals)
+                .networkProtocolVersion(() -> PROTOCOL_VERSION)
+                .simpleChannel();
         clientChannel = NetworkRegistry.ChannelBuilder
                 .named(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "client_channel"))
                 .clientAcceptedVersions(PROTOCOL_VERSION::equals)
@@ -26,6 +33,8 @@ public class ModNetwork {
 
         packetIndex = 0;
         registerMessage(clientChannel,new ButtonClickPacket.Handler(),Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        registerMessage(serverChannel, new PurplCommonConfigPacket.Handler(),Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        registerMessage(serverChannel,new ResetConfigPacket.Handler(),Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 
 

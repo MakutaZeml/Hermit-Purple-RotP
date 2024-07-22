@@ -3,6 +3,8 @@ package com.zeml.rotp_zhp;
 import com.zeml.rotp_zhp.init.InitEntities;
 import com.zeml.rotp_zhp.init.InitTags;
 import com.zeml.rotp_zhp.network.ModNetwork;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +23,8 @@ public class RotpHermitPurpleAddon {
     public static final Logger LOGGER = LogManager.getLogger();
 
     public RotpHermitPurpleAddon() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON,HermitConfig.commonSpec);
+
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         InitEntities.ENTITIES.register(modEventBus);

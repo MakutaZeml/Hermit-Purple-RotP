@@ -13,6 +13,7 @@ import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mc.damage.StandDamageSource;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
+import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineBarrierEntity;
@@ -86,8 +87,7 @@ public class GameplayHandler {
     @SubscribeEvent(priority =  EventPriority.LOW)
     public static void onPlayerTick(TickEvent.PlayerTickEvent event){
         PlayerEntity player = event.player;
-            if(!player.level.isClientSide)
-            {
+            if(!player.level.isClientSide) {
                 IStandPower.getStandPowerOptional(player).ifPresent(
                         power -> {
                             StandType<?> hp = InitStands.STAND_HERMITO_PURPLE.getStandType();
@@ -99,6 +99,19 @@ public class GameplayHandler {
                                         if(hamon.isSkillLearned(ModHamonSkills.ROPE_TRAP.get())){
                                             power.unlockAction(InitStands.HP_BARRIER.get());
                                             power.unlockAction(InitStands.HP_UNBARRIER.get());
+                                        }
+                                    }
+                                });
+                            }
+                            if(power.getType() == null && HermitConfig.getCommonConfigInstance(false).hamonToHermit.get()){
+                                INonStandPower.getNonStandPowerOptional(player).ifPresent(ipower->{
+                                    Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                                    if(hamonOp.isPresent()){
+                                        HamonData hamon = hamonOp.get();
+                                        if(hamon.getHamonStrengthLevel()==HermitConfig.getCommonConfigInstance(false).strength.get()&&
+                                        hamon.getBreathingLevel() == HermitConfig.getCommonConfigInstance(false).breathing.get() &&
+                                        hamon.getHamonControlLevel() == HermitConfig.getCommonConfigInstance(false).control.get()){
+                                            power.givePower(InitStands.STAND_HERMITO_PURPLE.getStandType());
                                         }
                                     }
                                 });

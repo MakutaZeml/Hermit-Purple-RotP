@@ -4,6 +4,7 @@ import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.client.playeranim.PlayerAnimationHandler;
 import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
+import com.github.standobyte.jojo.item.GlovesItem;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -63,16 +64,20 @@ public class HermitoThorns<T extends LivingEntity, M extends BipedModel<T>> exte
                 thornsModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
                 playerModel.copyPropertiesTo(thornsModel);
                 thornsModel.setupAnim(entity, limbSwing, limbSwingAmount, ticks, yRot, xRot);
-
                 thornsModel.leftArm.visible = playerModel.leftArm.visible;
                 thornsModel.rightArm.visible = playerModel.rightArm.visible;
-                ResourceLocation texture = new  ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"/textures/entity/stand/hermito_torns"+(slim ? "_slim" : "") + ".png");
-                texture = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                        .getStandSkin(stand.getStandInstance().get()), texture);
+                ResourceLocation texture = getTexture();
                 IVertexBuilder vertexBuilder = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(texture), false, false);
                 thornsModel.renderToBuffer(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
             }
 
         });
     }
+
+    private ResourceLocation getTexture() {
+        return new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"/textures/entity/stand/hermito_torns"+(slim ? "_slim" : "") + ".png");
+    }
+
+
+
 }

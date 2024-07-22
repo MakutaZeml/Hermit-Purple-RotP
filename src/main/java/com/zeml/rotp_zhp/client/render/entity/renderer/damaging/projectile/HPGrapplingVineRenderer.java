@@ -9,4 +9,7 @@ public class HPGrapplingVineRenderer extends HPVineAbstractRenderer<HPGrapplingV
     public HPGrapplingVineRenderer(EntityRendererManager renderManager) {
         super(renderManager, new HPVineModel<HPGrapplingVineEntity>());
     }
+
+
+
 }

@@ -31,6 +31,7 @@ import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class HermitoThorns<T extends LivingEntity, M extends BipedModel<T>> extends LayerRenderer<T, M>{
+    private final ResourceLocation THORNS = new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"textures/entity/stand/hermito_torns.png");
     private static final Map<PlayerRenderer, HermitoThorns<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>>> RENDERER_LAYERS = new HashMap<>();
     private final M thornsModel;
     private final boolean slim;
@@ -66,7 +67,8 @@ public class HermitoThorns<T extends LivingEntity, M extends BipedModel<T>> exte
                 thornsModel.setupAnim(entity, limbSwing, limbSwingAmount, ticks, yRot, xRot);
                 thornsModel.leftArm.visible = playerModel.leftArm.visible;
                 thornsModel.rightArm.visible = playerModel.rightArm.visible;
-                ResourceLocation texture = getTexture();
+                ResourceLocation texture = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
+                        .getStandSkin(stand.getStandInstance().get()), getTexture());
                 IVertexBuilder vertexBuilder = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(texture), false, false);
                 thornsModel.renderToBuffer(matrixStack, vertexBuilder, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
             }
@@ -75,7 +77,7 @@ public class HermitoThorns<T extends LivingEntity, M extends BipedModel<T>> exte
     }
 
     private ResourceLocation getTexture() {
-        return new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"/textures/entity/stand/hermito_torns"+(slim ? "_slim" : "") + ".png");
+        return THORNS;
     }
 
 

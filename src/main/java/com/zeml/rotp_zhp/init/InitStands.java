@@ -17,6 +17,7 @@ import com.github.standobyte.jojo.init.power.stand.EntityStandRegistryObject;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 
+import com.zeml.rotp_zhp.power.impl.stand.type.HermitPurpleStandType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
@@ -54,8 +55,13 @@ public class InitStands {
                     .standPose(StandPose.RANGED_ATTACK).standSound(InitSounds.VINE_TRHOW)
                     ));
     public static final RegistryObject<StandEntityAction> HP_GRAB_OVERDRIVE = ACTIONS.register("hp_grab_od",
-            () -> new HPGrabOverdrive(new StandEntityAction.Builder().staminaCost(100).standSound(ModSounds.HAMON_CONCENTRATION)
+            () -> new HPGrabOverdrive(new StandEntityAction.Builder().staminaCost(200).standSound(ModSounds.HAMON_CONCENTRATION)
                     .standUserWalkSpeed(1.0F).shout(InitSounds.USER_OVER_DRIVE)
+            ));
+
+    public static final RegistryObject<StandEntityAction> HP_HEAL_VINE = ACTIONS.register("hp_grab_heal",
+            () -> new HPGrabHealOverDrive(new StandEntityAction.Builder().staminaCost(200).standSound(ModSounds.HAMON_CONCENTRATION)
+                    .standUserWalkSpeed(1.0F).shiftVariationOf(HP_GRAB_OVERDRIVE)
             ));
 
 
@@ -107,10 +113,10 @@ public class InitStands {
             ()-> new HPTargetSelection(new StandEntityAction.Builder()
             ));
 
-    public static final EntityStandRegistryObject<EntityStandType<StandStats>, StandEntityType<HermitPurpleEntity>> STAND_HERMITO_PURPLE =
+    public static final EntityStandRegistryObject<HermitPurpleStandType<StandStats>, StandEntityType<HermitPurpleEntity>> STAND_HERMITO_PURPLE =
             new EntityStandRegistryObject<>("hermito_purple",
                     STANDS,
-                    () -> new EntityStandType.Builder<StandStats>()
+                    () -> new HermitPurpleStandType.Builder<StandStats>()
                             .color(0xF070D0)
                             .storyPartName(ModStandsInit.PART_3_NAME)
                             .leftClickHotbar(
@@ -137,7 +143,7 @@ public class InitStands {
                                     .randomWeight(2)
                             )
                             .addOst(InitSounds.JOSEPH_OST)
-                            .disableManualControl().addSummonShout(InitSounds.USER_HP)
+                            .addSummonShout(InitSounds.USER_HP)
                             .build(),
 
                     InitEntities.ENTITIES,

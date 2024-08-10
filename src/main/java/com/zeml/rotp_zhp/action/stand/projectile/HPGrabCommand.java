@@ -83,16 +83,10 @@ public class HPGrabCommand extends StandEntityAction {
     }
      */
 
-
     @Override
     public boolean noFinisherDecay() {
         return true;
     }
 
-
-    @Override
-    public StandAction[] getExtraUnlockable() {
-        return new StandAction[] { InitStands.HP_GRAB_OVERDRIVE.get()};
-    }
 
 }

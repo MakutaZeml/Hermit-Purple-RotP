@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.action.stand;
 
+import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import net.minecraft.command.Commands;
 import net.minecraft.entity.Entity;
@@ -10,6 +11,7 @@ import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,6 +28,8 @@ public class HPHelperDox {
             return hpObj(user);
         } else if (hermitPurple.getMode() == 1) {
             return hpObjPlayers(user,hermitPurple.getTarget());
+        } else if (hermitPurple.getMode()==-1) {
+            return hpStandUser(user,hermitPurple.getTarget());
         }
         return hpObj(user,hermitPurple.getTarget());
     }
@@ -35,6 +39,16 @@ public class HPHelperDox {
         for(Structure<?> structure: ForgeRegistries.STRUCTURE_FEATURES){
             if(structure.getRegistryName().toString().equals(hermitPurple.getTarget())){
                 out = structure;
+            }
+        }
+        return out;
+    }
+
+    public static Biome HPBiomes(LivingEntity user, HermitPurpleEntity hermitPurple){
+        Biome out = null;
+        for(Biome biome: ForgeRegistries.BIOMES){
+            if(biome.getRegistryName().toString().equals(hermitPurple.getTarget())){
+                out = biome;
             }
         }
         return out;
@@ -55,7 +69,7 @@ public class HPHelperDox {
         return fin;
     }
 
-    public static LivingEntity hpObj(LivingEntity user){
+    private static LivingEntity hpObj(LivingEntity user){
         if(user instanceof ServerPlayerEntity){
             ServerPlayerEntity player = Objects.requireNonNull(user.getServer()).getPlayerList().getPlayer(user.getUUID());
             ServerWorld world= player.getLevel();
@@ -76,7 +90,7 @@ public class HPHelperDox {
     }
 
 
-    public static LivingEntity HPojectives(LivingEntity user,String ent){
+    private static LivingEntity HPojectives(LivingEntity user,String ent){
         World world =user.level;
         List<LivingEntity> lista =  world.getEntitiesOfClass(LivingEntity.class,user.getBoundingBox().inflate(1000), EntityPredicates.ENTITY_STILL_ALIVE).stream()
                 .filter(entity -> entity.getType().getRegistryName().toString().equals(ent)).collect(Collectors.toList());
@@ -89,7 +103,7 @@ public class HPHelperDox {
         return fin;
     }
 
-    public static LivingEntity hpObj(LivingEntity user, String ent){
+    private static LivingEntity hpObj(LivingEntity user, String ent){
         if(user instanceof ServerPlayerEntity){
             ServerPlayerEntity player = Objects.requireNonNull(user.getServer()).getPlayerList().getPlayer(user.getUUID());
             ServerWorld world= player.getLevel();
@@ -109,18 +123,14 @@ public class HPHelperDox {
         return HPojectives(user,ent);
     }
 
-    public static PlayerEntity HPPlayers(LivingEntity user,String ent){
+    private static PlayerEntity HPPlayers(LivingEntity user,String ent){
         return (PlayerEntity) user;
     }
 
-    public static PlayerEntity hpObjPlayers(LivingEntity user, String ent){
+    private static PlayerEntity hpObjPlayers(LivingEntity user, String ent){
         if(user instanceof ServerPlayerEntity){
             ServerPlayerEntity player = Objects.requireNonNull(user.getServer()).getPlayerList().getPlayer(user.getUUID());
             ServerWorld world= player.getLevel();
-
-            world.players().forEach(player1 ->
-                    System.out.println("Jogadores"+player1.getName().getString())
-            );
 
             return  world.players().stream()
                     .filter(entity -> entity.getName().getString().equals(ent))
@@ -130,6 +140,21 @@ public class HPHelperDox {
         return HPPlayers(user,ent);
     }
 
+
+    private static PlayerEntity hpStandUser(LivingEntity user,String standType){
+        if(user instanceof ServerPlayerEntity){
+            ServerPlayerEntity player = Objects.requireNonNull(user.getServer()).getPlayerList().getPlayer(user.getUUID());
+            ServerWorld world= player.getLevel();
+            return world.players().stream().filter(player1 -> IStandPower.getPlayerStandPower(player1).getType().getRegistryName().toString().equals(standType)).findFirst().orElse(null);
+        }
+        return null;
+    }
+
+    public static BlockPos biomesPos(LivingEntity pos , String biome, ServerWorld world){
+        return world.getChunkSource().getGenerator().getBiomeSource().findBiomeHorizontal(pos.blockPosition().getX(), pos.blockPosition().getY(), pos.blockPosition().getZ(), 3000, 8, (p_242102_1_) -> {
+            return p_242102_1_.getRegistryName().toString().equals(biome);
+        }, world.random, true);
+    }
 
 
 }

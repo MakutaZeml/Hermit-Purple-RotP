@@ -1,6 +1,8 @@
 package com.zeml.rotp_zhp.client.ui.screen;
 
+import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.client.ui.screen.widgets.CustomButton;
+import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
@@ -9,6 +11,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @SuppressWarnings("deprecation")
 public class HPButton extends CustomButton {
@@ -29,7 +33,14 @@ public class HPButton extends CustomButton {
     @Override
     protected void renderCustomButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.getTextureManager().bind(BUTTON);
+        AtomicReference<ResourceLocation> texture = new AtomicReference<>(BUTTON);
+
+        IStandPower.getStandPowerOptional(minecraft.player).ifPresent(power -> {
+            texture.set(StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
+                    .getStandSkin(power.getStandInstance().get()), BUTTON));
+        });
+
+        minecraft.getTextureManager().bind(texture.get());
         FontRenderer fontrenderer = minecraft.font;
 
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);

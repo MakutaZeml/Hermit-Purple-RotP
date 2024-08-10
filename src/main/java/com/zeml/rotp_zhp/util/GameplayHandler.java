@@ -90,19 +90,6 @@ public class GameplayHandler {
             if(!player.level.isClientSide) {
                 IStandPower.getStandPowerOptional(player).ifPresent(
                         power -> {
-                            StandType<?> hp = InitStands.STAND_HERMITO_PURPLE.getStandType();
-                            if(power.getType() == hp){
-                                INonStandPower.getNonStandPowerOptional(player).ifPresent(ipower->{
-                                    Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
-                                    if(hamonOp.isPresent()){
-                                        HamonData hamon = hamonOp.get();
-                                        if(hamon.isSkillLearned(ModHamonSkills.ROPE_TRAP.get())){
-                                            power.unlockAction(InitStands.HP_BARRIER.get());
-                                            power.unlockAction(InitStands.HP_UNBARRIER.get());
-                                        }
-                                    }
-                                });
-                            }
                             if(power.getType() == null && HermitConfig.getCommonConfigInstance(false).hamonToHermit.get()){
                                 INonStandPower.getNonStandPowerOptional(player).ifPresent(ipower->{
                                     Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());

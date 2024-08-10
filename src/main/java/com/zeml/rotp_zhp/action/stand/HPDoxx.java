@@ -13,6 +13,7 @@ import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.power.impl.stand.StandUtil;
 import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
@@ -30,12 +31,14 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.MapData;
@@ -95,13 +98,16 @@ public class HPDoxx extends StandEntityAction {
 
                     }
                 }
-            }else {
+            }else if(((HermitPurpleEntity) standEntity).getMode() == 3){
                 Structure<?> structure = HPHelperDox.HPStructure(userPower.getUser(),(HermitPurpleEntity) standEntity);
                 if(structure != null){
                     ServerWorld serverWorld = (ServerWorld) world;
                     blockPos = serverWorld.getLevel().findNearestMapFeature(structure,standEntity.blockPosition(),100,false);
                     target = structure.getFeatureName();
                 }
+            } else if (((HermitPurpleEntity) standEntity).getMode() == 4) {
+                blockPos = HPHelperDox.biomesPos(standEntity,((HermitPurpleEntity) standEntity).getTarget(),(ServerWorld) world);
+                target = giveString((HermitPurpleEntity) standEntity);
             }
             if(blockPos != null){
                 itemStack.setCount(itemStack.getCount()-1);
@@ -120,13 +126,16 @@ public class HPDoxx extends StandEntityAction {
     }
 
 
+
     @Override
     public IFormattableTextComponent getTranslatedName(IStandPower power, String key) {
         HermitPurpleEntity hm = getStand((PlayerEntity) power.getUser());
         if(hm != null) {
             if(hm.getMode() == 1){
                 return new TranslationTextComponent(key+".s").append(hm.getTarget());
-
+            } else if (hm.getMode() == -1) {
+                TranslationTextComponent user = new TranslationTextComponent("action.rotp_zhp.hp_doxx_user");
+                return new TranslationTextComponent(key+".s").append(StandUtil.availableStands(!power.getUser().level.isClientSide).filter(standType -> standType.getRegistryName().toString().equals(hm.getTarget())).findFirst().orElse(null).getName()).append(user);
             }else if(hm.getMode() > 1){
                 String target = giveString(hm);
                 return new TranslationTextComponent(key+".s").append(target);
@@ -144,8 +153,16 @@ public class HPDoxx extends StandEntityAction {
     public static String giveString(HermitPurpleEntity hermitPurple){
         if(hermitPurple.getMode() == 2){
             return ForgeRegistries.ENTITIES.getValues().stream().filter(entityType -> entityType.getRegistryName().toString().equals(hermitPurple.getTarget())).findAny().get().getDescription().getString();
-        }else {
+        } else if (hermitPurple.getMode() == 4) {
+            return biomeName(ForgeRegistries.BIOMES.getValues().stream().filter(biome -> biome.getRegistryName().toString().equals(hermitPurple.getTarget())).findAny().orElse(null)).getString();
+        } else {
             return ForgeRegistries.STRUCTURE_FEATURES.getValues().stream().filter(structure -> structure.getRegistryName().toString().equals(hermitPurple.getTarget())).findAny().get().getFeatureName();
         }
     }
+
+    public static TranslationTextComponent biomeName(Biome item){
+        return new TranslationTextComponent(Util.makeDescriptionId("biome",item.getRegistryName()));
+    }
+
+
 }

@@ -1,5 +1,8 @@
 package com.zeml.rotp_zhp.action.stand;
 
+import com.github.standobyte.jojo.action.Action;
+import com.github.standobyte.jojo.action.ActionTarget;
+import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
@@ -15,15 +18,19 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamon
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineGrabEntity;
+import com.zeml.rotp_zhp.init.InitStands;
 import net.minecraft.client.gui.social.SocialInteractionsScreen;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HPGrabOverdrive extends StandEntityAction {
     public HPGrabOverdrive(StandEntityAction.Builder builder) {
@@ -64,6 +71,10 @@ public class HPGrabOverdrive extends StandEntityAction {
         }
     }
 
+    @Override
+    public StandAction[] getExtraUnlockable() {
+        return new StandAction[] { InitStands.HP_HEAL_VINE.get()};
+    }
 
     public static Optional<HPVineGrabEntity> getLandedVineStand(StandEntity stand) {
         List<HPVineGrabEntity> vineLanded = stand.level.getEntitiesOfClass(HPVineGrabEntity.class,

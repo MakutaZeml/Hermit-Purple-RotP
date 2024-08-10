@@ -17,6 +17,7 @@ import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitEntities;
 import com.zeml.rotp_zhp.init.InitStands;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -105,6 +106,7 @@ public class HPVineBarrierEntity extends OwnerBoundProjectileEntity {
                     return;
                 }
             }
+
         }
         else if (!level.isClientSide()) {
             if (!wasRipped()) {

@@ -5,15 +5,24 @@ import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandRelativeOffset;
 import com.github.standobyte.jojo.entity.stand.StandEntityType;
 
+import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
+import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
+import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
+import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.zeml.rotp_zhp.action.stand.projectile.HPAttachBarrier;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineBarrierEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.util.HPBarriersNet;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class HermitPurpleEntity extends StandEntity {
 
@@ -113,6 +122,26 @@ public class HermitPurpleEntity extends StandEntity {
 
     public String getTarget(){
         return entityData.get(TARGET);
+    }
+
+
+    @Override
+    public float getLeapStrength() {
+        AtomicReference<Float> strength = new AtomicReference<>((float) 0);
+        if(this.getUser() != null){
+            INonStandPower.getNonStandPowerOptional(this.getUser()).ifPresent(ipower->{
+                Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                if(hamonOp.isPresent()){
+                    HamonData hamon = hamonOp.get();
+                    strength.set(hamon.isSkillLearned(ModHamonSkills.AFTERIMAGES.get()) ? 2F : 1.25F);
+                    ModifiableAttributeInstance speedAttribute = this.getUser().getAttribute(Attributes.MOVEMENT_SPEED);
+                    if (speedAttribute != null) {
+                        strength.updateAndGet(v -> new Float((v * (float) (speedAttribute.getValue() / speedAttribute.getBaseValue()))));
+                    }
+                }
+            });
+        }
+        return strength.get();
     }
 
 }

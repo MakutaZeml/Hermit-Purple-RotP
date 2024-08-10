@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.client.ui.screen;
 
+import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -15,8 +16,11 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityType;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.client.gui.widget.button.Button;
 
@@ -60,6 +64,14 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
                     }
                 } else if (entry.item instanceof Structure) {
                     if (!((Structure<?>) entry.item).getFeatureName().toLowerCase(Locale.ROOT).contains(filterText.toLowerCase(Locale.ROOT))) {
+                        this.remove(i);
+                    }
+                } else if (entry.item instanceof StandType) {
+                    if (!((StandType<?>) entry.item).getName().getString().toLowerCase(Locale.ROOT).contains(filterText.toLowerCase(Locale.ROOT))) {
+                        this.remove(i);
+                    }
+                } else if (entry.item instanceof Biome) {
+                    if (!biomeName((Biome) entry.item).toString().toLowerCase(Locale.ROOT).contains(filterText.toLowerCase(Locale.ROOT))) {
                         this.remove(i);
                     }
                 }
@@ -259,6 +271,10 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
 
             } else if (item instanceof Structure) {
                 ModNetwork.sendToServer(new ButtonClickPacket(3,((Structure<?>) item).getRegistryName().toString()));
+            } else if (item instanceof StandType<?>) {
+                ModNetwork.sendToServer(new ButtonClickPacket(-1,((StandType<?>)item).getRegistryName().toString()));
+            } else if (item instanceof Biome) {
+                ModNetwork.sendToServer(new ButtonClickPacket(4,((Biome)item).getRegistryName().toString()));
             }
         }
 
@@ -270,6 +286,10 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
                 minecraft.font.draw(matrixStack, ((EntityType<?>) item).getDescription().getString(), getRowLeft()+10, top, 0xFFFFFF);
             } else if (item instanceof Structure) {
                 minecraft.font.draw(matrixStack, ((Structure<?>) item).getFeatureName(), getRowLeft()+10, top, 0xFFFFFF);
+            } else if (item instanceof StandType<?>) {
+                minecraft.font.draw(matrixStack,((StandType<?>)item).getName(),getRowLeft()+10, top, 0xFFFFFF);
+            } else if (item instanceof Biome) {
+                minecraft.font.draw(matrixStack,biomeName((Biome) item),getRowLeft()+10, top, 0xFFFFFF);
             }
 
             this.button.y = top;
@@ -307,5 +327,8 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
         }
     }
 
+    public TranslationTextComponent biomeName(Biome item){
+        return new TranslationTextComponent(Util.makeDescriptionId("biome",item.getRegistryName()));
+    }
 
 }

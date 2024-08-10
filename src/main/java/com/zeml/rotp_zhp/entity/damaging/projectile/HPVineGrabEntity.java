@@ -90,7 +90,7 @@ public class HPVineGrabEntity extends OwnerBoundProjectileEntity {
                             immobilizedEffect = targetLiving.getEffect(ModStatusEffects.IMMOBILIZE.get());
                         }
                     }
-                    return true;
+                    return false;
                 }
             }
         }

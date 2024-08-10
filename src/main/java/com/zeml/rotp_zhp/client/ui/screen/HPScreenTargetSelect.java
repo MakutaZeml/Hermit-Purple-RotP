@@ -1,6 +1,9 @@
 package com.zeml.rotp_zhp.client.ui.screen;
 
 
+import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
+import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.power.impl.stand.StandUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.network.ButtonClickPacket;
@@ -19,6 +22,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @OnlyIn(Dist.CLIENT)
@@ -27,10 +31,14 @@ public class HPScreenTargetSelect extends Screen {
     private static final ITextComponent TAB_PLAYERS = new TranslationTextComponent("gui.hermitpurpletarget.tab_all");
     private static final ITextComponent TAB_ENTITIES = new TranslationTextComponent("gui.hermitpurpletarget.tab_hidden");
     private static final ITextComponent TAB_STRUCTURES = new TranslationTextComponent("gui.hermitpurpletarget.tab_blocked");
+    private static final ITextComponent TAB_STANDS = new TranslationTextComponent("gui.hermitpurpletarget.tab_stands");
+    private static final ITextComponent TAB_BIOMES = new TranslationTextComponent("gui.hermitpurpletarget.tab_biomes");
     private static final ITextComponent RANDOM = new TranslationTextComponent("gui.hermitpurpletarget.random");
     private static final ITextComponent TAB_ALL_SELECTED = TAB_PLAYERS.plainCopy().withStyle(TextFormatting.UNDERLINE);
     private static final ITextComponent TAB_ENTITIES_SELECTED = TAB_ENTITIES.plainCopy().withStyle(TextFormatting.UNDERLINE);
     private static final ITextComponent TAB_STRUCTURES_SELECTED = TAB_STRUCTURES.plainCopy().withStyle(TextFormatting.UNDERLINE);
+    private static final ITextComponent TAB_STANDS_SELECTED = TAB_STANDS.plainCopy().withStyle(TextFormatting.UNDERLINE);
+    private static final ITextComponent TAB_BIOMES_SELECTED = TAB_BIOMES.plainCopy().withStyle(TextFormatting.UNDERLINE);
     private static final ITextComponent SEARCH_HINT = (new TranslationTextComponent("gui.socialInteractions.search_hint")).withStyle(TextFormatting.ITALIC).withStyle(TextFormatting.GRAY);
     private static final ITextComponent EMPTY_SEARCH = (new TranslationTextComponent("gui.hermitpurpletarget.search_empty")).withStyle(TextFormatting.GRAY);
     private static final ITextComponent EMPTY_ENTITIES = (new TranslationTextComponent("gui.socialInteractions.empty_entities")).withStyle(TextFormatting.GRAY);
@@ -43,6 +51,8 @@ public class HPScreenTargetSelect extends Screen {
     private HPButton entitiesButton;
     private HPButton structuresButton;
     private HPButton randomButton;
+    private HPButton standButton;
+    private HPButton biomesButton;
     @Nullable
     private ITextComponent serverLabel;
     private int playerCount;
@@ -104,21 +114,29 @@ public class HPScreenTargetSelect extends Screen {
         int j1 = (this.width - l) / 2;
 
         this.allButton = this.addButton(new HPButton(j, 45, i, 20, TAB_PLAYERS, (p_244686_1_) -> {
-            this.showPage(HPScreenTargetSelect.Mode.PLAYERS);
+            this.showPage(Mode.PLAYERS);
             this.HPTargetsList.setScrollAmount(0);
         }));
         this.entitiesButton = this.addButton(new HPButton((j + k - i) / 2 + 1, 45, i, 20, TAB_ENTITIES, (p_244681_1_) -> {
-            this.showPage(HPScreenTargetSelect.Mode.ENTITIES);
+            this.showPage(Mode.ENTITIES);
             this.HPTargetsList.setScrollAmount(0);
         }));
         this.structuresButton = this.addButton(new HPButton(k - i + 1, 45, i, 20, TAB_STRUCTURES, (p_244769_1_) -> {
-            this.showPage(HPScreenTargetSelect.Mode.STRUCTURES);
+            this.showPage(Mode.STRUCTURES);
             this.HPTargetsList.setScrollAmount(0);
         }));
-
+        this.standButton = this.addButton(new HPButton(j,i1+15,i,20,TAB_STANDS,(buttons)->{
+            this.showPage(Mode.STAND);
+            this.HPTargetsList.setScrollAmount(0);
+        }));
+        this.biomesButton = this.addButton(new HPButton(k - i + 1,i1+15,i,20,TAB_BIOMES,(buttons)->{
+            this.showPage(Mode.BIOMES);
+            this.HPTargetsList.setScrollAmount(0);
+        }));
         this.randomButton = this.addButton(new HPButton(j1, i1, l, 20, RANDOM, (p_244767_1_)-> {
             ModNetwork.sendToServer(new ButtonClickPacket(0,"random"));
         }));
+
 
         String s = this.searchBox != null ? this.searchBox.getValue() : "";
         this.searchBox = new TextFieldWidget(this.font, this.marginX() + 28, 78, 196, 16, SEARCH_HINT) {
@@ -145,6 +163,7 @@ public class HPScreenTargetSelect extends Screen {
         this.allButton.setMessage(TAB_PLAYERS);
         this.entitiesButton.setMessage(TAB_ENTITIES);
         this.structuresButton.setMessage(TAB_STRUCTURES);
+        this.standButton.setMessage(TAB_STANDS);
 
         Collection<?> collection;
         switch (mode) {
@@ -161,6 +180,14 @@ public class HPScreenTargetSelect extends Screen {
             case STRUCTURES:
                 this.structuresButton.setMessage(TAB_STRUCTURES_SELECTED);
                 collection = ForgeRegistries.STRUCTURE_FEATURES.getValues();
+                break;
+            case STAND:
+                this.standButton.setMessage(TAB_STANDS_SELECTED);
+                collection = StandUtil.availableStands(this.minecraft.player.level.isClientSide).collect(Collectors.toList());
+                break;
+            case BIOMES:
+                this.biomesButton.setMessage(TAB_BIOMES_SELECTED);
+                collection = ForgeRegistries.BIOMES.getValues();
                 break;
             default:
                 collection = Collections.emptyList();
@@ -191,7 +218,15 @@ public class HPScreenTargetSelect extends Screen {
     public void renderBackground(MatrixStack matrixStack) {
         int i = this.marginX() + 3;
         super.renderBackground(matrixStack);
-        this.minecraft.getTextureManager().bind(SOCIAL_INTERACTIONS_LOCATION);
+
+        AtomicReference<ResourceLocation> texture = new AtomicReference<>(SOCIAL_INTERACTIONS_LOCATION);
+
+        IStandPower.getStandPowerOptional(minecraft.player).ifPresent(power -> {
+            texture.set(StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
+                    .getStandSkin(power.getStandInstance().get()), SOCIAL_INTERACTIONS_LOCATION));
+        });
+
+        this.minecraft.getTextureManager().bind(texture.get());
         this.blit(matrixStack, i, 64, 1, 1, 236, 8);
         int j = this.backgroundUnits();
 
@@ -283,6 +318,8 @@ public class HPScreenTargetSelect extends Screen {
     enum Mode {
         PLAYERS,
         ENTITIES,
-        STRUCTURES;
+        STRUCTURES,
+        STAND,
+        BIOMES;
     }
 }

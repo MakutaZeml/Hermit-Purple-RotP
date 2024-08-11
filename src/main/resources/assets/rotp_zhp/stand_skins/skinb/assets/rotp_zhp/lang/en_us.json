@@ -1,0 +1,25 @@
+{
+  "entity.rotp_zhp.hermito_purple": "Holly's Stand",
+  "stand.rotp_zhp.hermito_purple": "Holly's Stand",
+
+  "action.rotp_zhp.hp_vine_attack": "Vine attack",
+  "action.rotp_zhp.hp_vine_shift": "Vine binding attack",
+  "action.rotp_zhp.hp_doxx": "Position location",
+
+  "action.rotp_zhp.hp_breath": "Hamon Breath",
+  "action.rotp_zhp.hp_block": "Holly's Thorns",
+  "action.rotp_zhp.hp_vine":"Vine",
+  "action.rotp_zhp.hp_vine_entity": "Vine Grapple",
+
+  "rotp_zhp.subtitle.hp_summon": "Holly's Stand Summon",
+  "rotp_zhp.subtitle.hp_user": "\"Holly's Stand\"",
+  "rotp_zhp.subtitle.hp_grapple": "Holly's Stand vine grapple",
+  "rotp_zhp.subtitle.hp_throw": "Holly's Stand throw vine",
+  "rotp_zhp.subtitle.hp_grp_ent": "Holly's Stand entity catched",
+  "rotp_zhp.subtitle.hp_ora": "Vine attack",
+
+  "jojo.message.action_condition.no_hamon": "You need to learn Hamon",
+  "jojo.message.action_condition.no_map": "You need an empty map in your offhand",
+
+  "filled_map.divination": "Location of "
+}

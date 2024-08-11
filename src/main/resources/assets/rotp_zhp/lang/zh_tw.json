@@ -1,0 +1,55 @@
+{
+  "entity.rotp_zhp.hermito_purple": "『隱者之紫』",
+  "stand.rotp_zhp.hermito_purple": "『隱者之紫』",
+
+  "action.rotp_zhp.hp_vine_attack": "藤蔓攻擊",
+  "action.rotp_zhp.hp_vine_shift": "藤蔓纏繞攻擊",
+  "action.rotp_zhp.hp_grab": "纏繞實體",
+  "action.rotp_zhp.hp_grab_od": "傳導波紋疾走",
+  "action.rotp_zhp.cringe": "OH NO CRINGE",
+
+
+
+  "action.rotp_zhp.hp_breath": "波紋呼吸",
+  "action.rotp_zhp.hp_block": "纏繞護體",
+  "action.rotp_zhp.hp_vine":"藤蔓穿梭",
+  "action.rotp_zhp.hp_vine_entity": "抓取實體",
+  "action.rotp_zhp.hp_doxx": "念寫",
+  "action.rotp_zhp.hp_doxx.s": "念寫以尋找 ",
+  "action.rotp_zhp.hp_camera": "照片念寫",
+  "action.rotp_zhp.hp_target": "選擇目標",
+  "action.rotp_zhp.hp_barrier": "藤蔓陷阱 (已佈置%s條/共可佈置%s條)",
+  "action.rotp_zhp.hp_unbarrier": "收回所有藤蔓",
+
+  "rotp_zhp.subtitle.hp_summon": "釋放『隱者之紫』",
+  "rotp_zhp.subtitle.hp_unsummon": "收回『隱者之紫』",
+  "rotp_zhp.subtitle.hp_user": "\"『隱者之紫』\"",
+  "rotp_zhp.subtitle.hp_grapple": "『隱者之紫』藤蔓聲",
+  "rotp_zhp.subtitle.hp_throw": "『隱者之紫』射出藤蔓",
+  "rotp_zhp.subtitle.hp_grp_ent": "『隱者之紫』命中實體",
+  "rotp_zhp.subtitle.hp_ora": "\"波紋疾走\"",
+  "rotp_zhp.subtitle.hp_spark": "『隱者之紫』波紋躁動",
+  "rotp_zhp.subtitle.joseph_breath": "玩家呼吸",
+  "rotp_zhp.subtitle.joseph_cringe": "OH NO CRINGE",
+
+  "jojo.message.action_condition.no_hamon": "你需要學習波紋",
+  "jojo.message.action_condition.no_map": "你的副手需要一張空地圖",
+  "jojo.message.action_condition.no_paper": "你需要紙",
+  "jojo.message.action_condition.strings_learn": "你需要學習波紋絲線結界",
+
+  "filled_map.divination": "地圖：尋找",
+
+  "gui.hermitpurpletarget.title": "選擇目標",
+  "gui.hermitpurpletarget.tab_all": "玩家",
+  "gui.hermitpurpletarget.tab_hidden": "實體",
+  "gui.hermitpurpletarget.tab_blocked": "結構",
+  "gui.hermitpurpletarget.search_empty": "找不到目標",
+  "gui.hermitpurpletarget.random": "隨機",
+
+
+  "rotp_zhp.config.hamonToHermit": "給予『隱者之紫』波紋",
+  "rotp_zhp.config.control": "需要波紋控制",
+  "rotp_zhp.config.strength": "需要波紋力量",
+  "rotp_zhp.config.breathing": "波紋呼吸強度"
+
+}

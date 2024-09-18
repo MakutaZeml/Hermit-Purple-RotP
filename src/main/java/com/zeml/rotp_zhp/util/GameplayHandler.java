@@ -11,12 +11,14 @@ import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
+import com.github.standobyte.jojo.util.mc.damage.IndirectStandEntityDamageSource;
 import com.github.standobyte.jojo.util.mc.damage.StandDamageSource;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineBarrierEntity;
+import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
 import com.zeml.rotp_zhp.init.InitTags;
@@ -33,6 +35,7 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -52,6 +55,8 @@ public class GameplayHandler {
             IStandPower.getStandPowerOptional(target).ifPresent(
                     standPower ->{
                         if(standPower.getHeldAction()==InitStands.HP_BLOCK.get()){
+                            StandEntity stand = getTargetStand(target);
+                            double standDurability = stand.getDurability();
                             if(ent instanceof LivingEntity){
                                 LivingEntity liv = (LivingEntity) ent;
                                 liv.hurt(DamageSource.GENERIC,1);
@@ -61,22 +66,27 @@ public class GameplayHandler {
                                     if(hamonOp.isPresent()){
                                         HamonData hamon = hamonOp.get();
 
-                                        float hamonDamage = hamon.getHamonStrengthLevel()/30F;
+                                        float hamonDamage = 1F;
 
                                         if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get()) && ipower.getEnergy()>0){
-                                            DamageUtil.dealHamonDamage(ent, hamonDamage, ent , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
+                                            DamageUtil.dealHamonDamage(ent, hamonDamage, ent , target, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
+                                            HermitPurpleEntity hermitPurple = MCUtil.entitiesAround(HermitPurpleEntity.class,target,5,false,hermitPurple1 -> hermitPurple1.getUser()==target).stream().findAny().orElse(null);
+                                            if(hermitPurple != null){
+                                                ent.hurt(new IndirectStandEntityDamageSource("hamon",null,hermitPurple),1);
+                                            }
                                         }
                                     }
                                 });
 
                             }
-                            if(dmgSource instanceof StandDamageSource){
-                                double conf = JojoModConfig.getCommonConfigInstance(false).standDamageMultiplier.get();
-                                event.setAmount(Math.max(event.getAmount() - (float) conf*14.F / 4F, 0));
-                            } else{
-                                event.setAmount(Math.max(event.getAmount() - 14.F / 4F, 0));
+                            if(standDurability >0){
+                                if(dmgSource instanceof StandDamageSource){
+                                    double conf = JojoModConfig.getCommonConfigInstance(false).standDamageMultiplier.get();
+                                    event.setAmount(Math.max(event.getAmount() - (float) conf* (float) standDurability / 4F, 0));
+                                } else{
+                                    event.setAmount(Math.max(event.getAmount() - (float) standDurability/ 4F, 0));
+                                }
                             }
-
                         }
                     }
             );
@@ -109,5 +119,12 @@ public class GameplayHandler {
 
     }
 
+
+    @Nullable
+    private static StandEntity getTargetStand(LivingEntity target) {
+        return IStandPower.getStandPowerOptional(target).map(stand -> {
+            return Optional.ofNullable(stand.getStandManifestation() instanceof StandEntity ? (StandEntity) stand.getStandManifestation() : null);
+        }).orElse(Optional.empty()).orElse(null);
+    }
 
 }

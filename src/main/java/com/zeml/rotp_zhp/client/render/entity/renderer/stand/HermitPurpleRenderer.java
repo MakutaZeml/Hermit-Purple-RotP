@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 public class HermitPurpleRenderer  extends StandEntityRenderer<HermitPurpleEntity, HermitPurpleModel> {
 
     public HermitPurpleRenderer(EntityRendererManager renderManager) {
-        super(renderManager, new HermitPurpleModel(), new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "textures/entity/stand/void.png"), 0);
+        super(renderManager, new HermitPurpleModel(), new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "textures/entity/stand/hermito_purple.png"), 0);
     }
 
 }

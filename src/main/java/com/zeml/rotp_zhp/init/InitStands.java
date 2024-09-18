@@ -89,6 +89,11 @@ public class InitStands {
                     .noResolveUnlock()
             ));
 
+    public static final RegistryObject<StandEntityAction> HP_NET = ACTIONS.register("hp_net",
+            ()->new HPAttachBarrier(new StandEntityAction.Builder().staminaCost(300)
+                    .resolveLevelToUnlock(4)
+            ));
+
     public static final RegistryObject<StandEntityAction> HP_UNBARRIER = ACTIONS.register("hp_unbarrier",
             ()->new HPUnattachBarrier(new StandEntityAction.Builder().shiftVariationOf(HP_BARRIER)
                     .noResolveUnlock()

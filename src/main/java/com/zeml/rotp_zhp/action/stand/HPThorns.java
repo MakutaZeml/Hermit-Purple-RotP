@@ -40,6 +40,7 @@ public class HPThorns extends StandEntityAction {
     }
 
 
+    /*
     @Override
     public void standTickPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task){
         if(!world.isClientSide) {
@@ -59,6 +60,8 @@ public class HPThorns extends StandEntityAction {
             });
         }
     }
+
+     */
 
     @Override
     public boolean heldAllowsOtherAction(IStandPower standPower, Action<IStandPower> action) {

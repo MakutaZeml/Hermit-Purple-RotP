@@ -14,6 +14,7 @@ import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonUtil;
+import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
@@ -78,6 +79,8 @@ import java.util.UUID;
             if (!isAlive()) {
                 return;
             }
+            LivingEntity hamonOwner = this.getOwner() instanceof StandEntity? ((StandEntity) this.getOwner()).getUser():this.getOwner();
+
             if (!level.isClientSide() && (userStandPower == null || userStandPower.getHeldAction() != (
                     bindEntities ? InitStands.HP_GRAPPLE_ENTITY.get() :
                             InitStands.HP_GRAPPLE.get()))) {
@@ -89,12 +92,7 @@ import java.util.UUID;
                 LivingEntity owner = getOwner();
                 if(owner != null){
                     if(this.ischarge){
-                        DamageUtil.dealHamonDamage(bound, 0.15F, this, owner);
-                    }
-                    if(spreed){
-                        this.n+=1;
-                        int eff = Math.floorDiv(n,10);
-                        bound.addEffect(new EffectInstance(ModStatusEffects.HAMON_SPREAD.get(),100,eff));
+                        DamageUtil.dealHamonDamage(bound, 0.05F, this, hamonOwner);
                     }
                     if (!bound.isAlive()) {
                         if (!level.isClientSide()) {
@@ -192,6 +190,7 @@ import java.util.UUID;
 
         @Override
         protected boolean hurtTarget(Entity target, LivingEntity owner) {
+            LivingEntity hamonOwner = owner instanceof StandEntity? ((StandEntity) owner).getUser():owner;
             if (getEntityAttachedTo() == null && bindEntities) {
                 if (target instanceof LivingEntity) {
                     LivingEntity livingTarget = (LivingEntity) target;
@@ -202,11 +201,27 @@ import java.util.UUID;
                         target.addTag(String.valueOf(userU));
 
                         if(scarlet){
+                            INonStandPower.getNonStandPowerOptional(hamonOwner).ifPresent(ipower->{
+                                Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                                if(hamonOp.isPresent()){
+                                    HamonData hamon = hamonOp.get();
+                                    float cost = 200 + (float) hamon.getHamonStrengthLevel();
+                                    hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,cost);
+                                    hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,cost);
+                                }});
                             DamageUtil.dealDamageAndSetOnFire(target,
-                                    entity -> DamageUtil.dealHamonDamage(entity, hamonDamage, this.getOwner() , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK_RED.get())),
+                                    entity -> DamageUtil.dealHamonDamage(entity, hamonDamage, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK_RED.get())),
                                     MathHelper.floor(2 + 8F *  hamomlevel / (float) HamonData.MAX_STAT_LEVEL * hamonDamageCost), false);
                         } else if(ischarge){
-                            DamageUtil.dealHamonDamage(target, hamonDamage, this.getOwner() , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
+                            INonStandPower.getNonStandPowerOptional(hamonOwner).ifPresent(ipower->{
+                                Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
+                                if(hamonOp.isPresent()){
+                                    HamonData hamon = hamonOp.get();
+                                    float cost = 200 + (float) hamon.getHamonStrengthLevel();
+                                    hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,cost);
+                                    hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,cost);
+                                }});
+                            DamageUtil.dealHamonDamage(target, hamonDamage, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
                         }
                         return true;
                     }

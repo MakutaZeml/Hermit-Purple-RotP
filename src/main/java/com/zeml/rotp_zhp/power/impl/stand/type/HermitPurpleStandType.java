@@ -41,6 +41,9 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
                     if(hamon.isSkillLearned(ModHamonSkills.ROPE_TRAP.get())){
                         power.unlockAction(InitStands.HP_BARRIER.get());
                         power.unlockAction(InitStands.HP_UNBARRIER.get());
+                        if(power.getResolveLevel() == 4){
+                            power.unlockAction(InitStands.HP_NET.get());
+                        }
                     }
                     if(hamon.isSkillLearned(ModHamonSkills.SUNLIGHT_YELLOW_OVERDRIVE.get())){
                         power.unlockAction(InitStands.HP_GRAB_OVERDRIVE.get());

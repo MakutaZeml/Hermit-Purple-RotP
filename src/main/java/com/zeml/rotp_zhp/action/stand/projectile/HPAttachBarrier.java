@@ -13,6 +13,8 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandManifestation;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
+import com.zeml.rotp_zhp.init.InitStands;
+import net.minecraft.block.Block;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +26,7 @@ public class HPAttachBarrier extends StandEntityAction {
     public HPAttachBarrier(StandEntityAction.Builder builder) {
         super(builder);
     }
+
     @Override
     protected ActionConditionResult checkStandConditions(StandEntity stand, IStandPower power, ActionTarget target) {
         AtomicBoolean string = new AtomicBoolean(false);

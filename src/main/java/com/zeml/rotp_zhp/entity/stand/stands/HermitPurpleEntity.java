@@ -5,6 +5,7 @@ import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandRelativeOffset;
 import com.github.standobyte.jojo.entity.stand.StandEntityType;
 
+import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
@@ -18,6 +19,7 @@ import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -45,6 +47,7 @@ public class HermitPurpleEntity extends StandEntity {
     @Override
     public void tick(){
         if (!level.isClientSide()) {
+            this.addEffect(new EffectInstance(ModStatusEffects.FULL_INVISIBILITY.get(),20,0,false,false));
             placedBarriers.tick();
             setPlacedBarriersCount(placedBarriers.getSize());
         }

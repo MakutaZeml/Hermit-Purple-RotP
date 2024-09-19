@@ -7,6 +7,7 @@ import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
+import com.github.standobyte.jojo.init.ModItems;
 import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
@@ -44,20 +45,26 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.MapData;
 import net.minecraft.world.storage.MapDecoration;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class HPDoxx extends StandEntityAction {
-    boolean once = true;
     public HPDoxx(StandEntityAction.Builder builder){
         super(builder);
     }
 
+
+    @Nullable
+    @Override
+    protected Action<IStandPower> replaceAction(IStandPower power, ActionTarget target) {
+        if(power.getUser().getItemInHand(Hand.OFF_HAND).getItem() == ModItems.POLAROID.get()){
+            return InitStands.HP_CAMERA.get();
+        }
+        return super.replaceAction(power, target);
+    }
 
     @Override
     protected ActionConditionResult checkSpecificConditions(LivingEntity user, IStandPower power, ActionTarget target){
@@ -122,7 +129,6 @@ public class HPDoxx extends StandEntityAction {
                 userPower.getUser().setItemInHand(Hand.MAIN_HAND,stackMap);
             }
         }
-        once = true;
     }
 
 
@@ -164,5 +170,8 @@ public class HPDoxx extends StandEntityAction {
         return new TranslationTextComponent(Util.makeDescriptionId("biome",item.getRegistryName()));
     }
 
-
+    @Override
+    public StandAction[] getExtraUnlockable() {
+        return new StandAction[]{InitStands.HP_CAMERA.get()};
+    }
 }

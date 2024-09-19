@@ -63,7 +63,7 @@ public class HamonBreath extends StandEntityAction {
                         }
                 );
                  ipower.addEnergy(10+tics.get());
-                 ipower.setHeldAction(ModHamonActions.HAMON_BREATH.get());
+                 ipower.setHeldAction(ModHamonActions.HAMON_BREATH.get(), ActionTarget.EMPTY);
             });
         }
 

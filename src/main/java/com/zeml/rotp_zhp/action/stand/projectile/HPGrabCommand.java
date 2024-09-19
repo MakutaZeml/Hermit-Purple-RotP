@@ -84,7 +84,7 @@ public class HPGrabCommand extends StandEntityAction {
      */
 
     @Override
-    public boolean noFinisherDecay() {
+    public boolean noFinisherBarDecay() {
         return true;
     }
 

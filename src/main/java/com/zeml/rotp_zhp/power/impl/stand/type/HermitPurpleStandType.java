@@ -10,6 +10,7 @@ import com.github.standobyte.jojo.power.impl.stand.stats.StandStats;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.zeml.rotp_zhp.init.InitStands;
+import com.zeml.rotp_zhp.util.GameplayHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.text.ITextComponent;
 import org.jetbrains.annotations.Nullable;
@@ -18,6 +19,7 @@ import java.util.Optional;
 
 public class HermitPurpleStandType<T extends StandStats> extends EntityStandType<T> {
     private boolean leapUnlocked;
+    private boolean remote;
 
     @Deprecated
     public HermitPurpleStandType(int color, ITextComponent partName, StandAction[] attacks, StandAction[] abilities, Class<T> statsClass, T defaultStats, @Nullable StandType.StandTypeOptionals additions) {
@@ -41,9 +43,6 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
                     if(hamon.isSkillLearned(ModHamonSkills.ROPE_TRAP.get())){
                         power.unlockAction(InitStands.HP_BARRIER.get());
                         power.unlockAction(InitStands.HP_UNBARRIER.get());
-                        if(power.getResolveLevel() == 4){
-                            power.unlockAction(InitStands.HP_NET.get());
-                        }
                     }
                     if(hamon.isSkillLearned(ModHamonSkills.SUNLIGHT_YELLOW_OVERDRIVE.get())){
                         power.unlockAction(InitStands.HP_GRAB_OVERDRIVE.get());
@@ -53,13 +52,22 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
                     }
                 }
             });
+
+           remote = GameplayHandler.hermitManual.contains(user);
         }
     }
 
 
+
+
     @Override
     public boolean canBeManuallyControlled() {
-        return false;
+        return this.remote;
+    }
+
+
+    public void setRemote(boolean remote) {
+        this.remote = remote;
     }
 
     @Override

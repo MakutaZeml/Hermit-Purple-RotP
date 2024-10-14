@@ -53,7 +53,7 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
                 }
             });
 
-           remote = GameplayHandler.hermitManual.contains(user);
+//           remote = GameplayHandler.hermitManual.contains(user);
         }
     }
 

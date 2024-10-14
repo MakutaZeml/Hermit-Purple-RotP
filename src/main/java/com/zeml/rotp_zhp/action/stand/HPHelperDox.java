@@ -1,8 +1,14 @@
 package com.zeml.rotp_zhp.action.stand;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
+
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
-import net.minecraft.command.Commands;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,10 +21,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class HPHelperDox {
 
@@ -123,21 +125,11 @@ public class HPHelperDox {
         return HPojectives(user,ent);
     }
 
-    private static PlayerEntity HPPlayers(LivingEntity user,String ent){
-        return (PlayerEntity) user;
-    }
-
+    @Nullable
     private static PlayerEntity hpObjPlayers(LivingEntity user, String ent){
-        if(user instanceof ServerPlayerEntity){
-            ServerPlayerEntity player = Objects.requireNonNull(user.getServer()).getPlayerList().getPlayer(user.getUUID());
-            ServerWorld world= player.getLevel();
-
-            return  world.players().stream()
-                    .filter(entity -> entity.getName().getString().equals(ent))
-                    .collect(Collectors.toList()).stream().findFirst().orElse(null);
-
-        }
-        return HPPlayers(user,ent);
+        return user.level.players().stream()
+                .filter(entity -> entity.getName().getString().equals(ent))
+                .collect(Collectors.toList()).stream().findFirst().orElse(null);
     }
 
 

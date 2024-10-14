@@ -36,7 +36,7 @@
 
   "jojo.message.action_condition.no_hamon": "You need to learn Hamon",
   "jojo.message.action_condition.no_map": "You need an empty map in your offhand",
-  "jojo.message.action_condition.no_paper": "You need paper",
+  "jojo.message.action_condition.no_player_target": "You need to select a player as a target",
   "jojo.message.action_condition.strings_learn": "You need to learn Rope Trap skill",
   "jojo.message.action_condition.no_healing": "You need to learn Healing Touch",
 

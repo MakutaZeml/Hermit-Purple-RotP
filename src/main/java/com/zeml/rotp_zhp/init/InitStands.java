@@ -89,11 +89,6 @@ public class InitStands {
                     .noResolveUnlock()
             ));
 
-    public static final RegistryObject<StandEntityAction> HP_NET = ACTIONS.register("hp_net",
-            ()->new HPAttachBarrier(new StandEntityAction.Builder().staminaCost(300)
-                    .resolveLevelToUnlock(4)
-            ));
-
     public static final RegistryObject<StandEntityAction> HP_UNBARRIER = ACTIONS.register("hp_unbarrier",
             ()->new HPUnattachBarrier(new StandEntityAction.Builder().shiftVariationOf(HP_BARRIER)
                     .noResolveUnlock()
@@ -113,6 +108,13 @@ public class InitStands {
                     .standSound(InitSounds.HERMITO_PURPLE_SUMMON).shout(InitSounds.USER_HP)
                     .staminaCost(30)
                     ));
+
+    public static final RegistryObject<StandEntityAction> HP_CAMERA =ACTIONS.register("hp_camera",
+            ()-> new HPCamera(new StandEntityAction.Builder().standWindupDuration(10).cooldown(100)
+                    .standSound(InitSounds.HERMITO_PURPLE_SUMMON).shout(InitSounds.USER_HP).standRecoveryTicks(10)
+                    .staminaCost(20)
+            ));
+
 
     public static final RegistryObject<StandEntityAction> HP_TARGET =ACTIONS.register("hp_target",
             ()-> new HPTargetSelection(new StandEntityAction.Builder()

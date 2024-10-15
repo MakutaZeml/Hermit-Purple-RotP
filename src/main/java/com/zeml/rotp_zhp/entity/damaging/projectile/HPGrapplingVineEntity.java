@@ -25,6 +25,7 @@ import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.SoundCategory;
@@ -316,16 +317,30 @@ import java.util.UUID;
         }
 
         @Override
-        public void writeSpawnData(PacketBuffer buffer){
-            super.writeSpawnData(buffer);
-            buffer.writeUUID(userU);
+        protected void addAdditionalSaveData(CompoundNBT nbt) {
+            super.addAdditionalSaveData(nbt);
+            if (this.userU != null) {
+                nbt.putUUID("UserServerId", this.userU);
+            }
         }
 
         @Override
-        public void readSpawnData(PacketBuffer additionalData) {
-            super.readSpawnData(additionalData);
-            this.userU = additionalData.readUUID();
+        protected void readAdditionalSaveData(CompoundNBT nbt) {
+            super.readAdditionalSaveData(nbt);
+            if (nbt.hasUUID("UserServerId")) {
+                this.userU = nbt.getUUID("UserServerId");
+            }
         }
+
+        // @Override
+        // public void writeSpawnData(PacketBuffer buffer){
+        //     super.writeSpawnData(buffer);
+        // }
+
+        // @Override
+        // public void readSpawnData(PacketBuffer additionalData) {
+        //     super.readSpawnData(additionalData);
+        // }
 
         public void isCharged(boolean charg){
             this.ischarge=charg;

@@ -19,6 +19,7 @@ import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineGrabEntity;
 import com.zeml.rotp_zhp.init.InitStands;
+import com.zeml.rotp_zhp.util.StandHamonDamage;
 import net.minecraft.client.gui.social.SocialInteractionsScreen;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
@@ -52,17 +53,12 @@ public class HPGrabOverdrive extends StandEntityAction {
                                 float hamomlevel = hamon.getHamonStrengthLevel();
                                 hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,5);
                                 DamageUtil.dealDamageAndSetOnFire(target,
-                                        entity -> DamageUtil.dealHamonDamage(entity, 5, userPower.getUser() , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK_RED.get())),
+                                        entity -> StandHamonDamage.dealHamonDamage(entity, 5, userPower.getUser() , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK_RED.get()), userPower),
                                         MathHelper.floor(2 + 8F *  hamomlevel / (float) HamonData.MAX_STAT_LEVEL *2), false);
                             } else if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get())&&ipower.getEnergy()>49) {
                                 hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,5);
-                                DamageUtil.dealHamonDamage(target, 5,userPower.getUser() , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
+                                StandHamonDamage.dealHamonDamage(target, 5,userPower.getUser() , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()), userPower);
                                 ipower.consumeEnergy(.2F*ipower.getMaxEnergy());
-                            }
-                            if(hamon.isSkillLearned(ModHamonSkills.HAMON_SPREAD.get())&&ipower.getEnergy()>0){
-                                hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,5);
-                                target.addEffect(new EffectInstance(ModStatusEffects.HAMON_SPREAD.get(),200,6));
-                                ipower.consumeEnergy(100);
                             }
                         }
                     });

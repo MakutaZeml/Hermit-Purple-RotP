@@ -3,8 +3,10 @@ package com.zeml.rotp_zhp.client.render.entity.renderer;
 import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.client.playeranim.PlayerAnimationHandler;
 import com.github.standobyte.jojo.client.render.entity.layerrenderer.GlovesLayer;
+import com.github.standobyte.jojo.client.render.entity.layerrenderer.IFirstPersonHandLayer;
 import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
+import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -25,13 +27,14 @@ import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class HermitoUserLayer<T extends LivingEntity, M extends BipedModel<T>> extends LayerRenderer<T, M> {
+public class HermitoUserLayer<T extends LivingEntity, M extends BipedModel<T>> extends LayerRenderer<T, M> implements IFirstPersonHandLayer {
     private static final ResourceLocation TEXTURE = new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,
             "textures/entity/stand/hermito_purple_slim.png");
     private static final ResourceLocation TEXTURE_SLIM = new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,
@@ -81,42 +84,33 @@ public class HermitoUserLayer<T extends LivingEntity, M extends BipedModel<T>> e
         });
     }
 
-    public static void renderFirstPerson(HandSide side, MatrixStack matrixStack,
-                                         IRenderTypeBuffer buffer, int light, AbstractClientPlayerEntity player){
-        EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-        if (renderer instanceof PlayerRenderer) {
-            PlayerRenderer playerRenderer = (PlayerRenderer) renderer;
-            if (RENDERER_LAYERS.containsKey(playerRenderer)) {
-                HermitoUserLayer<?, ?> layer = RENDERER_LAYERS.get(playerRenderer);
-                if (layer != null) {
-                    layer.renderHandFirstPerson(side, matrixStack,
-                            buffer, light, player, playerRenderer);
-                }
-            }
-        }
-    }
 
-    private void renderHandFirstPerson(HandSide side, MatrixStack matrixStack,
-                                       IRenderTypeBuffer buffer, int light, AbstractClientPlayerEntity player,
-                                       PlayerRenderer playerRenderer){
-        if (player.isSpectator()) return;
-        IStandPower.getStandPowerOptional(player).ifPresent((stand) -> {
-            StandType<?> hm = InitStands.STAND_HERMITO_PURPLE.getStandType();
-            if (stand.getType() == hm && stand.getStandManifestation() instanceof StandEntity) {
-                PlayerModel<AbstractClientPlayerEntity> model = playerRenderer.getModel();
-                ClientUtil.setupForFirstPersonRender(model, player);
-                ClientUtil.setupForFirstPersonRender((PlayerModel<AbstractClientPlayerEntity>) glovesModel, player);
-                ModelRenderer vines = ClientUtil.getArm(model, side);
-                ModelRenderer vinesOuter = ClientUtil.getArmOuter(model, side);
-                ResourceLocation texture = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                        .getStandSkin(stand.getStandInstance().get()), getTexture());
-                IVertexBuilder vertexBuilder = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(texture), false, false);
-                vines.xRot = 0.0F;
-                vines.render(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY);
-                vinesOuter.xRot = 0.0F;
-                vinesOuter.render(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY);
-            }
-        });
+    @Override
+    public void renderHandFirstPerson(HandSide side, MatrixStack matrixStack, IRenderTypeBuffer buffer, int light,
+                                      AbstractClientPlayerEntity player, PlayerRenderer playerRenderer) {
+        if (!ClientUtil.canSeeStands()) {
+            return;
+        }
+
+        if(!(player.hasEffect(Effects.INVISIBILITY ) || player.hasEffect(ModStatusEffects.FULL_INVISIBILITY.get()))){
+            IStandPower.getStandPowerOptional(player).ifPresent((stand)->{
+                StandType<?>  hm = InitStands.STAND_HERMITO_PURPLE.getStandType();
+                if(stand.getType() == hm && stand.getStandManifestation()instanceof StandEntity){
+                    PlayerModel<AbstractClientPlayerEntity> model = (PlayerModel<AbstractClientPlayerEntity>) glovesModel;
+                    ResourceLocation texture = getTexture();
+                    texture = StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
+                            .getStandSkin(stand.getStandInstance().get()), texture);
+                    ClientUtil.setupForFirstPersonRender(model, player);
+                    IVertexBuilder vertexBuilder = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(texture), false, false);
+                    ModelRenderer glove = ClientUtil.getArm(model, side);
+                    ModelRenderer gloveOuter = ClientUtil.getArmOuter(model, side);
+                    glove.xRot = 0.0F;
+                    glove.render(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY);
+                    gloveOuter.xRot = 0.0F;
+                    gloveOuter.render(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY);
+                }
+            });
+        }
     }
 
 

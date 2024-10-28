@@ -13,9 +13,12 @@ import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mc.damage.IndirectStandEntityDamageSource;
 import com.github.standobyte.jojo.util.mc.damage.StandDamageSource;
+import com.github.standobyte.jojo.util.mc.damage.StandEntityDamageSource;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
+import com.zeml.rotp_zhp.capability.LivingData;
+import com.zeml.rotp_zhp.capability.LivingDataProvider;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineBarrierEntity;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
@@ -29,6 +32,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -69,10 +73,10 @@ public class GameplayHandler {
                                         float hamonDamage = 1F;
 
                                         if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get()) && ipower.getEnergy()>0){
-                                            DamageUtil.dealHamonDamage(ent, hamonDamage, ent , target, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
+                                            StandHamonDamage.dealHamonDamage(ent, hamonDamage, target , target, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()),standPower);
                                             HermitPurpleEntity hermitPurple = MCUtil.entitiesAround(HermitPurpleEntity.class,target,5,false,hermitPurple1 -> hermitPurple1.getUser()==target).stream().findAny().orElse(null);
                                             if(hermitPurple != null){
-                                                ent.hurt(new IndirectStandEntityDamageSource("hamon",null,hermitPurple),1);
+                                                ent.hurt(new StandEntityDamageSource("hamon",target ,standPower),1);
                                             }
                                         }
                                     }
@@ -108,7 +112,13 @@ public class GameplayHandler {
                                         if(hamon.getHamonStrengthLevel()==HermitConfig.getCommonConfigInstance(false).strength.get()&&
                                         hamon.getBreathingLevel() == HermitConfig.getCommonConfigInstance(false).breathing.get() &&
                                         hamon.getHamonControlLevel() == HermitConfig.getCommonConfigInstance(false).control.get()){
-                                            power.givePower(InitStands.STAND_HERMITO_PURPLE.getStandType());
+                                            LazyOptional<LivingData> playerDataOptional = player.getCapability(LivingDataProvider.CAPABILITY);
+                                            playerDataOptional.ifPresent(playerData ->{
+                                                if(!playerData.isTriedHermit()){
+                                                    power.givePower(InitStands.STAND_HERMITO_PURPLE.getStandType());
+                                                    playerData.setTriedHermit(true);
+                                                }
+                                            });
                                         }
                                     }
                                 });

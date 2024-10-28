@@ -8,7 +8,9 @@ import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.network.PacketManager;
 import com.github.standobyte.jojo.network.packets.fromserver.PhotoForOtherPlayerPacket;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.power.impl.stand.StandUtil;
 import com.github.standobyte.jojo.util.general.ObjectWrapper;
+import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 
 import net.minecraft.entity.LivingEntity;
@@ -18,8 +20,11 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+
+import java.util.Optional;
 
 public class HPCamera extends StandEntityAction {
     public HPCamera(StandEntityAction.Builder builder){
@@ -27,13 +32,6 @@ public class HPCamera extends StandEntityAction {
     }
 
 
-    /*
-    @Override
-    protected ActionConditionResult checkStandConditions(StandEntity stand, IStandPower power, ActionTarget target){
-        return hasPaper(power.getUser(),false)?ActionConditionResult.POSITIVE:conditionMessage("polaroid.paper");
-    }
-
-     */
 
     @Override
     protected ActionConditionResult checkStandConditions(StandEntity stand, IStandPower power, ActionTarget target) {
@@ -64,8 +62,9 @@ public class HPCamera extends StandEntityAction {
                 ServerPlayerEntity playerToDox = (ServerPlayerEntity) selectedTarget;
                 PacketManager.sendToClient(new PhotoForOtherPlayerPacket(cameraUser.getId()), playerToDox);
                 
-                float level = (float) Math.random() * userPower.getResolveLevel();
+                float level = userPower.getResolveLevel();
                 float random = (float) Math.random() * 3.5F;
+                System.out.println(random);
                 if (random > level) {
                     ItemStack cameraItem = cameraUser.getItemInHand(Hand.OFF_HAND);
                     cameraItem.shrink(1);
@@ -77,55 +76,21 @@ public class HPCamera extends StandEntityAction {
     }
 
 
-/*
     @Override
-    public void standTickRecovery(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
-        if(world.isClientSide){
-            PolaroidHelper.takePicture(Vector3d.atCenterOf(blockPos),null,true,userPower.getUser().getId());
-        }
-        if(!world.isClientSide){
-            GameplayHandler.hermitManual.remove(userPower.getUser());
-            standEntity.moveTo(userPower.getUser().position());
-            standEntity.remove();
-            userPower.getType().summon(userPower.getUser(), userPower,true);
-        }
-    }
-
-
-    @Override
-    public void standTickWindup(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
-        if(!world.isClientSide){
-            GameplayHandler.hermitManual.add(userPower.getUser());
-            if(((HermitPurpleEntity) standEntity).getMode() < 3){
-                LivingEntity ent = HPHelperDox.HPGeneralObjectives(userPower.getUser(),(HermitPurpleEntity) standEntity);
-                if(ent != null){
-                    this.blockPos= ent.blockPosition();
-                    if(userPower.getUser().hasEffect(ModStatusEffects.RESOLVE.get())){
-                        INonStandPower.getNonStandPowerOptional(userPower.getUser()).ifPresent(ipower ->{
-                            if (ipower.getType() == ModPowers.HAMON.get()){
-                                Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
-                                HamonData hamon = hamonOp.get();
-                                if(hamon.isSkillLearned(ModHamonSkills.DETECTOR.get())){
-                                    int seconds = Objects.requireNonNull(userPower.getUser().getEffect(ModStatusEffects.RESOLVE.get())).getDuration();
-                                    ent.addEffect(new EffectInstance(Effects.GLOWING,seconds/4));
-                                }
-                            }
-                        });
-
-                    }
-                }
-            }else if(((HermitPurpleEntity) standEntity).getMode() == 3){
-                Structure<?> structure = HPHelperDox.HPStructure(userPower.getUser(),(HermitPurpleEntity) standEntity);
-                if(structure != null){
-                    ServerWorld serverWorld = (ServerWorld) world;
-                    this.blockPos = serverWorld.getLevel().findNearestMapFeature(structure,standEntity.blockPosition(),100,false);
-                }
-            } else if (((HermitPurpleEntity) standEntity).getMode() == 4) {
-                this.blockPos = HPHelperDox.biomesPos(standEntity,((HermitPurpleEntity) standEntity).getTarget(),(ServerWorld) world);
+    public IFormattableTextComponent getTranslatedName(IStandPower power, String key) {
+        HermitPurpleEntity hm = getStand((PlayerEntity) power.getUser());
+        if(hm != null && hm.getMode() != 0){
+            TranslationTextComponent name= new TranslationTextComponent(hm.getTarget());
+            if(hm.getMode() == -1){
+                name = (TranslationTextComponent) StandUtil.availableStands(!power.getUser().level.isClientSide).filter(standType -> standType.getRegistryName().toString().equals(hm.getTarget())).findFirst().orElse(null).getName();
+                return new TranslationTextComponent(key+".stand",name);
             }
-        }
+            return new TranslationTextComponent(key+".s",name);
 
-     */
+
+        }
+        return super.getTranslatedName(power, key);
+    }
 
     @Override
     public void overrideVanillaMouseTarget(ObjectWrapper<ActionTarget> targetContainer, World world, LivingEntity user, IStandPower power) {
@@ -152,5 +117,12 @@ public class HPCamera extends StandEntityAction {
             }
         }
         return value;
+    }
+
+
+    private HermitPurpleEntity getStand(PlayerEntity player){
+        Optional<HermitPurpleEntity> hm = MCUtil.entitiesAround(HermitPurpleEntity.class, player, 5, false, HermitPurpleEntity::isAlive).stream()
+                .filter(entity -> entity.getUser() == player).findAny();
+        return hm.orElse(null);
     }
 }

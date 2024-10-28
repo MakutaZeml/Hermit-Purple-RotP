@@ -5,6 +5,7 @@ import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
+import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.init.ModItems;
@@ -19,6 +20,7 @@ import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
+import com.zeml.rotp_zhp.init.InitTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -60,7 +62,7 @@ public class HPDoxx extends StandEntityAction {
     @Nullable
     @Override
     protected Action<IStandPower> replaceAction(IStandPower power, ActionTarget target) {
-        if(power.getUser().getItemInHand(Hand.OFF_HAND).getItem() == ModItems.POLAROID.get()){
+        if(InitTags.CAMERA.contains(power.getUser().getItemInHand(Hand.OFF_HAND).getItem())){
             return InitStands.HP_CAMERA.get();
         }
         return super.replaceAction(power, target);
@@ -124,7 +126,7 @@ public class HPDoxx extends StandEntityAction {
                 MapData.addTargetDecoration(stackMap, blockPos, "+", MapDecoration.Type.RED_X);
                 stackMap.setHoverName(new TranslationTextComponent("filled_map.divination").append(target));
                 CompoundNBT nbt =stackMap.getOrCreateTagElement("display");
-                nbt.putInt("MapColor",0x9E69CB);
+                nbt.putInt("MapColor", StandSkinsManager.getUiColor(userPower));
                 userPower.getUser().setItemInHand(Hand.OFF_HAND,itemStack);
                 userPower.getUser().setItemInHand(Hand.MAIN_HAND,stackMap);
             }
@@ -132,20 +134,26 @@ public class HPDoxx extends StandEntityAction {
     }
 
 
-
     @Override
     public IFormattableTextComponent getTranslatedName(IStandPower power, String key) {
         HermitPurpleEntity hm = getStand((PlayerEntity) power.getUser());
-        if(hm != null) {
-            if(hm.getMode() == 1){
-                return new TranslationTextComponent(key+".s").append(hm.getTarget());
-            } else if (hm.getMode() == -1) {
-                TranslationTextComponent user = new TranslationTextComponent("action.rotp_zhp.hp_doxx_user");
-                return new TranslationTextComponent(key+".s").append(StandUtil.availableStands(!power.getUser().level.isClientSide).filter(standType -> standType.getRegistryName().toString().equals(hm.getTarget())).findFirst().orElse(null).getName()).append(user);
-            }else if(hm.getMode() > 1){
-                String target = giveString(hm);
-                return new TranslationTextComponent(key+".s").append(target);
+        if(hm != null && hm.getMode() != 0){
+            TranslationTextComponent name;
+            switch (hm.getMode()){
+                case -1:
+                    name = (TranslationTextComponent) StandUtil.availableStands(!power.getUser().level.isClientSide).filter(standType -> standType.getRegistryName().toString().equals(hm.getTarget())).findFirst().orElse(null).getName();
+                    break;
+                case 1:
+                    name= new TranslationTextComponent(hm.getTarget());
+                    break;
+                default:
+                    name = new TranslationTextComponent(giveString(hm));
+                    break;
             }
+            if(hm.getMode() != -1){
+                return new TranslationTextComponent(key+".s",name);
+            }
+            return new TranslationTextComponent(key+".stand",name);
         }
         return super.getTranslatedName(power, key);
     }

@@ -73,7 +73,7 @@ public class GameplayHandler {
                                         float hamonDamage = 1F;
 
                                         if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get()) && ipower.getEnergy()>0){
-                                            StandHamonDamage.dealHamonDamage(ent, hamonDamage, target , target, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()),standPower);
+                                            StandHamonDamage.dealHamonDamage(ent, hamonDamage, target , target, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()),standPower,.75F,1);
                                             HermitPurpleEntity hermitPurple = MCUtil.entitiesAround(HermitPurpleEntity.class,target,5,false,hermitPurple1 -> hermitPurple1.getUser()==target).stream().findAny().orElse(null);
                                             if(hermitPurple != null){
                                                 ent.hurt(new StandEntityDamageSource("hamon",target ,standPower),1);
@@ -86,9 +86,9 @@ public class GameplayHandler {
                             if(standDurability >0){
                                 if(dmgSource instanceof StandDamageSource){
                                     double conf = JojoModConfig.getCommonConfigInstance(false).standDamageMultiplier.get();
-                                    event.setAmount(Math.max(event.getAmount() - (float) conf* (float) standDurability / 4F, 0));
+                                    event.setAmount(Math.max(event.getAmount() -3F* (float) conf* (float) standDurability / 8F, 0));
                                 } else{
-                                    event.setAmount(Math.max(event.getAmount() - (float) standDurability/ 4F, 0));
+                                    event.setAmount(Math.max(event.getAmount() - 3*(float) standDurability/ 8F, 0));
                                 }
                             }
                         }

@@ -3,6 +3,7 @@ package com.zeml.rotp_zhp.network;
 import com.github.standobyte.jojo.JojoMod;
 import com.github.standobyte.jojo.network.packets.IModPacketHandler;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
+import com.zeml.rotp_zhp.network.packets.ColorPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkDirection;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -33,6 +34,8 @@ public class ModNetwork {
 
         packetIndex = 0;
         registerMessage(clientChannel,new ButtonClickPacket.Handler(),Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        registerMessage(clientChannel,new ColorPacket.Handler(),Optional.of(NetworkDirection.PLAY_TO_SERVER));
+
         registerMessage(serverChannel, new PurplCommonConfigPacket.Handler(),Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         registerMessage(serverChannel,new ResetConfigPacket.Handler(),Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }

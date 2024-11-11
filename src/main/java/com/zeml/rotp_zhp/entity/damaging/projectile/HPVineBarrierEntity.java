@@ -13,6 +13,7 @@ import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitEntities;
 import com.zeml.rotp_zhp.init.InitStands;
+import com.zeml.rotp_zhp.util.StandHamonDamage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -201,7 +202,7 @@ public class HPVineBarrierEntity extends OwnerBoundProjectileEntity {
                 ripAt(entityRayTraceResult.getLocation());
                 if (getOwner() instanceof HermitPurpleEntity) {
                     HermitPurpleEntity stand = (HermitPurpleEntity) getOwner();
-                    DamageUtil.dealHamonDamage(target, 1F, this.standUser , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
+                    StandHamonDamage.dealHamonDamage(target, 1F, this.standUser , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()),userPower,1,1);
 
                 }
                 MCUtil.playSound(level, null, target.getX(), target.getY(), target.getZ(),

@@ -5,6 +5,7 @@ import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
+import com.github.standobyte.jojo.client.standskin.StandSkin;
 import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
@@ -21,6 +22,8 @@ import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
 import com.zeml.rotp_zhp.init.InitTags;
+import com.zeml.rotp_zhp.network.ModNetwork;
+import com.zeml.rotp_zhp.network.packets.ColorPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -83,6 +86,9 @@ public class HPDoxx extends StandEntityAction {
 
     @Override
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task){
+        if(world.isClientSide){
+            ModNetwork.sendToServer(new ColorPacket(StandSkinsManager.getUiColor(userPower)));
+        }
         if(!world.isClientSide){
             byte scale = userPower.getUser().isShiftKeyDown()?(byte) 0:(byte) 2;
             BlockPos blockPos = null;
@@ -126,13 +132,19 @@ public class HPDoxx extends StandEntityAction {
                 MapData.addTargetDecoration(stackMap, blockPos, "+", MapDecoration.Type.RED_X);
                 stackMap.setHoverName(new TranslationTextComponent("filled_map.divination").append(target));
                 CompoundNBT nbt =stackMap.getOrCreateTagElement("display");
-                nbt.putInt("MapColor", StandSkinsManager.getUiColor(userPower));
+                nbt.putInt("MapColor",((HermitPurpleEntity)standEntity).getCOLOR() );
                 userPower.getUser().setItemInHand(Hand.OFF_HAND,itemStack);
                 userPower.getUser().setItemInHand(Hand.MAIN_HAND,stackMap);
             }
         }
     }
 
+    @Override
+    public void onTaskSet(World world, StandEntity standEntity, IStandPower standPower, Phase phase, StandEntityTask task, int ticks) {
+        if(world.isClientSide){
+            ModNetwork.sendToServer(new ColorPacket(StandSkinsManager.getUiColor(standPower)));
+        }
+    }
 
     @Override
     public IFormattableTextComponent getTranslatedName(IStandPower power, String key) {

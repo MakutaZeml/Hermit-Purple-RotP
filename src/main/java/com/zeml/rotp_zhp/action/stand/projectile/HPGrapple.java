@@ -58,10 +58,6 @@ public class HPGrapple extends StandEntityAction {
                             vine.isCharged(true);
                             vine.setHamonDamageOnHit(hamonEfficiency,cost);
                         }
-                        if(hamon.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get())&& ipower.getEnergy()>0){
-                            user.playSound(ModSounds.HAMON_CONCENTRATION.get(),1,1);
-                            vine.isScarlet(true,hamon.getHamonStrengthLevel());
-                        }
                         if(hamon.isSkillLearned(ModHamonSkills.HAMON_SPREAD.get())&& ipower.getEnergy()>0){
                             vine.isSpread(true);
                         }

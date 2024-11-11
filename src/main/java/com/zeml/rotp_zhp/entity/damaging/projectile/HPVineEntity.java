@@ -106,7 +106,7 @@ public class HPVineEntity extends OwnerBoundProjectileEntity {
                 }});
             if(standPower != null){
                 DamageUtil.dealDamageAndSetOnFire(target,
-                        entity -> StandHamonDamage.dealHamonDamage(entity, .27F, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK_RED.get()),standPower),
+                        entity -> StandHamonDamage.dealHamonDamage(entity, .27F, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK_RED.get()),standPower, this.isBinding?.3F:1,this.isBinding?.5F:1.25F),
                         MathHelper.floor(2 + 8F *  hamomlevel / (float) HamonData.MAX_STAT_LEVEL * hamonDamageCost), false);
             }else {
                 DamageUtil.dealDamageAndSetOnFire(target,
@@ -124,10 +124,10 @@ public class HPVineEntity extends OwnerBoundProjectileEntity {
                     hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,cost);
                 }});
             if(standPower != null){
-                StandHamonDamage.dealHamonDamage(target, .27F, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()),standPower);
+                StandHamonDamage.dealHamonDamage(target, .4F, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()),standPower,this.isBinding?.3F:1,this.isBinding?.5F:1.25F);
 
             }else {
-                DamageUtil.dealHamonDamage(target, .27F, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
+                DamageUtil.dealHamonDamage(target, .4F, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
 
             }
         }

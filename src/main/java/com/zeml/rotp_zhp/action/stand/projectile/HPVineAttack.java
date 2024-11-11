@@ -10,6 +10,7 @@ import com.github.standobyte.jojo.action.stand.punch.StandEntityPunch;
 import com.github.standobyte.jojo.capability.entity.hamonutil.EntityHamonChargeCapProvider;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
+import com.github.standobyte.jojo.entity.stand.StandStatFormulas;
 import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
@@ -109,13 +110,10 @@ public class HPVineAttack extends StandEntityAction {
                 if(hamon.isSkillLearned(ModHamonSkills.HAMON_SHOCK.get())&& ipower.getEnergy()>0){
                     vine.hamonStuned(true);
                 }
-                if(hamon.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get())){
-                    vine.isScarlet(true,hamon.getHamonStrengthLevel());
-                }
-
             }
         });
     }
+
 
 
     @Override

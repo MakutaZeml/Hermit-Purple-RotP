@@ -36,9 +36,15 @@ import static com.github.standobyte.jojo.util.mc.damage.DamageUtil.hurtThroughIn
 
 public class StandHamonDamage {
 
-    public static boolean dealHamonDamage(Entity target, float amount, @Nullable Entity srcDirect, @Nullable Entity srcIndirect, @Nullable Consumer<StandHamonAttackProperties> attackProperties, IStandPower standPower) {
+    public static boolean dealHamonDamage(Entity target, float amount, @Nullable Entity srcDirect, @Nullable Entity srcIndirect, @Nullable Consumer<StandHamonAttackProperties> attackProperties, IStandPower standPower, float standVampirism, float standNormal) {
         if (target instanceof LivingEntity) {
-            LivingEntity livingTarget = (LivingEntity) target;
+            LivingEntity livingTarget;
+
+            if(target instanceof StandEntity){
+                livingTarget = ((StandEntity) target).getUser();
+            } else {
+                livingTarget = (LivingEntity) target;
+            }
 
             StandHamonAttackProperties attack = new StandHamonAttackProperties();
             if (attackProperties != null) {
@@ -72,10 +78,15 @@ public class StandHamonDamage {
             boolean undeadTarget = JojoModUtil.isAffectedByHamon(livingTarget);
             if (!undeadTarget) {
                 amount *= 0.2F;
+                if(target instanceof StandEntity){
+                    amount *= standNormal;
+                }
             }
             else if (INonStandPower.getNonStandPowerOptional(livingTarget)
                     .map(power -> power.getType() == ModPowers.PILLAR_MAN.get()).orElse(false)) {
                 amount *= 0.5F;
+            }else if(target instanceof StandEntity){
+                amount *= standVampirism;
             }
 
             final float dmgAmount = amount;
@@ -87,18 +98,6 @@ public class StandHamonDamage {
                             if (undeadTarget && !scarf && hamon.isSkillLearned(ModHamonSkills.HAMON_SPREAD.get())) {
                                 livingTarget.getCapability(LivingUtilCapProvider.CAPABILITY)
                                         .ifPresent(cap -> cap.hamonSpread(dmgAmount * hamonStrengthMultiplier));
-                            }
-                            if(livingTarget instanceof StandEntity){
-                                StandEntity standTarget = (StandEntity) livingTarget;
-                                LivingEntity standUserTarget = standTarget.getUser();
-                                boolean undeadUser = JojoModUtil.isUndeadOrVampiric(livingTarget);
-                                if(standUserTarget != null){
-                                    boolean userScarf = standUserTarget.getItemBySlot(EquipmentSlotType.HEAD).getItem() == ModItems.SATIPOROJA_SCARF.get();
-                                    if(undeadUser && !userScarf && hamon.isSkillLearned(ModHamonSkills.HAMON_SPREAD.get())){
-                                        standUserTarget.getCapability(LivingUtilCapProvider.CAPABILITY)
-                                                .ifPresent(cap -> cap.hamonSpread(dmgAmount * hamonStrengthMultiplier));
-                                    }
-                                }
                             }
                             return hamonStrengthMultiplier;
                         }).orElse(1F)).orElse(1F);

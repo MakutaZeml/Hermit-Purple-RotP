@@ -31,6 +31,7 @@ public class HermitPurpleEntity extends StandEntity {
     private static final DataParameter<Integer> MODE = EntityDataManager.defineId(HermitPurpleEntity.class,DataSerializers.INT);
     private static final DataParameter<String> TARGET = EntityDataManager.defineId(HermitPurpleEntity.class,DataSerializers.STRING);
     private static final DataParameter<Integer> PLACED_BARRIERS = EntityDataManager.defineId(HermitPurpleEntity.class, DataSerializers.INT);
+    private static final DataParameter<Integer> COLOR = EntityDataManager.defineId(HermitPurpleEntity.class,DataSerializers.INT);
     private HPBarriersNet placedBarriers = new HPBarriersNet();
     private HPVineBarrierEntity stringToUser;
 
@@ -102,6 +103,7 @@ public class HermitPurpleEntity extends StandEntity {
         entityData.define(MODE,0);
         entityData.define(TARGET,"random");
         entityData.define(PLACED_BARRIERS, 0);
+        entityData.define(COLOR,0xF070D0);
     }
     private final StandRelativeOffset offsetDefault = StandRelativeOffset.withYOffset(0, 0, 0);
 
@@ -127,6 +129,13 @@ public class HermitPurpleEntity extends StandEntity {
         return entityData.get(TARGET);
     }
 
+    public int getCOLOR() {
+        return entityData.get(COLOR);
+    }
+
+    public  void setColor(int color){
+        entityData.set(COLOR,color);
+    }
 
     @Override
     public float getLeapStrength() {

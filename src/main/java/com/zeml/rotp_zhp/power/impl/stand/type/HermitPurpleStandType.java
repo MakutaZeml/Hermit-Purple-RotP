@@ -50,6 +50,9 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
                     if(hamon.isSkillLearned(ModHamonSkills.HEALING_TOUCH.get())){
                         power.unlockAction(InitStands.HP_HEAL_VINE.get());
                     }
+                    if(hamon.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get())){
+                        power.unlockAction(InitStands.HP_GRAB_SCARLET.get());
+                    }
                 }
             });
 

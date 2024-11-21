@@ -176,9 +176,7 @@ public class HPScreenTargetSelect extends Screen {
                 break;
             case ENTITIES:
                 this.entitiesButton.setMessage(TAB_ENTITIES_SELECTED);
-                collection = ForgeRegistries.ENTITIES.getValues().stream()
-                        .filter(entityType -> HermitEntityTypeToInstance.getEntityInstance(entityType,this.minecraft.level) instanceof  LivingEntity && !(HermitEntityTypeToInstance.getEntityInstance(entityType,this.minecraft.level) instanceof StandEntity))
-                        .collect(Collectors.toList());
+                collection = ForgeRegistries.ENTITIES.getValues();
                 break;
             case STRUCTURES:
                 this.structuresButton.setMessage(TAB_STRUCTURES_SELECTED);

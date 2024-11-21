@@ -78,7 +78,7 @@ public class HPCamera extends StandEntityAction {
 
     @Override
     public IFormattableTextComponent getTranslatedName(IStandPower power, String key) {
-        HermitPurpleEntity hm = getStand((PlayerEntity) power.getUser());
+        HermitPurpleEntity hm = (HermitPurpleEntity) power.getStandManifestation();
         if(hm != null && hm.getMode() != 0){
             TranslationTextComponent name= new TranslationTextComponent(hm.getTarget());
             if(hm.getMode() == -1){
@@ -92,10 +92,7 @@ public class HPCamera extends StandEntityAction {
         return super.getTranslatedName(power, key);
     }
 
-    @Override
-    public void overrideVanillaMouseTarget(ObjectWrapper<ActionTarget> targetContainer, World world, LivingEntity user, IStandPower power) {
-        super.overrideVanillaMouseTarget(targetContainer, world, user, power);
-    }
+
 
     private boolean hasPaper(LivingEntity user, boolean delete) {
         boolean value = true;
@@ -120,9 +117,5 @@ public class HPCamera extends StandEntityAction {
     }
 
 
-    private HermitPurpleEntity getStand(PlayerEntity player){
-        Optional<HermitPurpleEntity> hm = MCUtil.entitiesAround(HermitPurpleEntity.class, player, 5, false, HermitPurpleEntity::isAlive).stream()
-                .filter(entity -> entity.getUser() == player).findAny();
-        return hm.orElse(null);
-    }
+
 }

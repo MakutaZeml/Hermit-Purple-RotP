@@ -74,7 +74,7 @@ public class GameplayHandler {
 
                                         if (hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get()) && ipower.getEnergy()>0){
                                             StandHamonDamage.dealHamonDamage(ent, hamonDamage, target , target, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()),standPower,.75F,1);
-                                            HermitPurpleEntity hermitPurple = MCUtil.entitiesAround(HermitPurpleEntity.class,target,5,false,hermitPurple1 -> hermitPurple1.getUser()==target).stream().findAny().orElse(null);
+                                            HermitPurpleEntity hermitPurple = (HermitPurpleEntity) standPower.getStandManifestation();
                                             if(hermitPurple != null){
                                                 ent.hurt(new StandEntityDamageSource("hamon",target ,standPower),1);
                                             }

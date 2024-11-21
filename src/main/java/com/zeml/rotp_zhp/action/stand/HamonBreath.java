@@ -46,7 +46,7 @@ public class HamonBreath extends StandEntityAction {
                 }
             }
         });
-        HermitPurpleEntity HP = MCUtil.entitiesAround(HermitPurpleEntity.class,power.getUser(),3,false, stand ->stand.getUser() == power.getUser()).stream().findAny().orElse(null);
+        HermitPurpleEntity HP = (HermitPurpleEntity) power.getStandManifestation();
         if(HP != null){
             if(HPGrabCommand.getLandedVineStand(HP).isPresent() && hm.get()){
                 return InitStands.HP_GRAB_SCARLET.get();

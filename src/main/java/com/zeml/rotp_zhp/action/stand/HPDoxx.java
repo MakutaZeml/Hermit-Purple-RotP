@@ -148,7 +148,7 @@ public class HPDoxx extends StandEntityAction {
 
     @Override
     public IFormattableTextComponent getTranslatedName(IStandPower power, String key) {
-        HermitPurpleEntity hm = getStand((PlayerEntity) power.getUser());
+        HermitPurpleEntity hm =(HermitPurpleEntity) power.getStandManifestation();
         if(hm != null && hm.getMode() != 0){
             TranslationTextComponent name;
             switch (hm.getMode()){
@@ -170,11 +170,6 @@ public class HPDoxx extends StandEntityAction {
         return super.getTranslatedName(power, key);
     }
 
-    private HermitPurpleEntity getStand(PlayerEntity player){
-        Optional<HermitPurpleEntity> hm = MCUtil.entitiesAround(HermitPurpleEntity.class, player, 5, false, HermitPurpleEntity::isAlive).stream()
-                .filter(entity -> entity.getUser() == player).findAny();
-        return hm.orElse(null);
-    }
 
     public static String giveString(HermitPurpleEntity hermitPurple){
         if(hermitPurple.getMode() == 2){

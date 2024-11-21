@@ -13,10 +13,13 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid = RotpHermitPurpleAddon.MOD_ID)
 public class HermitForgeBusEventSubscriber {
 
+    /*
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event) {
         HermitEntityTypeToInstance.init((World) event.getWorld());
     }
 
 
+
+     */
 }

@@ -160,7 +160,7 @@ public class InitStands {
                             .build(),
 
                     InitEntities.ENTITIES,
-                    () -> new StandEntityType<HermitPurpleEntity>(HermitPurpleEntity::new, 0.65F, 1.8F)
+                    () -> new StandEntityType<HermitPurpleEntity>(HermitPurpleEntity::new, 0.0065F, 1.8F)
                             .summonSound(InitSounds.HERMITO_PURPLE_SUMMON)
                             .unsummonSound(InitSounds.HERMITO_PURPLE_UNSUMMON))
                     .withDefaultStandAttributes();

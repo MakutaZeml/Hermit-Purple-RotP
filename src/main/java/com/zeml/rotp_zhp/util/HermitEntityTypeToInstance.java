@@ -12,6 +12,8 @@ import java.util.Map;
 
 /* Sorry for cloning this Stando, but it looks like you moved this on Gold Experience Version, so I didn't have a option*/
 public class HermitEntityTypeToInstance {
+
+    /*
     private static HermitEntityTypeToInstance instance;
 
     public static void init(World world) {
@@ -45,5 +47,7 @@ public class HermitEntityTypeToInstance {
         }
         return entity;
     }
+
+     */
 
 }

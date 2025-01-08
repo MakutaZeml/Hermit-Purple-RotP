@@ -4,6 +4,7 @@ import com.github.standobyte.jojo.action.Action;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
+import com.github.standobyte.jojo.client.playeranim.anim.ModPlayerAnimations;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
@@ -16,7 +17,9 @@ import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineGrabEntity;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitStands;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,24 +33,29 @@ public class HPGrabCommand extends StandEntityAction {
 
     @Override
     protected Action<IStandPower> replaceAction(IStandPower power, ActionTarget target){
-        AtomicBoolean hm= new AtomicBoolean(false);
-        INonStandPower.getNonStandPowerOptional(power.getUser()).ifPresent(ipower->{
+        boolean hm2 = INonStandPower.getNonStandPowerOptional(power.getUser()).map(ipower->{
+            boolean value = false;
             if (ipower.getType() == ModPowers.HAMON.get()){
+
                 Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
                 HamonData hamon = hamonOp.get();
-                if(hamon.isSkillLearned(ModHamonSkills.SUNLIGHT_YELLOW_OVERDRIVE.get())){
-                    hm.set(true);
-                }
+
+                value = hamon.isSkillLearned(ModHamonSkills.SUNLIGHT_YELLOW_OVERDRIVE.get());
             }
-        });
+            return value;
+        }).orElse(false);
+
+
         HermitPurpleEntity HP =  (HermitPurpleEntity) power.getStandManifestation();
         if(HP != null){
-            if(getLandedVineStand(HP).isPresent() && hm.get()){
+            if(getLandedVineStand(HP).isPresent() && hm2){
                 return InitStands.HP_GRAB_OVERDRIVE.get();
             }
         }
-        return super.replaceAction(power,target);
+        return this;
     }
+
+
 
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
         if (!world.isClientSide()) {
@@ -89,4 +97,18 @@ public class HPGrabCommand extends StandEntityAction {
     }
 
 
+    @Override
+    public boolean clHeldStartAnim(PlayerEntity user) {
+        return ModPlayerAnimations.scarletOverdrive.setWindupAnim(user);
+    }
+
+    @Override
+    public void clHeldStopAnim(PlayerEntity user) {
+        ModPlayerAnimations.scarletOverdrive.stopAnim(user);
+    }
+
+    @Override
+    protected void onTaskStopped(World world, StandEntity standEntity, IStandPower standPower, StandEntityTask task, @Nullable StandEntityAction newAction) {
+        super.onTaskStopped(world, standEntity, standPower, task, newAction);
+    }
 }

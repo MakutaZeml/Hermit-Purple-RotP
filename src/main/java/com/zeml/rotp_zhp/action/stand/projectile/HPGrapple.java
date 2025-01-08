@@ -4,6 +4,7 @@ import com.github.standobyte.jojo.action.Action;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.capability.entity.hamonutil.EntityHamonChargeCapProvider;
+import com.github.standobyte.jojo.client.playeranim.anim.ModPlayerAnimations;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.init.ModSounds;
@@ -18,6 +19,7 @@ import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.EntityPredicates;
 import net.minecraft.world.World;
 
@@ -81,5 +83,14 @@ public class HPGrapple extends StandEntityAction {
         return this.isShiftVariation() && target.getType() == ActionTarget.TargetType.ENTITY;
     }
 
+
+    public boolean clHeldStartAnim(PlayerEntity user) {
+        return ModPlayerAnimations.scarletOverdrive.setWindupAnim(user);
+    }
+
+    @Override
+    public void clHeldStopAnim(PlayerEntity user) {
+        ModPlayerAnimations.scarletOverdrive.stopAnim(user);
+    }
 
 }

@@ -9,16 +9,21 @@ import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.stats.StandStats;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
+import com.zeml.rotp_zhp.capability.LivingData;
+import com.zeml.rotp_zhp.capability.LivingDataProvider;
 import com.zeml.rotp_zhp.init.InitStands;
+import com.zeml.rotp_zhp.network.ModNetwork;
+import com.zeml.rotp_zhp.network.packets.CanLeapPacket;
 import com.zeml.rotp_zhp.util.GameplayHandler;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 public class HermitPurpleStandType<T extends StandStats> extends EntityStandType<T> {
-    private boolean leapUnlocked;
+    private boolean leapUnlocked = true;
     private boolean remote;
 
     @Deprecated
@@ -39,7 +44,12 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
                 Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
                 if(hamonOp.isPresent()) {
                     HamonData hamon = hamonOp.get();
-                    leapUnlocked = hamon.isSkillLearned(ModHamonSkills.JUMP.get());
+
+                    this.setLeapUnlocked(hamon.isSkillLearned(ModHamonSkills.JUMP.get()));
+                    if(user instanceof ServerPlayerEntity){
+                        ModNetwork.sendToClient(new CanLeapPacket(user.getId(), hamon.isSkillLearned(ModHamonSkills.JUMP.get())),(ServerPlayerEntity) user);
+                    }
+
                     if(hamon.isSkillLearned(ModHamonSkills.ROPE_TRAP.get())){
                         power.unlockAction(InitStands.HP_BARRIER.get());
                         power.unlockAction(InitStands.HP_UNBARRIER.get());
@@ -55,8 +65,6 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
                     }
                 }
             });
-
-//           remote = GameplayHandler.hermitManual.contains(user);
         }
     }
 
@@ -76,6 +84,10 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
     @Override
     public boolean canLeap() {
         return leapUnlocked;
+    }
+
+    public void setLeapUnlocked(boolean leapUnlocked) {
+        this.leapUnlocked = leapUnlocked;
     }
 
     public static class Builder<T extends StandStats> extends EntityStandType.AbstractBuilder<Builder<T>, T> {

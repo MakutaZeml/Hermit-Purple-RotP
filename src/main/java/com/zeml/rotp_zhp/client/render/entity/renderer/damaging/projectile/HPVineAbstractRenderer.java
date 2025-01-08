@@ -28,13 +28,19 @@ public abstract class HPVineAbstractRenderer<T extends OwnerBoundProjectileEntit
     public ResourceLocation getTextureLocation(T entity) {
         if(entity.getOwner() != null){
             LivingEntity owner = entity.getOwner();
-            if(owner instanceof StandEntity) owner = ((StandEntity) owner).getUser();
-            IStandPower.getStandPowerOptional(owner).ifPresent(power -> {
-                if(power.getType() == HP){
-                    VAINA =StandSkinsManager.getInstance() != null? (StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                            .getStandSkin(power.getStandInstance().get()), VINE)): VINE;
-        }else VAINA = VINE;
-            });
+            if(owner != null){
+                if(owner instanceof StandEntity) owner = ((StandEntity) owner).getUser();
+                if(owner != null){
+                    IStandPower.getStandPowerOptional(owner).ifPresent(power -> {
+                        if(power.getType() == HP){
+                            VAINA =StandSkinsManager.getInstance() != null? (StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
+                                    .getStandSkin(power.getStandInstance().get()), VINE)): VINE;
+
+                        }else VAINA = VINE;
+                    });
+                }else VAINA = VINE;
+            }else VAINA = VINE;
+
         }
         return VAINA;
     }

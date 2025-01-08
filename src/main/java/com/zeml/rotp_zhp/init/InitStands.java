@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.init;
 
+import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.entity.stand.StandPose;
 import com.github.standobyte.jojo.init.ModSounds;
@@ -105,9 +106,10 @@ public class InitStands {
             ));
 
 
-    public static final RegistryObject<StandEntityAction> HP_BREATH =ACTIONS.register("hp_breath",
+    public static final RegistryObject<StandAction> HP_BREATH =ACTIONS.register("hp_breath",
             ()-> new HamonBreath(new StandEntityAction.Builder().heldWalkSpeed(0.0F).holdType()
-                    .standSound(InitSounds.USER_BREATH).standSound(ModSounds.HAMON_CONCENTRATION)));
+                    .standSound(InitSounds.USER_BREATH).standSound(ModSounds.HAMON_CONCENTRATION)
+            ));
 
     public static final RegistryObject<StandEntityAction> HP_DOXX =ACTIONS.register("hp_doxx",
             ()-> new HPDoxx(new StandEntityAction.Builder().standWindupDuration(10).cooldown(200)

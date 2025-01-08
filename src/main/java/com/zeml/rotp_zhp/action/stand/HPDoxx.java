@@ -68,7 +68,7 @@ public class HPDoxx extends StandEntityAction {
         if(InitTags.CAMERA.contains(power.getUser().getItemInHand(Hand.OFF_HAND).getItem())){
             return InitStands.HP_CAMERA.get();
         }
-        return super.replaceAction(power, target);
+        return this;
     }
 
     @Override

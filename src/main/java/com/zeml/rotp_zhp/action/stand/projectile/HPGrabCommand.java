@@ -13,6 +13,8 @@ import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.MCUtil;
+import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
+import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineEntity;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineGrabEntity;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitStands;
@@ -59,7 +61,9 @@ public class HPGrabCommand extends StandEntityAction {
 
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
         if (!world.isClientSide()) {
-            standEntity.addProjectile(new HPVineGrabEntity(world, standEntity));
+            HPVineGrabEntity vineGrab = new HPVineGrabEntity(world, standEntity);
+            vineGrab.withStandSkin(standEntity.getStandSkin());
+            standEntity.addProjectile(vineGrab);
 
         }
     }
@@ -99,12 +103,12 @@ public class HPGrabCommand extends StandEntityAction {
 
     @Override
     public boolean clHeldStartAnim(PlayerEntity user) {
-        return ModPlayerAnimations.scarletOverdrive.setWindupAnim(user);
+        return AddonPlayerAnimations.grab.setWindupAnim(user);
     }
 
     @Override
     public void clHeldStopAnim(PlayerEntity user) {
-        ModPlayerAnimations.scarletOverdrive.stopAnim(user);
+        AddonPlayerAnimations.grab.stopAnim(user);
     }
 
     @Override

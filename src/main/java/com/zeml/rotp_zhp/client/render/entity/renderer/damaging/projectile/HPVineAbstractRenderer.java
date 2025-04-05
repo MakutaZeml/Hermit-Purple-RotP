@@ -22,26 +22,12 @@ public abstract class HPVineAbstractRenderer<T extends OwnerBoundProjectileEntit
         super(renderManager, model, VAINA);
     }
 
-    private final StandType<?> HP = InitStands.STAND_HERMITO_PURPLE.getStandType();
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        if(entity.getOwner() != null){
-            LivingEntity owner = entity.getOwner();
-            if(owner != null){
-                if(owner instanceof StandEntity) owner = ((StandEntity) owner).getUser();
-                if(owner != null){
-                    IStandPower.getStandPowerOptional(owner).ifPresent(power -> {
-                        if(power.getType() == HP){
-                            VAINA =StandSkinsManager.getInstance() != null? (StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                                    .getStandSkin(power.getStandInstance().get()), VINE)): VINE;
-
-                        }else VAINA = VINE;
-                    });
-                }else VAINA = VINE;
-            }else VAINA = VINE;
-
-        }
-        return VAINA;
+        return StandSkinsManager.getInstance()
+                .getRemappedResPath(manager -> manager.getStandSkin(entity.getStandSkin()), VINE);
     }
+
+
 }

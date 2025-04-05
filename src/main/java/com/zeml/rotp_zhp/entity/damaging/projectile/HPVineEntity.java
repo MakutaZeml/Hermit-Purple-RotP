@@ -97,6 +97,7 @@ public class HPVineEntity extends OwnerBoundProjectileEntity {
 
         if(scarlet){
             INonStandPower.getNonStandPowerOptional(hamonOwner).ifPresent(ipower->{
+
                 Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
                 if(hamonOp.isPresent()){
                     HamonData hamon = hamonOp.get();

@@ -4,6 +4,7 @@ import com.github.standobyte.jojo.client.playeranim.anim.ModPlayerAnimations;
 import com.github.standobyte.jojo.client.render.armor.ArmorModelRegistry;
 import com.github.standobyte.jojo.client.render.entity.layerrenderer.HamonBurnLayer;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
+import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
 import com.zeml.rotp_zhp.client.render.entity.model.stand.HermitoUserModel;
 import com.zeml.rotp_zhp.client.render.entity.renderer.HermitoThorns;
 import com.zeml.rotp_zhp.client.render.entity.renderer.HermitoUserLayer;
@@ -62,6 +63,14 @@ public class ClientInit {
     }
 
 
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void loadCustomArmorModels(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            ArmorModelRegistry.loadArmorModels();
+
+            AddonPlayerAnimations.init();
+        });
+    }
 
     private static <T extends LivingEntity, M extends BipedModel<T>> void addLayersToEntities(EntityRenderer<?> renderer) {
         if (renderer instanceof LivingRenderer<?, ?>) {

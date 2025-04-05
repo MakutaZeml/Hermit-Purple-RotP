@@ -50,7 +50,7 @@ public class InitStands {
 
 
     public static final RegistryObject<StandEntityAction> HP_GRAB_COMMAND = ACTIONS.register("hp_grab",
-            () -> new HPGrabCommand(new StandEntityAction.Builder().staminaCost(40)
+            () -> new HPGrabCommand(new StandEntityAction.Builder().staminaCost(40).standWindupDuration(5)
                     .resolveLevelToUnlock(2).swingHand().holdType().standUserWalkSpeed(1.0F)
                     .cooldown(150,0,0.5F)
                     .standPose(StandPose.RANGED_ATTACK).standSound(InitSounds.VINE_TRHOW)

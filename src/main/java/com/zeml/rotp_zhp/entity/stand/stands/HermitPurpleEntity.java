@@ -83,6 +83,7 @@ public class HermitPurpleEntity extends StandEntity {
             }
             stringFromStand = new HPVineBarrierEntity(level, this, this.getUserPower());
             stringFromStand.setOriginBlockPos(blockPos);
+            stringFromStand.withStandSkin(this.getStandSkin());
             level.addFreshEntity(stringFromStand);
             playSound(InitSounds.HP_GRAPPLE_CATCH.get(), 1.0F, 1.0F);
         }

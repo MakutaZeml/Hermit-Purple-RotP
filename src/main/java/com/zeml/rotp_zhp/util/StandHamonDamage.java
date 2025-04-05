@@ -9,6 +9,7 @@ import com.github.standobyte.jojo.capability.entity.hamonutil.EntityHamonChargeC
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.init.ModItems;
 import com.github.standobyte.jojo.init.ModParticles;
+import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
@@ -39,6 +40,8 @@ public class StandHamonDamage {
     public static boolean dealHamonDamage(Entity target, float amount, @Nullable Entity srcDirect, @Nullable Entity srcIndirect, @Nullable Consumer<StandHamonAttackProperties> attackProperties, IStandPower standPower, float standVampirism, float standNormal) {
         if (target instanceof LivingEntity) {
             LivingEntity livingTarget;
+            float mult = 1;
+
 
             if(target instanceof StandEntity){
                 livingTarget = ((StandEntity) target).getUser();
@@ -61,6 +64,12 @@ public class StandHamonDamage {
                     power -> power.getTypeSpecificData(ModPowers.PILLAR_MAN.get())
                             .map(pillarman -> pillarman.isStoneFormEnabled())).orElse(false)) {
                 return false;
+            }
+            if(srcDirect instanceof  LivingEntity){
+                LivingEntity owner = (LivingEntity) srcDirect;
+                if(owner.hasEffect(ModStatusEffects.RESOLVE.get())){
+                    amount *= 1.2F;
+                }
             }
 
             boolean scarf = livingTarget.getItemBySlot(EquipmentSlotType.HEAD).getItem() == ModItems.SATIPOROJA_SCARF.get();

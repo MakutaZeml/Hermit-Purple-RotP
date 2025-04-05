@@ -23,6 +23,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamon
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.general.MathUtil;
 import com.github.standobyte.jojo.util.mc.damage.StandEntityDamageSource;
+import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import net.minecraft.block.BlockState;
@@ -92,6 +93,7 @@ public class HPVineAttack extends StandEntityAction {
         vine.isCharged(false);
         vine.isSpread(false);
         vine.isScarlet(false,0);
+        vine.withStandSkin(standEntity.getStandSkin());
         standEntity.addProjectile(vine);
         INonStandPower.getNonStandPowerOptional(standPower.getUser()).ifPresent(ipower->{
             Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
@@ -137,12 +139,12 @@ public class HPVineAttack extends StandEntityAction {
 
     @Override
     public boolean clHeldStartAnim(PlayerEntity user) {
-        return ModPlayerAnimations.scarletOverdrive.setWindupAnim(user);
+        return AddonPlayerAnimations.vine.setAnimEnabled(user,true);
     }
 
     @Override
     public void clHeldStopAnim(PlayerEntity user) {
-        ModPlayerAnimations.scarletOverdrive.stopAnim(user);
+        AddonPlayerAnimations.vine.setAnimEnabled(user,false);
     }
 
 

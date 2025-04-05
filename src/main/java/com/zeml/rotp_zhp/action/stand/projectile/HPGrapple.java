@@ -15,6 +15,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.StandInstance;
+import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
@@ -44,6 +45,7 @@ public class HPGrapple extends StandEntityAction {
             vine.isSpread(false);
             vine.setHamonDamageOnHit(0,0);
             vine.isScarlet(false,0);
+            vine.withStandSkin(standEntity.getStandSkin());
 
             if (isShiftVariation()) {
                 INonStandPower.getNonStandPowerOptional(user).ifPresent(ipower -> {
@@ -85,12 +87,13 @@ public class HPGrapple extends StandEntityAction {
 
 
     public boolean clHeldStartAnim(PlayerEntity user) {
-        return ModPlayerAnimations.scarletOverdrive.setWindupAnim(user);
+        return user.isShiftKeyDown()? AddonPlayerAnimations.grab.setWindupAnim(user): AddonPlayerAnimations.grabCommand.setWindupAnim(user);
     }
 
     @Override
     public void clHeldStopAnim(PlayerEntity user) {
-        ModPlayerAnimations.scarletOverdrive.stopAnim(user);
+        AddonPlayerAnimations.grab.stopAnim(user);
+        AddonPlayerAnimations.grabCommand.stopAnim(user);
     }
 
 }

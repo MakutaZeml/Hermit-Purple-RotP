@@ -238,6 +238,13 @@ import java.util.UUID;
         private static final BlockState LAMP = Blocks.REDSTONE_LAMP.defaultBlockState().setValue(RedstoneLampBlock.LIT,true);
         @Override
         protected void afterBlockHit(BlockRayTraceResult blockRayTraceResult, boolean brokenBlock) {
+            BlockPos blockHitPos = blockRayTraceResult.getBlockPos();
+            BlockState hitBlock = level.getBlockState(blockHitPos);
+            if (hitBlock.getBlock() == Blocks.BARRIER) {
+                remove();
+                return;
+            }
+            
             if (!brokenBlock && !bindEntities) {
                 if (!getBlockPosAttachedTo().isPresent()) {
                     playSound(InitSounds.HP_GRAPPLE_CATCH.get(), 1.0F, 1.0F);

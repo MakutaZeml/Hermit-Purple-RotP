@@ -1,0 +1,352 @@
+{
+  "name": "grab",
+  "author": "Zeml",
+  "description": "description",
+  "emote": {
+    "beginTick": 0,
+    "endTick": 5,
+    "stopTick": 91,
+    "isLoop": true,
+    "returnTick": 5,
+    "nsfw": false,
+    "degrees": false,
+    "moves": [
+      {
+        "tick": 1,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "torso": {
+          "bend": 0
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "torso": {
+          "bend": 0
+        }
+      },
+      {
+        "tick": 1,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "torso": {
+          "axis": -0.576
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "torso": {
+          "axis": 1.187
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "x": -6.62
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "x": -5.0
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "y": 2.0
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "y": 2.0
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "z": 2.781
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "z": 0
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "pitch": 1.051
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "pitch": -0.924
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "yaw": 0.182
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "yaw": 0.061
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "roll": 1.712
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "roll": 1.348
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "bend": -1.897
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "bend": -0.621
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "axis": 0
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "rightArm": {
+          "axis": 0
+        }
+      },
+      {
+        "tick": 1,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "x": 5.0
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "x": 5.0
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "x": 5.0
+        }
+      },
+      {
+        "tick": 1,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "y": 2.0
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "y": 2.0
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "y": 2.0
+        }
+      },
+      {
+        "tick": 1,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "z": 0
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "z": 0
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "z": 0
+        }
+      },
+      {
+        "tick": 1,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "pitch": -0.0
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "pitch": 0
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "pitch": -2.115
+        }
+      },
+      {
+        "tick": 1,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "yaw": 0.0
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "yaw": 0
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "yaw": 0.175
+        }
+      },
+      {
+        "tick": 1,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "roll": -0.975
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "roll": -0.215
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "roll": -1.676
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "bend": -1.57
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "bend": -0.975
+        }
+      },
+      {
+        "tick": 2,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "axis": 0.0
+        }
+      },
+      {
+        "tick": 5,
+        "easing": "INOUTQUAD",
+        "turn": 0,
+        "leftArm": {
+          "axis": -0.0
+        }
+      }
+    ]
+  }
+}

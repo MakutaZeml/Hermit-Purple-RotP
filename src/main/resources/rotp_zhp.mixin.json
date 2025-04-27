@@ -8,5 +8,10 @@
   "injector": {
     "defaultRequire": 1
   },
-  "refmap": "rotp_zhp.mixins-refmap.json"
+  "refmap": "rotp_zhp.mixins-refmap.json",
+  "mixins": [
+    "HamonDataAccesor",
+    "MixinHamonData",
+    "TypeSpecificDataAccesor"
+  ]
 }

@@ -1,19 +1,15 @@
 package com.zeml.rotp_zhp.entity.damaging.projectile;
 
 import com.github.standobyte.jojo.action.non_stand.HamonOrganismInfusion;
-import com.github.standobyte.jojo.capability.entity.hamonutil.EntityHamonChargeCapProvider;
 import com.github.standobyte.jojo.entity.HamonBlockChargeEntity;
 import com.github.standobyte.jojo.entity.damaging.projectile.ownerbound.OwnerBoundProjectileEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.init.ModParticles;
-import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
-import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonActions;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
-import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonUtil;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
@@ -26,8 +22,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
@@ -53,6 +48,14 @@ import java.util.UUID;
 
 
         private boolean caughtAnEntity = false;
+
+        public HPGrapplingVineEntity(World world,LivingEntity owner, StandEntity entity, IStandPower userStand, boolean charg, LivingEntity suer) {
+            super(InitEntities.HP_GRAPPLING_VINE.get(), owner, world);
+            this.stand = entity;
+            this.userStandPower = userStand;
+            this.ischarge = charg;
+            this.userU = suer.getUUID();
+        }
 
         public HPGrapplingVineEntity(World world, StandEntity entity, IStandPower userStand, boolean charg, LivingEntity suer) {
             super(InitEntities.HP_GRAPPLING_VINE.get(), entity, world);
@@ -160,7 +163,7 @@ import java.util.UUID;
             return true;
         }
 
-        private static final Vector3d OFFSET = new Vector3d(-0.3, -0.2, 0.75);
+        private static final Vector3d OFFSET = new Vector3d(0, -0.2, 0);
         @Override
         protected Vector3d getOwnerRelativeOffset() {
             return OFFSET;
@@ -210,7 +213,7 @@ import java.util.UUID;
                                     hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,cost);
                                     hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,cost);
                                 }});
-                            DamageUtil.dealDamageAndSetOnFire(target,
+                            return DamageUtil.dealDamageAndSetOnFire(target,
                                     entity -> DamageUtil.dealHamonDamage(entity, hamonDamage, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK_RED.get())),
                                     MathHelper.floor(2 + 8F *  hamomlevel / (float) HamonData.MAX_STAT_LEVEL * hamonDamageCost), false);
                         } else if(ischarge){
@@ -222,9 +225,9 @@ import java.util.UUID;
                                     hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.STRENGTH,cost);
                                     hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,cost);
                                 }});
-                            DamageUtil.dealHamonDamage(target, hamonDamage, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
+                            return DamageUtil.dealHamonDamage(target, hamonDamage, hamonOwner , null, attack -> attack.hamonParticle(ModParticles.HAMON_SPARK.get()));
                         }
-                        return true;
+                        return false;
                     }
                 }
             }

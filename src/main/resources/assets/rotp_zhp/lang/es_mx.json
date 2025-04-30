@@ -6,18 +6,22 @@
   "action.rotp_zhp.hp_vine_shift": "Enredadera atrapante",
   "action.rotp_zhp.hp_grab": "Capturar entidad",
   "action.rotp_zhp.hp_grab_od": "OverDrive entidad atrapada",
+  "action.rotp_zhp.hp_grab_sc": "OverDrive Escarlata a entidad atrapada",
   "action.rotp_zhp.hp_grab_heal": "Enredadera sanadora",
   "action.rotp_zhp.cringe": "OH NO CRINGE",
 
 
-
   "action.rotp_zhp.hp_breath": "Respiración de hamon",
   "action.rotp_zhp.hp_block": "Protección de espinas",
-  "action.rotp_zhp.hp_vine":"Enredadera",
+  "action.rotp_zhp.hp_vine": "Enredadera",
   "action.rotp_zhp.hp_vine_entity": "Enredadera atrapante",
   "action.rotp_zhp.hp_doxx": "Adivinación de posición",
-  "action.rotp_zhp.hp_doxx.s": "Adivinación de posición de ",
+  "action.rotp_zhp.hp_doxx.s": "Adivinación de posición de %s",
+  "action.rotp_zhp.hp_doxx.stand": "Adivinación de posición de usuario de %s",
+  "action.rotp_zhp.hp_doxx_user": "'s user",
   "action.rotp_zhp.hp_camera": "Adivinación fotográfica",
+  "action.rotp_zhp.hp_camera.s": "%s photo divination",
+  "action.rotp_zhp.hp_camera.stand": "%s user photo divination",
   "action.rotp_zhp.hp_target": "Selección de objetivo",
   "action.rotp_zhp.hp_barrier": "Trampa de enredadera (%s/%s)",
   "action.rotp_zhp.hp_unbarrier": "Deshacer red de enredaderas",
@@ -35,8 +39,9 @@
 
   "jojo.message.action_condition.no_hamon": "Necesitas aprender Hamon",
   "jojo.message.action_condition.no_map": "Necesitas un mapa vacio en tu mano secundaria",
-  "jojo.message.action_condition.no_paper": "Necesitas papel",
+  "jojo.message.action_condition.no_player_target": "Necesitas seleccionar un objetivo de jugador",
   "jojo.message.action_condition.strings_learn": "Necesitas aprender las técnica de Trampa de cuerda",
+  "jojo.message.action_condition.no_healing": "Necesitas aprender toque curativo",
 
   "filled_map.divination": "Adivinación de ",
 
@@ -44,7 +49,10 @@
   "gui.hermitpurpletarget.tab_all": "Jugadores",
   "gui.hermitpurpletarget.tab_hidden": "Entidades",
   "gui.hermitpurpletarget.tab_blocked": "Estructuras",
+  "gui.hermitpurpletarget.tab_stands": "Stands",
+  "gui.hermitpurpletarget.tab_biomes": "Biomes",
   "gui.hermitpurpletarget.search_empty": "No existe objetivo con ese nombre",
-  "gui.hermitpurpletarget.random": "Aleatorio"
+  "gui.hermitpurpletarget.random": "Aleatorio",
+
 
 }

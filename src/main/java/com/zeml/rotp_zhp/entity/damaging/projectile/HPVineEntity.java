@@ -1,12 +1,10 @@
 package com.zeml.rotp_zhp.entity.damaging.projectile;
 
-import com.github.standobyte.jojo.JojoModConfig;
 import com.github.standobyte.jojo.action.non_stand.HamonOrganismInfusion;
 import com.github.standobyte.jojo.entity.HamonBlockChargeEntity;
 import com.github.standobyte.jojo.entity.damaging.projectile.ownerbound.OwnerBoundProjectileEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.init.ModParticles;
-import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
@@ -26,6 +24,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
@@ -270,10 +269,12 @@ public class HPVineEntity extends OwnerBoundProjectileEntity {
         return true;
     }
 
-    private static final Vector3d OFFSET = new Vector3d(-0.3, -0.2, 0.75);
+    private static final Vector3d RIGHT_OFFSET = new Vector3d(-0.3, -0.2, 0);
+    private static final Vector3d LEFT_OFFSET = new Vector3d(0.3, -0.2, 0);
+
     @Override
     protected Vector3d getOwnerRelativeOffset() {
-        return OFFSET;
+        return (this.getOwner() != null && this.getOwner().getMainArm()== HandSide.RIGHT)? RIGHT_OFFSET:LEFT_OFFSET;
     }
 
     @Override

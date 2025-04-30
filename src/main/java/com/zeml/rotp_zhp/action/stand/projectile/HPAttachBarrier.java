@@ -3,6 +3,7 @@ package com.zeml.rotp_zhp.action.stand.projectile;
 import com.github.standobyte.jojo.action.Action;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
+import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
@@ -13,6 +14,8 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandManifestation;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
+import com.zeml.rotp_zhp.init.InitStands;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -30,16 +33,10 @@ public class HPAttachBarrier extends StandEntityAction {
 
     @Override
     protected ActionConditionResult checkStandConditions(StandEntity stand, IStandPower power, ActionTarget target) {
-        AtomicBoolean string = new AtomicBoolean(false);
-        INonStandPower.getNonStandPowerOptional(power.getUser()).ifPresent(ipower->{
-            Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
-            if(hamonOp.isPresent()){
-                HamonData hamon = hamonOp.get();
-                string.set(hamon.isSkillLearned(ModHamonSkills.ROPE_TRAP.get()));
-            }
-        });
-
-        if(string.get()){
+        if(INonStandPower.getNonStandPowerOptional(power.getUser()).map(
+                ipower -> ipower.getTypeSpecificData(ModPowers.HAMON.get()).map(
+                        hamonData -> hamonData.isSkillLearned(ModHamonSkills.ROPE_TRAP.get())).orElse(false)
+        ).orElse(false)){
             if (stand instanceof HermitPurpleEntity) {
                 HermitPurpleEntity hermitPurple = (HermitPurpleEntity) stand;
                 if (!hermitPurple.canPlaceBarrier()) {
@@ -77,5 +74,6 @@ public class HPAttachBarrier extends StandEntityAction {
     public TargetRequirement getTargetRequirement() {
         return TargetRequirement.BLOCK;
     }
+
 
 }

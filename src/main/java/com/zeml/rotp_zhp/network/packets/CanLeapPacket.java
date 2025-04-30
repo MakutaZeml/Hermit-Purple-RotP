@@ -4,6 +4,7 @@ import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.capability.LivingData;
 import com.zeml.rotp_zhp.capability.LivingDataProvider;
+import com.zeml.rotp_zhp.init.InitStands;
 import com.zeml.rotp_zhp.power.impl.stand.type.HermitPurpleStandType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -38,7 +39,7 @@ public class CanLeapPacket {
             Entity entity = ClientUtil.getEntityById(msg.entityID);
             if (entity instanceof LivingEntity) {
                 IStandPower.getStandPowerOptional((LivingEntity) entity).ifPresent(power -> {
-                    if(entity.isAlive()){
+                    if(entity.isAlive() && power.getType() == InitStands.STAND_HERMITO_PURPLE.getStandType()){
                         ((HermitPurpleStandType<?>) power.getType()).setLeapUnlocked(msg.canLeap);
                     }
 

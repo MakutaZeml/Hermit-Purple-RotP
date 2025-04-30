@@ -27,7 +27,7 @@ public class KosmxGrabHandler extends KosmXWindupAttackHandler {
 
     @Override
     public boolean setWindupAnim(PlayerEntity player) {
-        return setAnimFromName(player, GRAPPLE, anim-> new KosmGrabCommandHandler.ChargedAttackAnimPlayer(anim).windupStopsAt(anim.returnToTick));
+        return setAnimFromName(player, GRAPPLE, anim-> new KosmxGrabCommandHandler.ChargedAttackAnimPlayer(anim).windupStopsAt(anim.returnToTick));
     }
 
     @Override

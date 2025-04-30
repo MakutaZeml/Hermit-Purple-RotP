@@ -5,11 +5,9 @@ import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandAction;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
-import com.github.standobyte.jojo.client.standskin.StandSkin;
 import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
-import com.github.standobyte.jojo.init.ModItems;
 import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
@@ -17,31 +15,23 @@ import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.StandUtil;
-import com.github.standobyte.jojo.util.mc.MCUtil;
+import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
-import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
 import com.zeml.rotp_zhp.init.InitTags;
 import com.zeml.rotp_zhp.network.ModNetwork;
 import com.zeml.rotp_zhp.network.packets.ColorPacket;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.EntityPredicates;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.Util;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -53,8 +43,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class HPDoxx extends StandEntityAction {
     public HPDoxx(StandEntityAction.Builder builder){
@@ -143,7 +131,20 @@ public class HPDoxx extends StandEntityAction {
     public void onTaskSet(World world, StandEntity standEntity, IStandPower standPower, Phase phase, StandEntityTask task, int ticks) {
         if(world.isClientSide){
             ModNetwork.sendToServer(new ColorPacket(StandSkinsManager.getUiColor(standPower)));
+            if(standPower.getUser() instanceof PlayerEntity){
+                AddonPlayerAnimations.doxx.setWindupAnim((PlayerEntity) standPower.getUser());
+            }
         }
+    }
+
+    @Override
+    protected void onTaskStopped(World world, StandEntity standEntity, IStandPower standPower, StandEntityTask task, @Nullable StandEntityAction newAction) {
+        if(world.isClientSide){
+            if(standPower.getUser() instanceof PlayerEntity){
+                AddonPlayerAnimations.doxx.stopAnim((PlayerEntity) standPower.getUser());
+            }
+        }
+        super.onTaskStopped(world, standEntity, standPower, task, newAction);
     }
 
     @Override
@@ -189,4 +190,7 @@ public class HPDoxx extends StandEntityAction {
     public StandAction[] getExtraUnlockable() {
         return new StandAction[]{InitStands.HP_CAMERA.get()};
     }
+
+
+
 }

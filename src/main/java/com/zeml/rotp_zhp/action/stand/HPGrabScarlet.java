@@ -13,6 +13,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
+import com.zeml.rotp_zhp.action.stand.projectile.HPGrabCommand;
 import com.zeml.rotp_zhp.util.StandHamonDamage;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
@@ -44,8 +45,8 @@ public class HPGrabScarlet extends StandEntityAction {
     @Override
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
         if (!world.isClientSide()) {
-            if(HPGrabOverdrive.getLandedVineStand(standEntity).isPresent()){
-                LivingEntity target = HPGrabOverdrive.getLandedVineStand(standEntity).get().getEntityAttachedTo();
+            if(HPGrabCommand.getLandedVineStand(userPower.getUser()).isPresent()){
+                LivingEntity target = HPGrabCommand.getLandedVineStand(userPower.getUser()).get().getEntityAttachedTo();
                 if(target != null){
                     INonStandPower.getNonStandPowerOptional(userPower.getUser()).ifPresent(ipower->{
                         Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
@@ -63,5 +64,14 @@ public class HPGrabScarlet extends StandEntityAction {
         }
     }
 
+    @Override
+    public boolean isUnlocked(IStandPower power) {
+        return INonStandPower.getNonStandPowerOptional(power.getUser()).map(ipower ->ipower.getTypeSpecificData(ModPowers.HAMON.get()).map(hamonData -> hamonData.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get())).orElse(false)).orElse(false);
+    }
 
+
+    @Override
+    public boolean isLegalInHud(IStandPower power) {
+        return INonStandPower.getNonStandPowerOptional(power.getUser()).map(ipower ->ipower.getTypeSpecificData(ModPowers.HAMON.get()).map(hamonData -> hamonData.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get())).orElse(false)).orElse(false);
+    }
 }

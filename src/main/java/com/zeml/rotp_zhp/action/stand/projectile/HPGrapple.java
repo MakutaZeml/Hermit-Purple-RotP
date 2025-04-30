@@ -1,10 +1,7 @@
 package com.zeml.rotp_zhp.action.stand.projectile;
 
-import com.github.standobyte.jojo.action.Action;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
-import com.github.standobyte.jojo.capability.entity.hamonutil.EntityHamonChargeCapProvider;
-import com.github.standobyte.jojo.client.playeranim.anim.ModPlayerAnimations;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.init.ModSounds;
@@ -14,19 +11,14 @@ import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
-import com.github.standobyte.jojo.power.impl.stand.StandInstance;
 import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
-import com.zeml.rotp_zhp.init.InitStands;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.EntityPredicates;
 import net.minecraft.world.World;
 
-import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HPGrapple extends StandEntityAction {
     private boolean hasEnt;
@@ -36,12 +28,16 @@ public class HPGrapple extends StandEntityAction {
     }
 
 
+    @Override
+    public int getStandWindupTicks(IStandPower standPower, StandEntity standEntity) {
+        return 10;
+    }
 
     @Override
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
         if (!world.isClientSide()) {
             LivingEntity user = userPower.getUser();
-            HPGrapplingVineEntity vine = new HPGrapplingVineEntity(world, standEntity, userPower,false,user);
+            HPGrapplingVineEntity vine = new HPGrapplingVineEntity(world, userPower.getUser(),standEntity, userPower,false,user);
             vine.isSpread(false);
             vine.setHamonDamageOnHit(0,0);
             vine.isScarlet(false,0);

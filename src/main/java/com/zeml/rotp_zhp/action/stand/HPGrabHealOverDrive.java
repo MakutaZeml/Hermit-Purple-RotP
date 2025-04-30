@@ -11,6 +11,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonUtil;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.zeml.rotp_zhp.action.stand.projectile.HPGrabCommand;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -21,7 +22,6 @@ import net.minecraft.world.World;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.zeml.rotp_zhp.action.stand.HPGrabOverdrive.getLandedVineStand;
 
 public class HPGrabHealOverDrive extends StandEntityAction {
     public HPGrabHealOverDrive(StandEntityAction.Builder builder) {
@@ -47,8 +47,8 @@ public class HPGrabHealOverDrive extends StandEntityAction {
     @Override
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
         if (!world.isClientSide()) {
-            if(getLandedVineStand(standEntity).isPresent()){
-                LivingEntity target = getLandedVineStand(standEntity).get().getEntityAttachedTo();
+            if(HPGrabCommand.getLandedVineStand(userPower.getUser()).isPresent()){
+                LivingEntity target = HPGrabCommand.getLandedVineStand(userPower.getUser()).get().getEntityAttachedTo();
                 if(target != null){
                     if(userPower.getUser() != null){
                         INonStandPower.getNonStandPowerOptional(userPower.getUser()).ifPresent(ipower ->{
@@ -101,5 +101,15 @@ public class HPGrabHealOverDrive extends StandEntityAction {
             }
         }
         entity.addEffect(new EffectInstance(Effects.REGENERATION, duration, level));
+    }
+
+    @Override
+    public boolean isUnlocked(IStandPower power) {
+        return INonStandPower.getNonStandPowerOptional(power.getUser()).map(ipower ->ipower.getTypeSpecificData(ModPowers.HAMON.get()).map(hamonData -> hamonData.isSkillLearned(ModHamonSkills.HEALING_TOUCH.get())).orElse(false)).orElse(false);
+    }
+
+    @Override
+    public boolean isLegalInHud(IStandPower power) {
+        return INonStandPower.getNonStandPowerOptional(power.getUser()).map(ipower ->ipower.getTypeSpecificData(ModPowers.HAMON.get()).map(hamonData -> hamonData.isSkillLearned(ModHamonSkills.HEALING_TOUCH.get())).orElse(false)).orElse(false);
     }
 }

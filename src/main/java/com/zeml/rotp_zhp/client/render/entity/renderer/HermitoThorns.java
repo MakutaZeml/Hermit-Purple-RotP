@@ -53,6 +53,10 @@ public class HermitoThorns<T extends LivingEntity, M extends BipedModel<T>> exte
             return;
         }
 
+        if(entity.isInvisible()){
+            return;
+        }
+
         if (!playerAnimHandled) {
             PlayerAnimationHandler.getPlayerAnimator().onArmorLayerInit(this);
             playerAnimHandled = true;

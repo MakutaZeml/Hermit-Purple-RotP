@@ -35,6 +35,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -109,9 +110,9 @@ public class GameplayHandler {
                                     Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
                                     if(hamonOp.isPresent()){
                                         HamonData hamon = hamonOp.get();
-                                        if(hamon.getHamonStrengthLevel()==HermitConfig.getCommonConfigInstance(false).strength.get()&&
-                                        hamon.getBreathingLevel() == HermitConfig.getCommonConfigInstance(false).breathing.get() &&
-                                        hamon.getHamonControlLevel() == HermitConfig.getCommonConfigInstance(false).control.get()){
+                                        if(hamon.getHamonStrengthLevel()>=HermitConfig.getCommonConfigInstance(false).strength.get()&&
+                                        hamon.getBreathingLevel() >= HermitConfig.getCommonConfigInstance(false).breathing.get() &&
+                                        hamon.getHamonControlLevel() >= HermitConfig.getCommonConfigInstance(false).control.get()){
                                             LazyOptional<LivingData> playerDataOptional = player.getCapability(LivingDataProvider.CAPABILITY);
                                             playerDataOptional.ifPresent(playerData ->{
                                                 if(!playerData.isTriedHermit()){
@@ -129,6 +130,14 @@ public class GameplayHandler {
 
     }
 
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void onCloneEvent(PlayerEvent.Clone event){
+        if(!event.getEntityLiving().level.isClientSide){
+            boolean tried = event.getOriginal().getCapability(LivingDataProvider.CAPABILITY).map(LivingData::isTriedHermit).orElse(false);
+            event.getPlayer().getCapability(LivingDataProvider.CAPABILITY).ifPresent(livingData -> livingData.setTriedHermit(tried));
+        }
+    }
 
     @Nullable
     private static StandEntity getTargetStand(LivingEntity target) {

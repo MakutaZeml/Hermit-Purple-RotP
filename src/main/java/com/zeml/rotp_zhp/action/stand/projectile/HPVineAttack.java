@@ -38,6 +38,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -52,10 +53,8 @@ public class HPVineAttack extends StandEntityAction {
         return Math.max(super.getStandWindupTicks(standPower, standEntity) - getStandActionTicks(standPower, standEntity) / 2, 3);
     }
 
-
     @Override
-    public void onTaskSet(World world, StandEntity standEntity, IStandPower standPower, Phase phase, StandEntityTask task, int ticks) {
-        super.onTaskSet(world, standEntity, standPower, phase, task, ticks);
+    public void standPerform(World world, StandEntity standEntity, IStandPower standPower, StandEntityTask task) {
         if (!world.isClientSide()) {
             boolean shift = isShiftVariation();
             int n = shift ? 1: 2;
@@ -82,10 +81,25 @@ public class HPVineAttack extends StandEntityAction {
         });
     }
 
+    @Override
+    public void onTaskSet(World world, StandEntity standEntity, IStandPower standPower, Phase phase, StandEntityTask task, int ticks) {
+        super.onTaskSet(world, standEntity, standPower, phase, task, ticks);
+        if(world.isClientSide){
+            if(standPower.getUser() instanceof PlayerEntity) AddonPlayerAnimations.vine.setWindupAnim((PlayerEntity) standPower.getUser());
+        }
+    }
 
+
+    @Override
+    protected void onTaskStopped(World world, StandEntity standEntity, IStandPower standPower, StandEntityTask task, @Nullable StandEntityAction newAction) {
+        super.onTaskStopped(world, standEntity, standPower, task, newAction);
+        if(world.isClientSide){
+            if(standPower.getUser() instanceof PlayerEntity) AddonPlayerAnimations.vine.stopAnim((PlayerEntity) standPower.getUser());
+        }
+    }
 
     public void addProjectile(World world, IStandPower standPower, StandEntity standEntity, float yRotDelta, float xRotDelta, boolean shift) {
-        HPVineEntity vine = new HPVineEntity(world, standEntity, yRotDelta, xRotDelta, shift);
+        HPVineEntity vine = new HPVineEntity(world, standEntity.getUser(), yRotDelta, xRotDelta, shift);
         if (!shift) {
             vine.addKnockback(0.15F);
         }
@@ -135,16 +149,6 @@ public class HPVineAttack extends StandEntityAction {
             }
         }
         return potionItem;
-    }
-
-    @Override
-    public boolean clHeldStartAnim(PlayerEntity user) {
-        return AddonPlayerAnimations.vine.setAnimEnabled(user,true);
-    }
-
-    @Override
-    public void clHeldStopAnim(PlayerEntity user) {
-        AddonPlayerAnimations.vine.setAnimEnabled(user,false);
     }
 
 

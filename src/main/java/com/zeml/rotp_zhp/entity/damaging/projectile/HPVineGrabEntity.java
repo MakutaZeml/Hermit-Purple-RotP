@@ -36,6 +36,11 @@ public class HPVineGrabEntity extends OwnerBoundProjectileEntity {
         this.ownerStand = entity;
     }
 
+    public HPVineGrabEntity(World world, LivingEntity owner, StandEntity stand){
+        super(InitEntities.HP_GRAB_ENTITY.get(),owner,world);
+        this.ownerStand = stand;
+    }
+
     public HPVineGrabEntity(EntityType<? extends HPVineGrabEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -142,7 +147,7 @@ public class HPVineGrabEntity extends OwnerBoundProjectileEntity {
         return ownerStand;
     }
 
-    private static final Vector3d OFFSET = new Vector3d(0, -0.25, 0.5);
+    private static final Vector3d OFFSET = new Vector3d(0, -0.25, 0);
     @Override
     protected Vector3d getOwnerRelativeOffset() {
         return OFFSET;

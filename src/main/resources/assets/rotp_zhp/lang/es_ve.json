@@ -1,0 +1,67 @@
+{
+  "entity.rotp_zhp.hermito_purple": "Hermito Púrpura",
+  "stand.rotp_zhp.hermito_purple": "Hermito Púrpura",
+
+  "action.rotp_zhp.hp_vine_attack": "Ataque de Enredadera",
+  "action.rotp_zhp.hp_vine_shift": "Ataque de Atadura de enredadera",
+  "action.rotp_zhp.hp_grab": "Agarrar Entidad",
+  "action.rotp_zhp.hp_grab_od": "Agarre de Entidad OverDrive",
+  "action.rotp_zhp.hp_grab_sc": "Agarre de Entidad OverDrive Escarlata",
+  "action.rotp_zhp.hp_grab_heal": "Enredadera Sanadora",
+  "action.rotp_zhp.cringe": "OH NO CRINGE",
+
+
+  "action.rotp_zhp.hp_breath": "Respiración Hamon",
+  "action.rotp_zhp.hp_block": "Espinas Hermito",
+  "action.rotp_zhp.hp_vine": "Enredar",
+  "action.rotp_zhp.hp_vine_entity": "Agarre de Enredadera",
+  "action.rotp_zhp.hp_doxx": "Adivinación de posición",
+  "action.rotp_zhp.hp_doxx.s": "Adivinación de posición de %s",
+  "action.rotp_zhp.hp_doxx.stand": "Adivinación de la posición del usuario %s",
+  "action.rotp_zhp.hp_doxx_user": "'s user",
+  "action.rotp_zhp.hp_camera": "Adivinar Foto",
+  "action.rotp_zhp.hp_camera.s": "%s Adivinar Foto",
+  "action.rotp_zhp.hp_camera.stand": "%s adivinar fotos del usuario",
+  "action.rotp_zhp.hp_target": "Seleccion de Objetivo",
+  "action.rotp_zhp.hp_barrier": "Hilo de Hermito Púrpura (%s/%s)",
+  "action.rotp_zhp.hp_unbarrier": "Desinvocar Barreras",
+
+  "rotp_zhp.subtitle.hp_summon": "Invocar Hermito Púrpura",
+  "rotp_zhp.subtitle.hp_unsummon": "Desinvocar Hermito Púrpura",
+  "rotp_zhp.subtitle.hp_user": "\"Hermito Púrpura\"",
+  "rotp_zhp.subtitle.hp_grapple": "Garfio Hermito Púrpura",
+  "rotp_zhp.subtitle.hp_throw": "Hermito Púrpura lanzó enredadera",
+  "rotp_zhp.subtitle.hp_grp_ent": "Hermito Púrpura agarró Entidad",
+  "rotp_zhp.subtitle.hp_ora": "\"OVER DRIVE\"",
+  "rotp_zhp.subtitle.hp_spark": "Chispa de Hermito Púrpura",
+  "rotp_zhp.subtitle.joseph_breath": "Respiración",
+  "rotp_zhp.subtitle.joseph_cringe": "OH NO CRINGE",
+
+  "jojo.message.action_condition.no_hamon": "Necesitas aprender Hamon",
+  "jojo.message.action_condition.no_map": "Necesitas un mapa vacio en tu mano secundaria",
+  "jojo.message.action_condition.no_player_target": "Necesitas seleccionar un jugador como Objetivo",
+  "jojo.message.action_condition.strings_learn": "Necesitas aprender la habilidad de Trampa de Cuerda",
+  "jojo.message.action_condition.no_healing": "Necesitas aprender Toque Sanador",
+
+  "filled_map.divination": "Adivinar ",
+
+  "gui.hermitpurpletarget.title": "Seleccionar objetivo de Hermito Púrpura",
+  "gui.hermitpurpletarget.tab_all": "Jugadores",
+  "gui.hermitpurpletarget.tab_hidden": "Entidades",
+  "gui.hermitpurpletarget.tab_blocked": "Estructuras",
+  "gui.hermitpurpletarget.tab_stands": "Stands",
+  "gui.hermitpurpletarget.tab_biomes": "Biomas",
+  "gui.hermitpurpletarget.search_empty": "No se encontro un objetivo con ese nombre",
+  "gui.hermitpurpletarget.random": "Aleatorio",
+
+
+  "rotp_zhp.config.hamonToHermit": "Hamon otorga Hermito Púrpira",
+  "rotp_zhp.config.control": "Control de Hamon Requerido",
+  "rotp_zhp.config.strength": "Fuerza de Hamon Requerida",
+  "rotp_zhp.config.breathing": "Fuerza de Respiracion de Hamon",
+
+
+
+  "entity.epicfight.wither_ghost": "Fantasma Wither",
+  "entity.jojo.dummy": "Muñeco"
+}

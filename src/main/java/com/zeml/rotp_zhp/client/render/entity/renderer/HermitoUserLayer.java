@@ -61,14 +61,17 @@ public class HermitoUserLayer<T extends LivingEntity, M extends BipedModel<T>> e
             return;
         }
 
+        if(entity.isInvisible()){
+            return;
+        }
+
         if (!playerAnimHandled) {
             PlayerAnimationHandler.getPlayerAnimator().onArmorLayerInit(this);
             playerAnimHandled = true;
         }
 
         IStandPower.getStandPowerOptional(entity).ifPresent((stand) -> {
-            StandType<?> hm = InitStands.STAND_HERMITO_PURPLE.getStandType();
-            if (stand.getType() == hm && stand.getStandManifestation() instanceof StandEntity) {
+            if (stand.getType() == InitStands.STAND_HERMITO_PURPLE.getStandType() && stand.getStandManifestation() instanceof StandEntity) {
                 M playerModel = getParentModel();
                 glovesModel.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTick);
                 playerModel.copyPropertiesTo(glovesModel);

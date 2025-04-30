@@ -6,9 +6,9 @@
   "action.rotp_zhp.hp_vine_shift": "Vine binding attack",
   "action.rotp_zhp.hp_grab": "Grab Entity",
   "action.rotp_zhp.hp_grab_od": "OverDrive grabbed entity",
+  "action.rotp_zhp.hp_grab_sc": "Scarlet OverDrive grabbed entity",
   "action.rotp_zhp.hp_grab_heal": "Healing vine",
   "action.rotp_zhp.cringe": "OH NO CRINGE",
-
 
 
   "action.rotp_zhp.hp_breath": "Hamon Breath",
@@ -16,9 +16,12 @@
   "action.rotp_zhp.hp_vine":"Vine",
   "action.rotp_zhp.hp_vine_entity": "Vine Grapple",
   "action.rotp_zhp.hp_doxx": "Position divination",
-  "action.rotp_zhp.hp_doxx.s": "Position divination of ",
+  "action.rotp_zhp.hp_doxx.s": "%s 's position divination",
+  "action.rotp_zhp.hp_doxx.stand":"%s user position divination",
   "action.rotp_zhp.hp_doxx_user": "'s user",
   "action.rotp_zhp.hp_camera": "Photo divination",
+  "action.rotp_zhp.hp_camera.s": "%s photo divination",
+  "action.rotp_zhp.hp_camera.stand": "%s user photo divination",
   "action.rotp_zhp.hp_target": "Target selection",
   "action.rotp_zhp.hp_barrier": "Hermit Purple String (%s/%s)",
   "action.rotp_zhp.hp_unbarrier": "Unsummon barriers",
@@ -55,6 +58,15 @@
   "rotp_zhp.config.hamonToHermit": "Hamon gives Hermit Purple",
   "rotp_zhp.config.control": "Hamon control required",
   "rotp_zhp.config.strength": "Hamon strenght required",
-  "rotp_zhp.config.breathing": "Hamon strenght breathing"
+  "rotp_zhp.config.breathing": "Hamon strenght breathing",
 
+
+
+  "entity.rotp_zhp.hp_vine": "Hermit Purple Vine",
+  "entity.rotp_zhp.hp_barrier": "Hermit Purple Vine Barrier",
+  "entity.rotp_zhp.hp_grab_vine": "Hermit Purple Grab Vine",
+  "entity.rotp_zhp.hp_grappling_vine": "Hermit Purple Grappling Vine",
+
+  "entity.epicfight.wither_ghost": "Wither Ghost",
+  "entity.jojo.dummy": "Dummy"
 }

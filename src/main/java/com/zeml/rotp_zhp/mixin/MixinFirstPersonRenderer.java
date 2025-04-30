@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.mixin;
 
+import com.zeml.rotp_zhp.client.render.entity.renderer.HermitoThorns;
 import com.zeml.rotp_zhp.client.render.entity.renderer.HermitoUserLayer;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
@@ -19,5 +20,6 @@ public class MixinFirstPersonRenderer extends PatchedLivingEntityRenderer<Client
     @Inject(method = "<init>", at = @At("RETURN"))
     private void onInit(CallbackInfo ci){
         this.addPatchedLayer(HermitoUserLayer.class, new EmptyLayer<>());
+        this.addPatchedLayer(HermitoThorns.class, new EmptyLayer<>());
     }
 }

@@ -9,12 +9,9 @@ import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.stats.StandStats;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
-import com.zeml.rotp_zhp.capability.LivingData;
-import com.zeml.rotp_zhp.capability.LivingDataProvider;
 import com.zeml.rotp_zhp.init.InitStands;
 import com.zeml.rotp_zhp.network.ModNetwork;
 import com.zeml.rotp_zhp.network.packets.CanLeapPacket;
-import com.zeml.rotp_zhp.util.GameplayHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.ITextComponent;
@@ -24,7 +21,7 @@ import java.util.Optional;
 
 public class HermitPurpleStandType<T extends StandStats> extends EntityStandType<T> {
     private boolean leapUnlocked = true;
-    private boolean remote;
+
 
     @Deprecated
     public HermitPurpleStandType(int color, ITextComponent partName, StandAction[] attacks, StandAction[] abilities, Class<T> statsClass, T defaultStats, @Nullable StandType.StandTypeOptionals additions) {
@@ -44,18 +41,16 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
                 Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
                 if(hamonOp.isPresent()) {
                     HamonData hamon = hamonOp.get();
-
                     this.setLeapUnlocked(hamon.isSkillLearned(ModHamonSkills.JUMP.get()));
                     if(user instanceof ServerPlayerEntity){
                         ModNetwork.sendToClient(new CanLeapPacket(user.getId(), hamon.isSkillLearned(ModHamonSkills.JUMP.get())),(ServerPlayerEntity) user);
                     }
-
+                    if(hamon.isSkillLearned(ModHamonSkills.SUNLIGHT_YELLOW_OVERDRIVE.get())){
+                        power.unlockAction(InitStands.HP_GRAB_OVERDRIVE.get());
+                    }
                     if(hamon.isSkillLearned(ModHamonSkills.ROPE_TRAP.get())){
                         power.unlockAction(InitStands.HP_BARRIER.get());
                         power.unlockAction(InitStands.HP_UNBARRIER.get());
-                    }
-                    if(hamon.isSkillLearned(ModHamonSkills.SUNLIGHT_YELLOW_OVERDRIVE.get())){
-                        power.unlockAction(InitStands.HP_GRAB_OVERDRIVE.get());
                     }
                     if(hamon.isSkillLearned(ModHamonSkills.HEALING_TOUCH.get())){
                         power.unlockAction(InitStands.HP_HEAL_VINE.get());
@@ -70,16 +65,6 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
 
 
 
-
-    @Override
-    public boolean canBeManuallyControlled() {
-        return this.remote;
-    }
-
-
-    public void setRemote(boolean remote) {
-        this.remote = remote;
-    }
 
     @Override
     public boolean canLeap() {

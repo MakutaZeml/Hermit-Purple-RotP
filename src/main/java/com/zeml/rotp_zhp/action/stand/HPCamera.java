@@ -3,16 +3,18 @@ package com.zeml.rotp_zhp.action.stand;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
+import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.network.PacketManager;
 import com.github.standobyte.jojo.network.packets.fromserver.PhotoForOtherPlayerPacket;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.StandUtil;
-import com.github.standobyte.jojo.util.general.ObjectWrapper;
-import com.github.standobyte.jojo.util.mc.MCUtil;
+import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 
+import com.zeml.rotp_zhp.network.ModNetwork;
+import com.zeml.rotp_zhp.network.packets.ColorPacket;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -20,11 +22,11 @@ import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
+import net.minecraft.util.HandSide;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-
-import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
 
 public class HPCamera extends StandEntityAction {
     public HPCamera(StandEntityAction.Builder builder){
@@ -73,6 +75,26 @@ public class HPCamera extends StandEntityAction {
             }
         }
 
+    }
+
+    @Override
+    public void onTaskSet(World world, StandEntity standEntity, IStandPower standPower, Phase phase, StandEntityTask task, int ticks) {
+        if(world.isClientSide){
+            ModNetwork.sendToServer(new ColorPacket(StandSkinsManager.getUiColor(standPower)));
+            AddonPlayerAnimations.doxx.setWindupAnim((PlayerEntity) standPower.getUser());
+        }
+    }
+
+
+
+    @Override
+    protected void onTaskStopped(World world, StandEntity standEntity, IStandPower standPower, StandEntityTask task, @Nullable StandEntityAction newAction) {
+        if(world.isClientSide){
+            if(standPower.getUser() instanceof PlayerEntity){
+                AddonPlayerAnimations.doxx.stopAnim((PlayerEntity) standPower.getUser());
+            }
+        }
+        super.onTaskStopped(world, standEntity, standPower, task, newAction);
     }
 
 

@@ -35,6 +35,10 @@
     "rotp_zhp:skinh": {
       "stand_type": "rotp_zhp:hermito_purple",
       "color" : "0x262626"
+    },
+    "rotp_zhp:spider_man": {
+      "stand_type": "rotp_zhp:hermito_purple",
+      "color" : "0xC91A09"
     }
   }
 }

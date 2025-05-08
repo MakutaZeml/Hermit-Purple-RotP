@@ -54,6 +54,6 @@ public class InitSounds {
     public static final RegistryObject<SoundEvent> USER_CRINGE = SOUNDS.register("joseph_cringe",
             ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "joseph_cringe"))
     );
-	
-        static final OstSoundList JOSEPH_OST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_ost"), SOUNDS);
+
+    static final OstSoundList JOSEPH_OST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_ost"), SOUNDS);
 }

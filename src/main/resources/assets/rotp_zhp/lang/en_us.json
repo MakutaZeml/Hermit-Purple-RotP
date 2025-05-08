@@ -10,7 +10,6 @@
   "action.rotp_zhp.hp_grab_heal": "Healing vine",
   "action.rotp_zhp.cringe": "OH NO CRINGE",
 
-
   "action.rotp_zhp.hp_breath": "Hamon Breath",
   "action.rotp_zhp.hp_block": "Hermito Thorns",
   "action.rotp_zhp.hp_vine":"Vine",
@@ -54,13 +53,10 @@
   "gui.hermitpurpletarget.search_empty": "Couldn't find any target with that name",
   "gui.hermitpurpletarget.random": "Random",
 
-
   "rotp_zhp.config.hamonToHermit": "Hamon gives Hermit Purple",
   "rotp_zhp.config.control": "Hamon control required",
   "rotp_zhp.config.strength": "Hamon strenght required",
   "rotp_zhp.config.breathing": "Hamon strenght breathing",
-
-
 
   "entity.rotp_zhp.hp_vine": "Hermit Purple Vine",
   "entity.rotp_zhp.hp_barrier": "Hermit Purple Vine Barrier",

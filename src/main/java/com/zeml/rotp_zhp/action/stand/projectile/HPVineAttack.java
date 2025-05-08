@@ -23,6 +23,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamon
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.general.MathUtil;
 import com.github.standobyte.jojo.util.mc.damage.StandEntityDamageSource;
+import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
@@ -69,7 +70,7 @@ public class HPVineAttack extends StandEntityAction {
             if(hamonOp.isPresent()){
                 HamonData hamon = hamonOp.get();
                 if ((hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get())||(hamon.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get()))) && ipower.getEnergy()>0){
-                    standEntity.playSound(InitSounds.USER_OVER.get(),1F,1);
+                    JojoModUtil.sayVoiceLine(standPower.getUser(), InitSounds.USER_OVER.get());
                 }
                 if(hamon.isSkillLearned(ModHamonSkills.HAMON_CUTTER.get()) && isShiftVariation() && !getCutterUsableItem(standPower.getUser()).isEmpty()){
                     ipower.clickAction(ModHamonActions.ZEPPELI_HAMON_CUTTER.get(), false,task.getTarget(),null);

@@ -11,6 +11,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
@@ -54,7 +55,7 @@ public class HPGrapple extends StandEntityAction {
                             hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,cost);
                             float hamonEfficiency = hamon.getActionEfficiency(cost, true);
                             user.playSound(ModSounds.HAMON_CONCENTRATION.get(),1,1);
-                            standEntity.playSound(InitSounds.USER_OVER.get(),1F,1);
+                            JojoModUtil.sayVoiceLine(userPower.getUser(), InitSounds.USER_OVER.get());
                             vine.isCharged(true);
                             vine.setHamonDamageOnHit(hamonEfficiency,cost);
                         }

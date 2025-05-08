@@ -155,6 +155,7 @@ public class InitStands {
                                     .precision(7.0)
                                     .randomWeight(2)
                             )
+                            .disableManualControl()
                             .addOst(InitSounds.JOSEPH_OST)
                             .addSummonShout(InitSounds.USER_HP)
                             .build(),

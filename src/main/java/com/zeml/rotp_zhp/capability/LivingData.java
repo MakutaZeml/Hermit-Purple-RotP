@@ -12,6 +12,8 @@ public class LivingData implements INBTSerializable<CompoundNBT> {
     private boolean triedHermit = false;
     private boolean canLeap = false;
     private boolean isBreathing = false;
+    private int mode = 0;
+
 
     public LivingData(LivingEntity entity) {
         this.entity = entity;
@@ -36,6 +38,13 @@ public class LivingData implements INBTSerializable<CompoundNBT> {
         return canLeap;
     }
 
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+
+    public int getMode() {
+        return this.mode;
+    }
 
 
     public void syncWithAnyPlayer(ServerPlayerEntity player) {

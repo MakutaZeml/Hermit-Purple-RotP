@@ -1,19 +1,26 @@
 package com.zeml.rotp_zhp.power.impl.stand.type;
 
 import com.github.standobyte.jojo.action.stand.StandAction;
+import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
+import com.github.standobyte.jojo.item.GlovesItem;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.stats.StandStats;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
+import com.github.standobyte.jojo.util.mc.MCUtil;
+import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
+import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitStands;
 import com.zeml.rotp_zhp.network.ModNetwork;
 import com.zeml.rotp_zhp.network.packets.CanLeapPacket;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.util.Hand;
 import net.minecraft.util.text.ITextComponent;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,6 +44,14 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
     public void tickUser(LivingEntity user, IStandPower power) {
         super.tickUser(user, power);
         if(!user.level.isClientSide){
+
+
+            if(power.getResolveLevel() > 3 && power.getStandManifestation() instanceof HermitPurpleEntity){
+                if(user.getMainHandItem().isEmpty() || MCUtil.isHandFree(user, Hand.MAIN_HAND)){
+                    user.addEffect(new EffectInstance(ModStatusEffects.INTEGRATED_STAND.get(),10,0,false,false,false));
+                }
+            }
+
             INonStandPower.getNonStandPowerOptional(user).ifPresent(ipower->{
                 Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
                 if(hamonOp.isPresent()) {
@@ -60,6 +75,7 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
                     }
                 }
             });
+
         }
     }
 

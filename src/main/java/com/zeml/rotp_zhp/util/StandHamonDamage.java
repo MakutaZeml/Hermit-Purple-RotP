@@ -37,11 +37,12 @@ import static com.github.standobyte.jojo.util.mc.damage.DamageUtil.hurtThroughIn
 
 public class StandHamonDamage {
 
+
+    /*
     public static boolean dealHamonDamage(Entity target, float amount, @Nullable Entity srcDirect, @Nullable Entity srcIndirect, @Nullable Consumer<StandHamonAttackProperties> attackProperties, IStandPower standPower, float standVampirism, float standNormal) {
         if (target instanceof LivingEntity) {
             LivingEntity livingTarget;
             float mult = 1;
-
 
             if(target instanceof StandEntity){
                 livingTarget = ((StandEntity) target).getUser();
@@ -99,8 +100,12 @@ public class StandHamonDamage {
             }
 
             final float dmgAmount = amount;
+
+            Optional<HamonData> attackerHamon = null;
             if (attack.srcEntityHamonMultiplier && dmgSource.getEntity() instanceof LivingEntity) {
                 LivingEntity sourceLiving = (LivingEntity) dmgSource.getEntity();
+                INonStandPower.getNonStandPowerOptional(sourceLiving).resolve().flatMap(
+                        power -> power.getTypeSpecificData(ModPowers.HAMON.get()));
                 float hamonMultiplier = INonStandPower.getNonStandPowerOptional(sourceLiving).map(power ->
                         power.getTypeSpecificData(ModPowers.HAMON.get()).map(hamon -> {
                             float hamonStrengthMultiplier = hamon.getHamonDamageMultiplier();
@@ -111,6 +116,9 @@ public class StandHamonDamage {
                             return hamonStrengthMultiplier;
                         }).orElse(1F)).orElse(1F);
                 amount *= hamonMultiplier;
+            }else {
+                attackerHamon = Optional.empty();
+                hamonMultiplier = 1;
             }
 
 
@@ -123,12 +131,110 @@ public class StandHamonDamage {
                 if (scarf && undeadTarget && livingTarget instanceof ServerPlayerEntity) {
                     ModCriteriaTriggers.VAMPIRE_HAMON_DAMAGE_SCARF.get().trigger((ServerPlayerEntity) livingTarget);
                 }
+                attackerHamon.ifPresent(hamon -> {
+                    if (undeadTarget && !scarf && hamon.isSkillLearned(ModHamonSkills.HAMON_SPREAD.get())) {
+                        livingTarget.getCapability(LivingUtilCapProvider.CAPABILITY)
+                                .ifPresent(cap -> cap.hamonSpread(dmgAmount * hamonMultiplier));
+                    }
+                });
                 return true;
             }
         }
         return false;
     }
 
+     */
+
+
+
+    public static boolean dealHamonDamage(Entity target, float amount, @Nullable Entity srcDirect, @Nullable Entity srcIndirect,IStandPower standPower, float standVampirism, float standNormal) {
+        return dealHamonDamage(target, amount, srcDirect, srcIndirect, null, standPower, standVampirism, standNormal);
+    }
+
+    public static boolean dealHamonDamage(Entity target, float amount, @Nullable Entity srcDirect,
+                                          @Nullable Entity srcIndirect, @Nullable Consumer<StandHamonDamage.StandHamonAttackProperties> attackProperties,
+                                          IStandPower standPower, float standVampirism, float standNormal
+    ) {
+        if (target instanceof LivingEntity) {
+            LivingEntity livingTarget = (LivingEntity) target;
+
+            if(target instanceof StandEntity){
+                livingTarget = ((StandEntity) target).getUser();
+            }
+
+            StandHamonAttackProperties attack = new StandHamonAttackProperties();
+            if (attackProperties != null) {
+                attackProperties.accept(attack);
+            }
+
+            if (livingTarget.getCapability(EntityHamonChargeCapProvider.CAPABILITY).map(EntityHamonChargeCap::hasHamonCharge).orElse(false)) {
+                return false;
+            }
+
+            Optional<INonStandPower> targetPower = INonStandPower.getNonStandPowerOptional(livingTarget).resolve();
+
+            if (INonStandPower.getNonStandPowerOptional(livingTarget).resolve().flatMap(
+                    power -> power.getTypeSpecificData(ModPowers.PILLAR_MAN.get())
+                            .map(pillarman -> pillarman.isStoneFormEnabled())).orElse(false)) {
+                return false;
+            }
+
+            boolean scarf = livingTarget.getItemBySlot(EquipmentSlotType.HEAD).getItem() == ModItems.SATIPOROJA_SCARF.get();
+            if (scarf) {
+                if (targetPower.map(power -> power.getType() == ModPowers.HAMON.get()).orElse(false)) {
+                    return false;
+                }
+                amount *= 0.25F;
+            }
+
+            DamageSource dmgSource = srcDirect == null ? DamageUtil.HAMON :
+                    srcIndirect == null ? new EntityDamageSource(DamageUtil.HAMON.getMsgId() + ".entity", srcDirect).bypassArmor() :
+                            new IndirectEntityDamageSource(DamageUtil.HAMON.getMsgId() + ".entity", srcDirect, srcIndirect).bypassArmor();
+
+            boolean undeadTarget = JojoModUtil.isAffectedByHamon(livingTarget);
+            if (!undeadTarget) {
+                amount *= 0.2F;
+            }
+            else if (INonStandPower.getNonStandPowerOptional(livingTarget)
+                    .map(power -> power.getType() == ModPowers.PILLAR_MAN.get()).orElse(false)) {
+                amount *= 0.5F;
+            }
+
+            final float dmgAmount = amount;
+            Optional<HamonData> attackerHamon;
+            float hamonMultiplier;
+            if (attack.srcEntityHamonMultiplier && dmgSource.getEntity() instanceof LivingEntity) {
+                LivingEntity sourceLiving = (LivingEntity) dmgSource.getEntity();
+                attackerHamon = INonStandPower.getNonStandPowerOptional(sourceLiving).resolve().flatMap(
+                        power -> power.getTypeSpecificData(ModPowers.HAMON.get()));
+                hamonMultiplier = attackerHamon.map(HamonData::getHamonDamageMultiplier).orElse(1F);
+                amount *= hamonMultiplier;
+            }
+            else {
+                attackerHamon = Optional.empty();
+                hamonMultiplier = 1;
+            }
+            amount *= JojoModConfig.getCommonConfigInstance(false).hamonDamageMultiplier.get().floatValue();
+
+//            JojoMod.LOGGER.debug(amount);
+
+            if (hurtThroughInvulTicks(target, new StandEntityDamageSource(DamageUtil.HAMON.getMsgId() + ".entity", srcDirect, standPower), amount)) {
+                HamonUtil.createHamonSparkParticlesEmitter(target, amount / (HamonData.MAX_HAMON_STRENGTH_MULTIPLIER * 5), attack.soundVolumeMultiplier, attack.hamonParticle);
+                if (scarf && undeadTarget && livingTarget instanceof ServerPlayerEntity) {
+                    ModCriteriaTriggers.VAMPIRE_HAMON_DAMAGE_SCARF.get().trigger((ServerPlayerEntity) livingTarget);
+                }
+                LivingEntity finalLivingTarget = livingTarget;
+                attackerHamon.ifPresent(hamon -> {
+                    if (undeadTarget && !scarf && hamon.isSkillLearned(ModHamonSkills.HAMON_SPREAD.get())) {
+                        finalLivingTarget.getCapability(LivingUtilCapProvider.CAPABILITY)
+                                .ifPresent(cap -> cap.hamonSpread(dmgAmount * hamonMultiplier));
+                    }
+                });
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static class StandHamonAttackProperties{
         private IParticleData hamonParticle = ModParticles.HAMON_SPARK.get();

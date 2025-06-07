@@ -1,9 +1,11 @@
 package com.zeml.rotp_zhp.client.ui.screen;
 
+import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.network.ButtonClickPacket;
 import com.zeml.rotp_zhp.network.ModNetwork;
@@ -133,12 +135,6 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
 
             bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
 
-            /*
-            bufferbuilder.vertex((double) innerStartX, (double) innerEndY, 0.1D).uv(0.0F, 1.0F).color(158, 105, 203, 255).endVertex();
-            bufferbuilder.vertex((double) innerEndX, (double) innerEndY, 0.1D).uv(1.0F, 1.0F).color(158, 105, 203, 255).endVertex();
-            bufferbuilder.vertex((double) innerEndX, (double) innerStartY, 0.1D).uv(1.0F, 0.0F).color(158, 105, 203, 255).endVertex();
-            bufferbuilder.vertex((double)innerStartX, (double) innerStartY, 0.1D).uv(0.0F, 0.0F).color(158, 105, 203, 255).endVertex();
-*/
 
             bufferbuilder.vertex((double) i, (double) this.y1, 0.0D).uv(0.0F, 1.0F).color(105, 75, 116, 255).endVertex();
             bufferbuilder.vertex((double) j, (double) this.y1, 0.0D).uv(1.0F, 1.0F).color(105, 75, 116, 255).endVertex();
@@ -250,7 +246,7 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
 
     class Entry extends AbstractList.AbstractListEntry<Entry> {
         private final Object item;
-        private final Button button;
+        private final HPButton button;
 
         public Entry(Object item) {
             this.item = item;
@@ -282,15 +278,57 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
         public void render(MatrixStack matrixStack, int index, int top, int left, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isHovered, float partialTicks) {
             if (item instanceof NetworkPlayerInfo) {
                 minecraft.font.draw(matrixStack, ((NetworkPlayerInfo) item).getProfile().getName(), getRowLeft()+10, top, 0xFFFFFF);
+
+                if(IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity){
+                    HermitPurpleEntity hermitPurple = (HermitPurpleEntity) IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation();
+                    if(((NetworkPlayerInfo) item).getProfile().getName().equals(hermitPurple.getTarget())){
+                        button.setTarget(true);
+                    }
+                }
+
             } else if (item instanceof EntityType) {
                 minecraft.font.draw(matrixStack, ((EntityType<?>) item).getDescription().getString(), getRowLeft()+10, top, 0xFFFFFF);
+
+                if(IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity){
+                    HermitPurpleEntity hermitPurple = (HermitPurpleEntity) IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation();
+                    if(((EntityType<?>) item).getDescription().getString().equals(hermitPurple.getTarget())){
+                        button.setTarget(true);
+                    }
+                }
+
             } else if (item instanceof Structure) {
                 minecraft.font.draw(matrixStack, ((Structure<?>) item).getFeatureName(), getRowLeft()+10, top, 0xFFFFFF);
+
+                if(IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity){
+                    HermitPurpleEntity hermitPurple = (HermitPurpleEntity) IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation();
+                    if(((Structure<?>) item).getFeatureName().equals(hermitPurple.getTarget())){
+                        button.setTarget(true);
+                    }
+                }
+
             } else if (item instanceof StandType<?>) {
                 minecraft.font.draw(matrixStack,((StandType<?>)item).getName(),getRowLeft()+10, top, 0xFFFFFF);
+
+                if(IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity){
+                    HermitPurpleEntity hermitPurple = (HermitPurpleEntity) IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation();
+                    if(((StandType<?>)item).getName().equals(hermitPurple.getTarget())){
+                        button.setTarget(true);
+                    }
+                }
+
             } else if (item instanceof Biome) {
                 minecraft.font.draw(matrixStack,biomeName((Biome) item),getRowLeft()+10, top, 0xFFFFFF);
+
+                if(IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity){
+                    HermitPurpleEntity hermitPurple = (HermitPurpleEntity) IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation();
+                    if(biomeName((Biome) item).equals(hermitPurple.getTarget())){
+                        button.setTarget(true);
+                    }
+                }
+
             }
+
+
 
             this.button.y = top;
             this.button.render(matrixStack, mouseX, mouseY, partialTicks);

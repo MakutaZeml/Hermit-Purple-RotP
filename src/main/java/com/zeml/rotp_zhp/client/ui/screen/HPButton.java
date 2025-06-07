@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class HPButton extends CustomButton {
     protected static final ResourceLocation BUTTON = new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"/textures/gui/hp_widgets.png");
 
+    private boolean isTarget;
 
     public HPButton(int x, int y, int width, int height,
                              ITextComponent message, IPressable onPress) {
@@ -33,18 +34,22 @@ public class HPButton extends CustomButton {
     @Override
     protected void renderCustomButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
-        AtomicReference<ResourceLocation> texture = new AtomicReference<>(BUTTON);
 
-        IStandPower.getStandPowerOptional(minecraft.player).ifPresent(power -> {
-            texture.set(StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
-                    .getStandSkin(power.getStandInstance().get()), BUTTON));
-        });
+        ResourceLocation texture = BUTTON;
 
-        minecraft.getTextureManager().bind(texture.get());
+
+        if(IStandPower.getPlayerStandPower(minecraft.player).getStandInstance().isPresent()){
+            texture = StandSkinsManager.getInstance().getRemappedResPath(manager ->
+                    manager.getStandSkin(IStandPower.getPlayerStandPower(minecraft.player).getStandInstance().get()),BUTTON);
+        }
+
+
+
+        minecraft.getTextureManager().bind(texture);
         FontRenderer fontrenderer = minecraft.font;
 
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, alpha);
-        int i = getYImage(isHovered());
+        int i = getYImage(isHovered() || isTarget());
         blit(matrixStack, x, y, 0, 46 + i * 20, width / 2, height);
         blit(matrixStack, x + width / 2, y, 200 - width / 2, 46 + i * 20, width / 2, height);
         int j = getFGColor();
@@ -52,6 +57,11 @@ public class HPButton extends CustomButton {
 
     }
 
+    public boolean isTarget() {
+        return isTarget;
+    }
 
-
+    public void setTarget(boolean target) {
+        isTarget = target;
+    }
 }

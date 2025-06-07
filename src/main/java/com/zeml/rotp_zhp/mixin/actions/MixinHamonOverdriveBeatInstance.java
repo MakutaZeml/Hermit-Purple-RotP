@@ -36,9 +36,6 @@ public class MixinHamonOverdriveBeatInstance extends ContinuousActionInstance<Ha
     @Inject(method = "punch", at = @At("HEAD") ,cancellable = true)
     private void onPunch(LivingEntity target, CallbackInfo ci){
         World world = user.level;
-
-        RotpHermitPurpleAddon.LOGGER.debug("condicion {}", IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false));
-
         if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false)){
             if (!world.isClientSide()) {
 

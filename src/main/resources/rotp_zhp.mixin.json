@@ -12,6 +12,17 @@
   "mixins": [
     "HamonDataAccesor",
     "MixinHamonData",
-    "TypeSpecificDataAccesor"
+    "MixinZoomPunchEntity",
+    "TypeSpecificDataAccesor",
+    "ZoomPunchEntityAccesor",
+    "actions.MixinHamonOverdrive",
+    "actions.MixinHamonOverdriveBarrage",
+    "actions.MixinHamonOverdriveBeatInstance",
+    "actions.MixinHamonScarletOverdrive$MixinInstance",
+    "actions.MixinHamonSunlightYellowOverdrive$Instance",
+    "actions.MixinHamonSunlightYellowOverdriveBarrage$MixinInstance",
+    "actions.interfaces.HamonOverdriveBeatInstanceAccesor",
+    "actions.interfaces.HamonSunlightYellowOverdriveAccesor",
+    "actions.interfaces.HamonSunlightYellowOverdriveBarrageAccessor"
   ]
 }

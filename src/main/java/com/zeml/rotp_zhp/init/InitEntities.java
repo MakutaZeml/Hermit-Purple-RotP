@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.init;
 
+import com.github.standobyte.jojo.JojoMod;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 
 import com.zeml.rotp_zhp.entity.damaging.projectile.*;
@@ -29,6 +30,8 @@ public class InitEntities {
             () -> EntityType.Builder.<HPVineBarrierEntity>of(HPVineBarrierEntity::new, EntityClassification.MISC).sized(0.25F, 0.25F).noSummon().noSave().setShouldReceiveVelocityUpdates(false).setUpdateInterval(Integer.MAX_VALUE)
                     .build(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_barrier").toString()));
 
-
+    public static final RegistryObject<EntityType<EmperorBullet>> EMPEROR_BULLET = ENTITIES.register("emperor_bullet",
+            () -> EntityType.Builder.<EmperorBullet>of(EmperorBullet::new, EntityClassification.MISC).sized(0.0625F, 0.0625F).clientTrackingRange(4).setUpdateInterval(20).fireImmune()
+                    .build(new ResourceLocation(JojoMod.MOD_ID, "emperor_bullet").toString()));
 
 }

@@ -5,6 +5,7 @@ import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.network.ButtonClickPacket;
@@ -276,10 +277,11 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
 
         @Override
         public void render(MatrixStack matrixStack, int index, int top, int left, int rowWidth, int rowHeight, int mouseX, int mouseY, boolean isHovered, float partialTicks) {
+            boolean active = IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity;
+
             if (item instanceof NetworkPlayerInfo) {
                 minecraft.font.draw(matrixStack, ((NetworkPlayerInfo) item).getProfile().getName(), getRowLeft()+10, top, 0xFFFFFF);
-
-                if(IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity){
+                if(active){
                     HermitPurpleEntity hermitPurple = (HermitPurpleEntity) IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation();
                     if(((NetworkPlayerInfo) item).getProfile().getName().equals(hermitPurple.getTarget())){
                         button.setTarget(true);
@@ -288,10 +290,9 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
 
             } else if (item instanceof EntityType) {
                 minecraft.font.draw(matrixStack, ((EntityType<?>) item).getDescription().getString(), getRowLeft()+10, top, 0xFFFFFF);
-
-                if(IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity){
+                if(active){
                     HermitPurpleEntity hermitPurple = (HermitPurpleEntity) IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation();
-                    if(((EntityType<?>) item).getDescription().getString().equals(hermitPurple.getTarget())){
+                    if(((EntityType<?>) item).getRegistryName().toString().equals(hermitPurple.getTarget())){
                         button.setTarget(true);
                     }
                 }
@@ -299,9 +300,9 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
             } else if (item instanceof Structure) {
                 minecraft.font.draw(matrixStack, ((Structure<?>) item).getFeatureName(), getRowLeft()+10, top, 0xFFFFFF);
 
-                if(IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity){
+                if(active){
                     HermitPurpleEntity hermitPurple = (HermitPurpleEntity) IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation();
-                    if(((Structure<?>) item).getFeatureName().equals(hermitPurple.getTarget())){
+                    if(((Structure<?>) item).getRegistryName().toString().equals(hermitPurple.getTarget())){
                         button.setTarget(true);
                     }
                 }
@@ -309,9 +310,9 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
             } else if (item instanceof StandType<?>) {
                 minecraft.font.draw(matrixStack,((StandType<?>)item).getName(),getRowLeft()+10, top, 0xFFFFFF);
 
-                if(IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity){
+                if(active){
                     HermitPurpleEntity hermitPurple = (HermitPurpleEntity) IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation();
-                    if(((StandType<?>)item).getName().equals(hermitPurple.getTarget())){
+                    if(((StandType<?>)item).getRegistryName().toString().equals(hermitPurple.getTarget())){
                         button.setTarget(true);
                     }
                 }
@@ -321,7 +322,7 @@ class HPTargetsList extends AbstractList<HPTargetsList.Entry> {
 
                 if(IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation() instanceof HermitPurpleEntity){
                     HermitPurpleEntity hermitPurple = (HermitPurpleEntity) IStandPower.getPlayerStandPower(minecraft.player).getStandManifestation();
-                    if(biomeName((Biome) item).equals(hermitPurple.getTarget())){
+                    if(((Biome)item).getRegistryName().toString().equals(hermitPurple.getTarget())){
                         button.setTarget(true);
                     }
                 }

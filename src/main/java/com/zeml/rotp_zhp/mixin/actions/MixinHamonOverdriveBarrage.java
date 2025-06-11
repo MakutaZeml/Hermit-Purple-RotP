@@ -11,6 +11,7 @@ import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
+import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.util.StandHamonDamage;
@@ -46,7 +47,8 @@ public abstract class MixinHamonOverdriveBarrage extends HamonAction {
     @Inject(method = "holdTick(Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;Lcom/github/standobyte/jojo/power/impl/nonstand/INonStandPower;ILcom/github/standobyte/jojo/action/ActionTarget;Z)V", at = @At("HEAD"), cancellable = true)
     private void holdTick(World world, LivingEntity user, INonStandPower power, int ticksHeld, ActionTarget target, boolean requirementsFulfilled, CallbackInfo ci){
 
-        if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false)) {
+        if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false) &&
+                HermitConfig.getCommonConfigInstance(false).hermitHamon.get()) {
             IStandPower.getStandPowerOptional(user).ifPresent(standPower -> {
 
                 RotpHermitPurpleAddon.LOGGER.debug("FUNCIONA? {}", standPower);

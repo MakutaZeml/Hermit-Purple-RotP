@@ -14,6 +14,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamon
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mc.damage.KnockbackCollisionImpact;
+import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.util.StandHamonDamage;
 import net.minecraft.entity.LivingEntity;
@@ -36,7 +37,8 @@ public class MixinHamonScarletOverdrive {
         @Inject(method = "doHamonAttack", at = @At("HEAD") ,cancellable = true)
         private void doHamonAttack(LivingEntity target, CallbackInfo ci){
 
-            if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false)) {
+            if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false) &&
+                    HermitConfig.getCommonConfigInstance(false).hermitHamon.get()) {
                 IStandPower.getStandPowerOptional(user).ifPresent(standPower -> {
                     float efficiency = userHamon.getActionEfficiency(0, true, getAction().getUnlockingSkill());
                     float damage = 2.5F + 5F * energySpentRatio;

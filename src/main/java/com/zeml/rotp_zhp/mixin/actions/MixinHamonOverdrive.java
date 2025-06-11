@@ -7,6 +7,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
+import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.util.StandHamonDamage;
 import net.minecraft.entity.LivingEntity;
@@ -25,7 +26,8 @@ public class MixinHamonOverdrive extends HamonAction {
 
     @Inject(method = "dealDamage", at = @At("HEAD"), cancellable = true)
     protected void dealDamage(ActionTarget target, LivingEntity targetEntity, float dmgAmount, LivingEntity user, INonStandPower power, HamonData hamon, CallbackInfoReturnable<Boolean> cir) {
-        if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false)){
+        if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false) &&
+                HermitConfig.getCommonConfigInstance(false).hermitHamon.get()){
             IStandPower.getStandPowerOptional(user).ifPresent(standPower -> {
                 cir.setReturnValue(StandHamonDamage.dealHamonDamage(targetEntity, dmgAmount, user, null,standPower,1,1));
             });

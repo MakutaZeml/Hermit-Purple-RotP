@@ -10,6 +10,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamon
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.general.MathUtil;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
+import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -41,7 +42,7 @@ public class MixinZoomPunchEntity extends OwnerBoundProjectileEntity {
 
     @Inject(method = "hurtTarget", at =@At("HEAD"))
     private void hurtTarget(Entity target, LivingEntity owner, CallbackInfoReturnable<Boolean> cir){
-        if(IStandPower.getStandPowerOptional(owner).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false)){
+        if(IStandPower.getStandPowerOptional(owner).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false) && HermitConfig.getCommonConfigInstance(false).hermitHamon.get()){
             IStandPower.getStandPowerOptional(owner).ifPresent(standPower -> {
 
                 boolean spendHamonStability = ((ZoomPunchEntityAccesor) ((ZoomPunchEntity)(Object)this)).getSpendHamonStability();
@@ -123,7 +124,7 @@ public class MixinZoomPunchEntity extends OwnerBoundProjectileEntity {
 
     @Override
     public boolean standDamage() {
-        return this.getOwner() != null && IStandPower.getStandPowerOptional(this.getOwner()).map(isStandPower -> isStandPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false);
+        return this.getOwner() != null && HermitConfig.getCommonConfigInstance(false).hermitHamon.get() && IStandPower.getStandPowerOptional(this.getOwner()).map(isStandPower -> isStandPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false);
     }
 
 

@@ -16,6 +16,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamon
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mc.damage.KnockbackCollisionImpact;
+import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.mixin.actions.interfaces.HamonOverdriveBeatInstanceAccesor;
@@ -42,7 +43,8 @@ public class MixinHamonSunlightYellowOverdrive{
 
         @Inject(method = "doHamonAttack", at = @At("HEAD") ,cancellable = true)
         private void doHamonAttack(LivingEntity target, CallbackInfo ci){
-            if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false)) {
+            if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false) &&
+                    HermitConfig.getCommonConfigInstance(false).hermitHamon.get()) {
                 IStandPower.getStandPowerOptional(user).ifPresent(standPower -> {
                     RotpHermitPurpleAddon.LOGGER.debug("PASO? {}, {}",IStandPower.getStandPowerOptional(user).map(stand -> stand.getStandManifestation() instanceof HermitPurpleEntity).orElse(false), standPower );
 

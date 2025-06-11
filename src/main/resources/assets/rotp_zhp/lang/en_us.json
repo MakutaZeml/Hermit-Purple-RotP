@@ -57,6 +57,7 @@
   "rotp_zhp.config.control": "Hamon control required",
   "rotp_zhp.config.strength": "Hamon strenght required",
   "rotp_zhp.config.breathing": "Hamon strenght breathing",
+  "rotp_zhp.config.hermitHamon": "Can Hermit Purple make hamon attacks target Stands?",
 
   "entity.rotp_zhp.hp_vine": "Hermit Purple Vine",
   "entity.rotp_zhp.hp_barrier": "Hermit Purple Vine Barrier",

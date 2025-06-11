@@ -12,6 +12,7 @@ import com.github.standobyte.jojo.power.impl.stand.stats.StandStats;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.github.standobyte.jojo.util.mc.MCUtil;
+import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.init.InitStands;
@@ -46,7 +47,7 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
         if(!user.level.isClientSide){
 
 
-            if(power.getResolveLevel() > 3 && power.getStandManifestation() instanceof HermitPurpleEntity){
+            if(power.getResolveLevel() > 3 && power.getStandManifestation() instanceof HermitPurpleEntity && HermitConfig.getCommonConfigInstance(false).hermitHamon.get()){
                 if(user.getMainHandItem().isEmpty() || MCUtil.isHandFree(user, Hand.MAIN_HAND)){
                     user.addEffect(new EffectInstance(ModStatusEffects.INTEGRATED_STAND.get(),10,0,false,false,false));
                 }

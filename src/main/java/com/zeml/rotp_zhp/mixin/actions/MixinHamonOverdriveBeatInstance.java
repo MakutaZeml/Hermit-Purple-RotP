@@ -11,6 +11,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.MCUtil;
+import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.mixin.actions.interfaces.HamonOverdriveBeatInstanceAccesor;
@@ -36,7 +37,8 @@ public class MixinHamonOverdriveBeatInstance extends ContinuousActionInstance<Ha
     @Inject(method = "punch", at = @At("HEAD") ,cancellable = true)
     private void onPunch(LivingEntity target, CallbackInfo ci){
         World world = user.level;
-        if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false)){
+        if(IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false) &&
+                HermitConfig.getCommonConfigInstance(false).hermitHamon.get()){
             if (!world.isClientSide()) {
 
                 RotpHermitPurpleAddon.LOGGER.debug("Is this working? {}", user);

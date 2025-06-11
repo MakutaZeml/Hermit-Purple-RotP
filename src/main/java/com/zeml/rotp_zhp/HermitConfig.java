@@ -31,6 +31,7 @@ public class HermitConfig {
         public final ForgeConfigSpec.IntValue control;
         public final ForgeConfigSpec.IntValue strength;
         public final ForgeConfigSpec.IntValue breathing;
+        public final ForgeConfigSpec.BooleanValue hermitHamon;
 
         private Common(ForgeConfigSpec.Builder builder) {
             this(builder, null);
@@ -41,7 +42,8 @@ public class HermitConfig {
                 builder.push(mainPath);
             }
             builder.push("Can Hamon give Hermit Purple");
-            hamonToHermit = builder.translation("rotp_zhp.config.hamonToHermit")
+            hamonToHermit = builder.comment("Does training hamon gives Stand?")
+                    .translation("rotp_zhp.config.hamonToHermit")
                     .define("hamonToHermit",false);
             control = builder.comment("Hamon control level to obtain Hermit Purple")
                     .translation("rotp_zhp.config.control")
@@ -53,6 +55,10 @@ public class HermitConfig {
                     .translation("rotp_zhp.config.breathing")
                     .defineInRange("breathing",100,0,100);
             builder.pop();
+            builder.push("Can Hermit Purple punch Stands?");
+            hermitHamon = builder.comment("Can Hermit Purple make hamon attacks target Stands?")
+                    .translation("rotp_zhp.config.hermitHamon")
+                    .define("hermitHamon",false);
         }
 
         public boolean isConfigLoaded() {
@@ -68,12 +74,14 @@ public class HermitConfig {
             private final int control;
             private final int strength;
             private final int breathing;
+            private final boolean hermitHamon;
 
             public SyncedValues(PacketBuffer buf){
                 hamonToHermit = buf.readBoolean();
                 control = buf.readInt();
                 strength = buf.readInt();
                 breathing = buf.readInt();
+                hermitHamon = buf.readBoolean();
 
             }
             public void writeToBuf(PacketBuffer buf){
@@ -81,12 +89,14 @@ public class HermitConfig {
                 buf.writeInt(control);
                 buf.writeInt(strength);
                 buf.writeInt(breathing);
+                buf.writeBoolean(hermitHamon);
             }
             private SyncedValues(Common config){
                 hamonToHermit = config.hamonToHermit.get();
                 control = config.control.get();
                 strength = config.strength.get();
                 breathing = config.breathing.get();
+                hermitHamon = config.hermitHamon.get();
             }
 
             public void changeConfigValues(){
@@ -94,12 +104,14 @@ public class HermitConfig {
                 COMMON_SYNCED_TO_CLIENT.control.set(control);
                 COMMON_SYNCED_TO_CLIENT.strength.set(strength);
                 COMMON_SYNCED_TO_CLIENT.breathing.set(breathing);
+                COMMON_SYNCED_TO_CLIENT.hermitHamon.set(hermitHamon);
             }
             public static void resetConfig() {
                 COMMON_SYNCED_TO_CLIENT.hamonToHermit.clearCache();
                 COMMON_SYNCED_TO_CLIENT.control.clearCache();
                 COMMON_SYNCED_TO_CLIENT.strength.clearCache();
                 COMMON_SYNCED_TO_CLIENT.breathing.clearCache();
+                COMMON_SYNCED_TO_CLIENT.hermitHamon.clearCache();
             }
             public static void syncWithClient(ServerPlayerEntity player) {
                 PacketManager.sendToClient(new PurplCommonConfigPacket(new Common.SyncedValues(COMMON_FROM_FILE)), player);

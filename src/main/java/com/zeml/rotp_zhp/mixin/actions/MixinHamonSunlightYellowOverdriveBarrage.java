@@ -20,6 +20,7 @@ import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.github.standobyte.jojo.util.mc.reflection.CommonReflection;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
+import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.zeml.rotp_zhp.mixin.actions.interfaces.HamonSunlightYellowOverdriveAccesor;
 import com.zeml.rotp_zhp.mixin.actions.interfaces.HamonSunlightYellowOverdriveBarrageAccessor;
@@ -62,7 +63,8 @@ public class MixinHamonSunlightYellowOverdriveBarrage {
 
         @Inject(method = "playerTick", at = @At("HEAD"), cancellable = true)
         protected void playerTick(CallbackInfo ci) {
-            if (IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false)) {
+            if (IStandPower.getStandPowerOptional(user).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false) &&
+                    HermitConfig.getCommonConfigInstance(false).hermitHamon.get()) {
                 IStandPower.getStandPowerOptional(user).ifPresent(standPower -> {
                     LivingEntity user = getUser();
                     World world = user.level;

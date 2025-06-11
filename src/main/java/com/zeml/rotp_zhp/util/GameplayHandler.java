@@ -22,18 +22,24 @@ import com.zeml.rotp_zhp.capability.LivingDataProvider;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPGrapplingVineEntity;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineBarrierEntity;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
+import com.zeml.rotp_zhp.init.InitItems;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
 import com.zeml.rotp_zhp.init.InitTags;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -41,6 +47,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -144,6 +151,119 @@ public class GameplayHandler {
         return IStandPower.getStandPowerOptional(target).map(stand -> {
             return Optional.ofNullable(stand.getStandManifestation() instanceof StandEntity ? (StandEntity) stand.getStandManifestation() : null);
         }).orElse(Optional.empty()).orElse(null);
+    }
+
+
+
+    // ======================================== The Emperor ========================================
+
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event){
+
+        if(!event.getEntity().level.isClientSide){
+            Entity entity = event.getEntity();
+            if(entity instanceof ItemEntity){
+                ItemEntity entItem = (ItemEntity) entity;
+                if(entItem.getItem().getItem() == InitItems.EMPEROR.get()){
+                    entity.remove();
+                }
+            }
+        }
+    }
+
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void onEmpPlayerTick(TickEvent.PlayerTickEvent event){
+        PlayerEntity player = event.player;
+        if(!player.level.isClientSide){
+            IStandPower.getStandPowerOptional(player).ifPresent(
+                    standPower -> {
+                        StandType<?> emp = InitStands.STAND_EMPEROR.getStandType();
+                        if(standPower.getType()!=emp){
+                            empInv(player);
+                        }else if (standPower.getStandManifestation() instanceof StandEntity){
+                            if(player.getItemInHand(Hand.MAIN_HAND).getItem() != InitItems.EMPEROR.get() && player.getItemInHand(Hand.OFF_HAND).getItem() != InitItems.EMPEROR.get()){
+                                ItemStack hand = player.getItemInHand(Hand.MAIN_HAND);
+                                if(!hand.isEmpty()){
+                                    ItemEntity ent = new ItemEntity(player.level,player.getX(),player.getY(),player.getZ(),hand);
+                                    player.level.addFreshEntity(ent);
+                                }
+
+                                ItemStack itemStack = new ItemStack(InitItems.EMPEROR.get(),1);
+                                CompoundNBT nbt =itemStack.getOrCreateTag();
+                                player.getCapability(LivingDataProvider.CAPABILITY).ifPresent(livingData -> {
+                                    nbt.putInt("mode",livingData.getMode());
+                                });
+                                player.setItemInHand(Hand.MAIN_HAND,itemStack);
+                                oneEmp(player);
+                            }
+
+                            dupEmp(player);
+
+
+                        }else {
+                            empInv(player);
+                        }
+                    }
+            );
+        }
+
+
+    }
+
+
+    private static void empInv(PlayerEntity player){
+        for (int i = 0; i < player.inventory.getContainerSize(); ++i) {
+            ItemStack inventoryStack = player.inventory.getItem(i);
+            if (inventoryStack.getItem() == InitItems.EMPEROR.get()) {
+                inventoryStack.shrink(inventoryStack.getCount());
+            }
+        }
+    }
+
+
+    private static void oneEmp(PlayerEntity player) {
+
+        int selected = player.inventory.selected;
+
+        for (int i = 9; i < player.inventory.getContainerSize(); ++i){
+            ItemStack inventoryStack = player.inventory.getItem(i);
+            if (inventoryStack.getItem() == InitItems.EMPEROR.get()) {
+                inventoryStack.shrink(inventoryStack.getCount());
+            }
+        }
+        for (int i = 0; i < player.inventory.getContainerSize(); ++i) {
+            ItemStack inventoryStack = player.inventory.getItem(i);
+            if (inventoryStack.getItem() == InitItems.EMPEROR.get()) {
+
+                if (i!=selected){
+                    inventoryStack.shrink(inventoryStack.getCount());
+                }
+            }
+        }
+    }
+
+
+    private static void dupEmp(PlayerEntity player){
+        int count = 0;
+        ArrayList<Integer> places = new ArrayList<>();
+
+        for (int i = 0; i < player.inventory.getContainerSize(); ++i) {
+            ItemStack inventoryStack = player.inventory.getItem(i);
+            if (inventoryStack.getItem() == InitItems.EMPEROR.get()) {
+                ++count;
+                places.add((Integer) i);
+            }
+            if(count>1){
+                for (Integer in:places) {
+                    int pl = (int) in;
+                    ItemStack dupliEmp = player.inventory.getItem(pl);
+                    dupliEmp.shrink(1);
+                }
+            }
+        }
+
     }
 
 }

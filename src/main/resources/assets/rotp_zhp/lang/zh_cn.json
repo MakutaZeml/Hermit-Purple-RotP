@@ -62,6 +62,27 @@
   "rotp_zhp.config.hamonToHermit": "Hamon gives Hermit Purple",
   "rotp_zhp.config.control": "Hamon control required",
   "rotp_zhp.config.strength": "Hamon strenght required",
-  "rotp_zhp.config.breathing": "Hamon strenght breathing"
+  "rotp_zhp.config.breathing": "Hamon strenght breathing",
+
+
+  "entity.rotp_zhp.the_emperor": "皇帝",
+  "stand.rotp_zhp.the_emperor": "皇帝",
+
+  "item.rotp_zhp.emperor": "皇帝",
+
+  "action.rotp_zhp.give_emp": "召唤皇帝",
+  "action.rotp_zhp.target": "当前目标：%s",
+  "action.rotp_zhp.stand_target": "设置目标",
+  "action.rotp_zhp.no_stand_target": "删除指定目标",
+
+  "rotp_zhp.type.random": "随机",
+  "rotp_zhp.type.players": "玩家",
+  "rotp_zhp.type.hostile": "敌对生物",
+  "rotp_zhp.type.non": "只是一把枪，祝你开心",
+
+  "rotp_zhp.subtitle.emp_shot": "皇帝射击",
+  "rotp_zhp.subtitle.emp_user": "“皇帝”",
+  "rotp_zhp.subtitle.emp_summon": "召唤皇帝",
+  "rotp_zhp.subtitle.emp_umsummon": "收回皇帝"
 
 }

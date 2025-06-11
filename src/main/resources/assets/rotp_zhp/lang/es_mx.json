@@ -54,5 +54,26 @@
   "gui.hermitpurpletarget.search_empty": "No existe objetivo con ese nombre",
   "gui.hermitpurpletarget.random": "Aleatorio",
 
+  "comment": "COSAS DEL EMPERADOR",
+
+
+  "stand.rotp_zhp.the_emperor": "El Emperador",
+
+  "item.rotp_zhp.emperor": "El Emperador",
+
+  "action.rotp_zhp.give_emp": "Invocar Emperador",
+  "action.rotp_zhp.target": "Objetivo actual: %s",
+  "action.rotp_zhp.stand_target": "Seleccionar objetivo",
+  "action.rotp_zhp.no_stand_target": "Quitar objetivo específico",
+
+  "rotp_zhp.type.random": "Aleatorio",
+  "rotp_zhp.type.players": "Jugadores",
+  "rotp_zhp.type.hostile": "Mobs hostiles",
+  "rotp_zhp.type.non": "Solo una pistola, espero que esten contentos",
+
+  "rotp_zhp.subtitle.emp_shot": "Disparo del emperador",
+  "rotp_zhp.subtitle.emp_user": "\"Emperador\"",
+  "rotp_zhp.subtitle.emp_summon": "Invocación del Emperador",
+  "rotp_zhp.subtitle.emp_umsummon": "Desinvocación del Emperador"
 
 }

@@ -65,5 +65,8 @@
   "entity.rotp_zhp.hp_grappling_vine": "Hermit Purple Grappling Vine",
 
   "entity.epicfight.wither_ghost": "Wither Ghost",
-  "entity.jojo.dummy": "Dummy"
+  "entity.jojo.dummy": "Dummy",
+
+  "commands.hermit.player.success": "%s has been set as your Hermit purple's target",
+  "commands.hermit_target.failed.single": "Failed at putting a target to Hermit Purple"
 }

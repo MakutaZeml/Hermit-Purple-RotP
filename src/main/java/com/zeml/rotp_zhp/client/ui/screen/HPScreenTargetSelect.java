@@ -2,21 +2,17 @@ package com.zeml.rotp_zhp.client.ui.screen;
 
 
 import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
-import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.power.impl.stand.StandUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.network.ButtonClickPacket;
 import com.zeml.rotp_zhp.network.ModNetwork;
-import com.zeml.rotp_zhp.util.HermitEntityTypeToInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.*;
 import net.minecraftforge.api.distmarker.Dist;

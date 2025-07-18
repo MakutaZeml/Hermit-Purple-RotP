@@ -20,6 +20,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,25 +31,20 @@ import java.util.Optional;
 import java.util.function.BiPredicate;
 
 @Mixin(value = ZoomPunchEntity.class, remap = false)
-public class MixinZoomPunchEntity extends OwnerBoundProjectileEntity {
+public abstract class MixinZoomPunchEntity extends OwnerBoundProjectileEntity {
 
     public MixinZoomPunchEntity(EntityType<? extends OwnerBoundProjectileEntity> entityType, @NotNull LivingEntity owner, World world) {
         super(entityType, owner, world);
     }
 
-    @Inject(method = "standDamage", at = @At("RETURN"), cancellable = true)
-    private void standDamage(CallbackInfoReturnable<Boolean> cir){
-        cir.setReturnValue(this.getOwner() != null && IStandPower.getStandPowerOptional(this.getOwner()).map(isStandPower -> isStandPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false));
-    }
 
     @Inject(method = "hurtTarget", at =@At("HEAD"))
     private void hurtTarget(Entity target, LivingEntity owner, CallbackInfoReturnable<Boolean> cir){
         if(IStandPower.getStandPowerOptional(owner).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false) && HermitConfig.getCommonConfigInstance(false).hermitHamon.get()){
             IStandPower.getStandPowerOptional(owner).ifPresent(standPower -> {
-
-                boolean spendHamonStability = ((ZoomPunchEntityAccesor) ((ZoomPunchEntity)(Object)this)).getSpendHamonStability();
-                float hamonDamage = ((ZoomPunchEntityAccesor) ((ZoomPunchEntity)(Object)this)).getHamonDamage();
-                float hamonDamageCost = ((ZoomPunchEntityAccesor) ((ZoomPunchEntity)(Object)this)).getHamonDamageCost();
+                boolean spendHamonStability = this.spendHamonStability;
+                float hamonDamage = this.hamonDamage;
+                float hamonDamageCost = this.hamonDamageCost;
 
                 if(!isRetracting()) {
                     boolean regularAttack = super.hurtTarget(target, owner);
@@ -58,8 +55,8 @@ public class MixinZoomPunchEntity extends OwnerBoundProjectileEntity {
                         if (!(hasEnergy || spendHamonStability)) return false;
                         Boolean dealtDamage = hamon.consumeHamonEnergyTo(eff -> {
 
-                            boolean gaveHamonPointsForBaseHit = ((ZoomPunchEntityAccesor) ((ZoomPunchEntity)(Object)this)).getGaveHamonPointsForBaseHit();
-                            float baseHitPoints =  ((ZoomPunchEntityAccesor) ((ZoomPunchEntity)(Object)this)).getBaseHitPoints();
+                            boolean gaveHamonPointsForBaseHit = this.gaveHamonPointsForBaseHit;
+                            float baseHitPoints = this.baseHitPoints;
 
                             boolean dealtHamonDamage = DamageUtil.dealHamonDamage(target, hamonDamage * eff, this, owner);
 
@@ -95,7 +92,7 @@ public class MixinZoomPunchEntity extends OwnerBoundProjectileEntity {
                             this.setSprinting(false);
                         }
                     }
-                    cir.setReturnValue(regularAttack || hamonAttack); ;
+                    cir.setReturnValue(regularAttack || hamonAttack);
                 }
                 cir.setReturnValue(false);
             });
@@ -105,31 +102,39 @@ public class MixinZoomPunchEntity extends OwnerBoundProjectileEntity {
     }
 
 
-    @Override
-    protected float movementSpeed() {
-        return ((ZoomPunchEntityAccesor)((ZoomPunchEntity)(Object) this)).getSpeed();
-    }
 
-    @Override
-    protected float getBaseDamage() {
-        LivingEntity owner = getOwner();
-        return owner != null ? DamageUtil.getDamageWithoutHeldItem(owner)
-                : (float) Attributes.ATTACK_DAMAGE.getDefaultValue();
-    }
 
-    @Override
-    protected float getMaxHardnessBreakable() {
-        return 0;
-    }
+    @Shadow protected abstract float movementSpeed();
 
-    @Override
+    @Shadow public abstract float getBaseDamage();
+
+    @Shadow protected abstract float getMaxHardnessBreakable();
+
+
+    @Shadow private Optional<INonStandPower> userPower;
+
+    @Shadow private Optional<HamonData> hamon;
+
+    @Shadow private boolean spendHamonStability;
+
+    @Shadow private float hamonDamage;
+
+    @Shadow private float hamonDamageCost;
+
+    @Shadow private boolean gaveHamonPointsForBaseHit;
+
+    @Shadow private float baseHitPoints;
+
+    /**
+     * @author Zeml
+     * @reason making it able to hit Stands if config is enabled
+     */
+    @Overwrite
     public boolean standDamage() {
         return this.getOwner() != null && HermitConfig.getCommonConfigInstance(false).hermitHamon.get() && IStandPower.getStandPowerOptional(this.getOwner()).map(isStandPower -> isStandPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false);
     }
 
 
-    private Optional<INonStandPower> userPower = ((ZoomPunchEntityAccesor) ((ZoomPunchEntity)(Object)this)).getUserPower();
-    private Optional<HamonData> hamon = ((ZoomPunchEntityAccesor)((ZoomPunchEntity)(Object)this)).getHamon();
 
     @Unique
     private boolean hermit_Purple_RotP$userHamon(BiPredicate<INonStandPower, HamonData> action) {

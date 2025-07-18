@@ -26,6 +26,18 @@ public class HPHelperDox {
 
 
     public static LivingEntity HPGeneralObjectives(LivingEntity user, HermitPurpleEntity hermitPurple){
+        switch (hermitPurple.getMode()){
+            case 0:
+                return hpObj(user);
+            case 1:
+                return hpObjPlayers(user,hermitPurple.getTarget());
+            case -1:
+                return hpStandUser(user,hermitPurple.getTarget());
+            default:
+                return hpObj(user,hermitPurple.getTarget());
+        }
+
+        /*
         if(hermitPurple.getMode() == 0){
             return hpObj(user);
         } else if (hermitPurple.getMode() == 1) {
@@ -34,6 +46,7 @@ public class HPHelperDox {
             return hpStandUser(user,hermitPurple.getTarget());
         }
         return hpObj(user,hermitPurple.getTarget());
+         */
     }
 
     public static Structure<?> HPStructure(LivingEntity user, HermitPurpleEntity hermitPurple){

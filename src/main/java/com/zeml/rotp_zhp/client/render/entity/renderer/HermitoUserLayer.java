@@ -78,7 +78,6 @@ public class HermitoUserLayer<T extends LivingEntity, M extends BipedModel<T>> e
                 glovesModel.setupAnim(entity, limbSwing, limbSwingAmount, ticks, yRot, xRot);
                 glovesModel.leftArm.visible = playerModel.leftArm.visible;
                 glovesModel.rightArm.visible = playerModel.rightArm.visible;
-
                 ResourceLocation texture =  StandSkinsManager.getInstance().getRemappedResPath(manager -> manager
                         .getStandSkin(stand.getStandInstance().get()), getTexture());
                 IVertexBuilder vertexBuilder = ItemRenderer.getArmorFoilBuffer(buffer, RenderType.armorCutoutNoCull(texture), false, false);

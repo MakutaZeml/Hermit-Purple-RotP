@@ -53,6 +53,39 @@
   "gui.hermitpurpletarget.search_empty": "无法找到该目标",
   "gui.hermitpurpletarget.random": "随机",
 
+  "action.rotp_zhp.hp_grab_heal": "传导治愈波纹",
+  "action.rotp_zhp.hp_doxx.stand": "念写替身为%s的替身使者",
+  "action.rotp_zhp.hp_doxx_user": "的替身使者",
+  "jojo.message.action_condition.no_player_target": "你需要选择玩家或者替身为目标",
+  "gui.hermitpurpletarget.tab_stands": "替身",
+  "gui.hermitpurpletarget.tab_biomes": "地形",
+  "rotp_zhp.config.hamonToHermit": "Hamon gives Hermit Purple",
+  "rotp_zhp.config.control": "Hamon control required",
+  "rotp_zhp.config.strength": "Hamon strenght required",
+  "rotp_zhp.config.breathing": "Hamon strenght breathing",
+
+
+  "entity.rotp_zhp.the_emperor": "皇帝",
+  "stand.rotp_zhp.the_emperor": "皇帝",
+
+  "item.rotp_zhp.emperor": "皇帝",
+
+  "action.rotp_zhp.give_emp": "召唤皇帝",
+  "action.rotp_zhp.target": "当前目标：%s",
+  "action.rotp_zhp.stand_target": "设置目标",
+  "action.rotp_zhp.no_stand_target": "删除指定目标",
+
+  "rotp_zhp.type.random": "随机",
+  "rotp_zhp.type.players": "玩家",
+  "rotp_zhp.type.hostile": "敌对生物",
+  "rotp_zhp.type.non": "只是一把枪，祝你开心",
+
+  "rotp_zhp.subtitle.emp_shot": "皇帝射击",
+  "rotp_zhp.subtitle.emp_user": "“皇帝”",
+  "rotp_zhp.subtitle.emp_summon": "召唤皇帝",
+  "rotp_zhp.subtitle.emp_umsummon": "收回皇帝"
+
+
   "rotp_zhp.config.hamonToHermit": "学习波纹可觉醒紫色隐者",
   "rotp_zhp.config.control": "波纹控制等级需要:",
   "rotp_zhp.config.strength": "波纹力量等级需要:",

@@ -1,5 +1,6 @@
 package com.zeml.rotp_zhp.init;
 
+import com.zeml.rotp_zhp.entity.stand.stands.EmperorEntity;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
 import com.github.standobyte.jojo.power.impl.stand.stats.StandStats;
 import com.github.standobyte.jojo.entity.stand.StandEntityType;
@@ -13,4 +14,7 @@ public class AddonStands {
 
     public static final EntityStandSupplier<HermitPurpleStandType<StandStats>, StandEntityType<HermitPurpleEntity>>
             HERMITOPURLE = new EntityStandSupplier<>(InitStands.STAND_HERMITO_PURPLE);
+
+    public static final EntityStandSupplier<EntityStandType<StandStats>, StandEntityType<EmperorEntity>>
+            EMPEROR_STAND = new EntityStandSupplier<>(InitStands.STAND_EMPEROR);
 }

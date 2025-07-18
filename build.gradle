@@ -16,7 +16,10 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.3.2'
+
+version = '1.3.2b'
+
+
 group = 'com.zeml.rotp_zhp' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'RotP-Hermit Purple'
 

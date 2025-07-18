@@ -69,4 +69,28 @@
 
   "commands.hermit.player.success": "%s has been set as your Hermit purple's target",
   "commands.hermit_target.failed.single": "Failed at putting a target to Hermit Purple"
+
+
+  "comment": "EMPEROR STUFF",
+
+  "entity.rotp_zhp.the_emperor": "The Emperor",
+  "stand.rotp_zhp.the_emperor": "The Emperor",
+
+  "item.rotp_zhp.emperor": "The Emperor",
+
+  "action.rotp_zhp.give_emp": "Summon Emperor",
+  "action.rotp_zhp.target": "Currents Targets: %s",
+  "action.rotp_zhp.stand_target": "Set Target",
+  "action.rotp_zhp.no_stand_target": "Delete specific target",
+
+  "rotp_zhp.type.random": "Random",
+  "rotp_zhp.type.players": "Players",
+  "rotp_zhp.type.hostile": "Hostile mobs",
+  "rotp_zhp.type.non": "Just a Gun, I wish you are happy",
+
+  "rotp_zhp.subtitle.emp_shot": "Emperor Shot",
+  "rotp_zhp.subtitle.emp_user": "\"Emperor\"",
+  "rotp_zhp.subtitle.emp_summon": "Summon emperor",
+  "rotp_zhp.subtitle.emp_umsummon": "Unsummon emperor"
+
 }

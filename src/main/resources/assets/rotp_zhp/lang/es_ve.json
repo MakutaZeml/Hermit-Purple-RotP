@@ -85,5 +85,8 @@
   "rotp_zhp.subtitle.emp_shot": "Disparo del emperador",
   "rotp_zhp.subtitle.emp_user": "\"Emperador\"",
   "rotp_zhp.subtitle.emp_summon": "Invocación del Emperador",
-  "rotp_zhp.subtitle.emp_umsummon": "Desinvocación del Emperador"
+  "rotp_zhp.subtitle.emp_umsummon": "Desinvocación del Emperador",
+
+  "commands.hermit.player.success": "%s ha sido puesto como objetivo de Hermit Purple",
+  "commands.hermit_target.failed.single": "No se ha podido poner el objetivo en Hermit Purple"
 }

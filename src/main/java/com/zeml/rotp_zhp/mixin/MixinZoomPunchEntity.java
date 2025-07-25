@@ -38,7 +38,7 @@ public abstract class MixinZoomPunchEntity extends OwnerBoundProjectileEntity {
     }
 
 
-    @Inject(method = "hurtTarget", at =@At("HEAD"))
+    @Inject(method = "hurtTarget", at =@At("HEAD"), cancellable = true)
     private void hurtTarget(Entity target, LivingEntity owner, CallbackInfoReturnable<Boolean> cir){
         if(IStandPower.getStandPowerOptional(owner).map(standPower -> standPower.getStandManifestation() instanceof HermitPurpleEntity).orElse(false) && HermitConfig.getCommonConfigInstance(false).hermitHamon.get()){
             IStandPower.getStandPowerOptional(owner).ifPresent(standPower -> {

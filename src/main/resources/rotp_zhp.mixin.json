@@ -10,10 +10,8 @@
   },
   "refmap": "rotp_zhp.mixins-refmap.json",
   "mixins": [
-    "HamonDataAccesor",
     "MixinHamonData",
     "MixinZoomPunchEntity",
-    "TypeSpecificDataAccesor",
     "actions.MixinHamonOverdrive",
     "actions.MixinHamonOverdriveBarrage",
     "actions.MixinHamonOverdriveBeatInstance",

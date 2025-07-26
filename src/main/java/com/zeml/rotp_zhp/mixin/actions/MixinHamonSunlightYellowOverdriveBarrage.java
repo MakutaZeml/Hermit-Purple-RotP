@@ -40,6 +40,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeHooks;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -52,14 +53,17 @@ public class MixinHamonSunlightYellowOverdriveBarrage {
 
     @Mixin(value = HamonSunlightYellowOverdriveBarrage.Instance.class, remap = false)
     public abstract static class MixinInstance extends ContinuousActionInstance<HamonSunlightYellowOverdriveBarrage, INonStandPower> {
-        private final int MAX_BARRAGE_DURATION = ((HamonSunlightYellowOverdriveBarrageAccessor) (HamonSunlightYellowOverdriveBarrage.Instance) (Object) this).getMAX_BARRAGE_DURATION();
-        private boolean finishingPunch = ((HamonSunlightYellowOverdriveBarrageAccessor) (HamonSunlightYellowOverdriveBarrage.Instance) (Object) this).getFinishingPunch();;
+
         public MixinInstance(LivingEntity user, PlayerUtilCap userCap, INonStandPower playerPower, HamonSunlightYellowOverdriveBarrage action) {
             super(user, userCap, playerPower, action);
         }
 
         @Shadow
         public abstract void startFinishingPunch();
+
+        @Shadow @Final private static int MAX_BARRAGE_DURATION;
+
+        @Shadow private boolean finishingPunch;
 
         @Inject(method = "playerTick", at = @At("HEAD"), cancellable = true)
         protected void playerTick(CallbackInfo ci) {

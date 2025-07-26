@@ -5,6 +5,7 @@ import com.github.standobyte.jojo.JojoModConfig;
 import com.github.standobyte.jojo.action.Action;
 import com.github.standobyte.jojo.init.ModItems;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonActions;
+import com.github.standobyte.jojo.power.IPower;
 import com.github.standobyte.jojo.power.impl.nonstand.TypeSpecificData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
@@ -18,6 +19,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -25,52 +32,20 @@ import java.util.concurrent.atomic.AtomicReference;
 @Mixin(value = HamonData.class, remap = false)
 public abstract class MixinHamonData extends TypeSpecificData {
 
-    @Shadow
-    private boolean playedEnergySound;
-    @Shadow
-    private int noEnergyDecayTicks;
-
     public MixinHamonData() {
     }
 
-    /**
-     * @author Makuta Zeml
-     * @reason Implement hamon breathing
-     */
-    @Overwrite
-    public float tickEnergy() {
-        LivingEntity user = this.power.getUser();
-        AtomicReference<Float> energy = new AtomicReference<>(0.0F);
-        AtomicInteger ticksMaskWithNoHamonBreath = new AtomicInteger(((HamonDataAccesor)((HamonData)(Object)this)).getTicksMaskWithNoHamonBreath());
-        IStandPower.getStandPowerOptional(user).ifPresent((standPower) -> {
-            if (( standPower.getHeldAction() == InitStands.HP_BREATH.get()) &&  user.getAirSupply() >= user.getMaxAirSupply()) {
-                energy.set(this.power.getEnergy() + this.tickHamonBreath(InitStands.HP_BREATH.get()));
-            } else if (this.power.getHeldAction() == ModHamonActions.HAMON_BREATH.get() &&  user.getAirSupply() >= user.getMaxAirSupply()) {
-                energy.set(this.power.getEnergy() + this.tickHamonBreath(ModHamonActions.HAMON_BREATH.get()));
-            } else {
-                if (this.hermitPurpleCamera$isUserWearingBreathMask()) {
-                    ticksMaskWithNoHamonBreath.getAndIncrement();
-                } else {
-                    ticksMaskWithNoHamonBreath.set(0);
-                }
 
-                if (this.power.getEnergy() <= 0.0F) {
-                    this.setHamonProtection(false);
-                }
 
-                this.playedEnergySound = false;
-                if (this.noEnergyDecayTicks > 0) {
-                    --this.noEnergyDecayTicks;
-                    energy.set(this.power.getEnergy());
-                } else if (JojoModConfig.getCommonConfigInstance(user.level.isClientSide()).hamonEnergyTicksDown.get()) {
-                    energy.set(this.power.getEnergy() - 20.0F);
-                } else {
-                    energy.set(this.power.getEnergy());
-                }
+    @Inject(method = "tickEnergy", at = @At("RETURN"), cancellable = true)
+    private void onTickEnergy(CallbackInfoReturnable<Float> cir){
+        LivingEntity user = power.getUser();
+        IStandPower.getStandPowerOptional(user).ifPresent(standPower->{
+            if(standPower.getHeldAction() == InitStands.HP_BREATH.get() && user.getAirSupply() >= user.getMaxAirSupply()){
+                cir.cancel();
+                cir.setReturnValue(power.getEnergy()+tickHamonBreath(InitStands.HP_BREATH.get()));
             }
-
         });
-        return energy.get();
     }
 
     @Shadow
@@ -88,15 +63,6 @@ public abstract class MixinHamonData extends TypeSpecificData {
     @Shadow
     public abstract float tickHamonBreath(Action<?> var1);
 
-    @Shadow
-    public abstract void setHamonProtection(boolean var1);
-
-    @Unique
-    private boolean hermitPurpleCamera$isUserWearingBreathMask() {
-        ItemStack headItem = this.power.getUser().getItemBySlot(EquipmentSlotType.HEAD);
-        return !headItem.isEmpty() && headItem.getItem() == ModItems.BREATH_CONTROL_MASK.get();
-    }
-
-
+    
 
 }

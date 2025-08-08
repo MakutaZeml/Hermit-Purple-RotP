@@ -50,7 +50,7 @@ public class InitStands {
     public static final RegistryObject<StandEntityAction> HP_GRAB_COMMAND = ACTIONS.register("hp_grab",
             () -> new HPGrabCommand(new StandEntityAction.Builder().staminaCost(40).standWindupDuration(5)
                     .resolveLevelToUnlock(2).swingHand().holdType().standUserWalkSpeed(1.0F)
-                    .cooldown(150,0,0.5F)
+                    .cooldown(150,0,0.5F).shout(InitSounds.USER_THROW)
                     .standSound(StandEntityAction.Phase.PERFORM,InitSounds.VINE_TRHOW)
                     ));
     public static final RegistryObject<StandEntityAction> HP_GRAB_OVERDRIVE = ACTIONS.register("hp_grab_od",
@@ -68,6 +68,7 @@ public class InitStands {
             () -> new HPGrabHealOverDrive(new StandEntityAction.Builder().staminaCost(200).standSound(ModSounds.HAMON_CONCENTRATION)
                     .standUserWalkSpeed(1.0F)
             ));
+
 
 
     public static final RegistryObject<StandEntityAction> HP_BLOCK = ACTIONS.register("hp_block",

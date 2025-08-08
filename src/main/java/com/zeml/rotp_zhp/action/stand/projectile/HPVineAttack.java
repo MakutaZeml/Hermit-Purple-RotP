@@ -69,8 +69,12 @@ public class HPVineAttack extends StandEntityAction {
             Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
             if(hamonOp.isPresent()){
                 HamonData hamon = hamonOp.get();
-                if ((hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get())||(hamon.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get()))) && ipower.getEnergy()>0){
-                    JojoModUtil.sayVoiceLine(standPower.getUser(), InitSounds.USER_OVER.get());
+                if ((hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get())) && ipower.getEnergy()>0){
+                    if(standEntity.getStandSkin().toString().contains("jonathan")){
+                        JojoModUtil.sayVoiceLine(standPower.getUser(), InitSounds.JONATHAN_OVER.get());
+                    }else {
+                        JojoModUtil.sayVoiceLine(standPower.getUser(), InitSounds.USER_OVER.get());
+                    }
                 }
                 if(hamon.isSkillLearned(ModHamonSkills.HAMON_CUTTER.get()) && isShiftVariation() && !getCutterUsableItem(standPower.getUser()).isEmpty()){
                     ipower.clickAction(ModHamonActions.ZEPPELI_HAMON_CUTTER.get(), false,task.getTarget(),null);
@@ -152,5 +156,14 @@ public class HPVineAttack extends StandEntityAction {
         return potionItem;
     }
 
+    @Override
+    public void playSound(StandEntity standEntity, IStandPower standPower, Phase phase, StandEntityTask task) {
+        if(standEntity.getStandSkin().isPresent()){
+            if(standEntity.getStandSkin().toString().contains("spider_man")){
+                playSoundAtStand(standEntity.level,standEntity, InitSounds.WEB_SLINGER.get(),standPower,Phase.PERFORM);
+            }
+        }
+        super.playSound(standEntity, standPower, phase, task);
+    }
 
 }

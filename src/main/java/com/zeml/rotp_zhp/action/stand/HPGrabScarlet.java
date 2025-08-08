@@ -3,9 +3,11 @@ package com.zeml.rotp_zhp.action.stand;
 import com.github.standobyte.jojo.action.ActionConditionResult;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
+import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.init.ModParticles;
+import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
@@ -14,8 +16,10 @@ import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamon
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.damage.DamageUtil;
 import com.zeml.rotp_zhp.action.stand.projectile.HPGrabCommand;
+import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.util.StandHamonDamage;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
@@ -73,5 +77,18 @@ public class HPGrabScarlet extends StandEntityAction {
     @Override
     public boolean isLegalInHud(IStandPower power) {
         return INonStandPower.getNonStandPowerOptional(power.getUser()).map(ipower ->ipower.getTypeSpecificData(ModPowers.HAMON.get()).map(hamonData -> hamonData.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get())).orElse(false)).orElse(false);
+    }
+
+
+    @Override
+    protected SoundEvent getShout(LivingEntity user, IStandPower power, ActionTarget target, boolean wasActive){
+        if(power.getStandInstance()
+                .flatMap(StandSkinsManager.getInstance()::getStandSkin).map(standSkin -> standSkin.resLoc).isPresent()){
+            if(power.getStandInstance()
+                    .flatMap(StandSkinsManager.getInstance()::getStandSkin).map(standSkin -> standSkin.resLoc).get().toString().contains("jonathan")){
+                return ModSounds.JONATHAN_SCARLET_OVERDRIVE.get();
+            }
+        }
+        return super.getShout(user,power,target,wasActive);
     }
 }

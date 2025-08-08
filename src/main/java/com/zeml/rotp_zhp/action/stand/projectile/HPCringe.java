@@ -18,14 +18,6 @@ public class HPCringe extends StandEntityAction {
     }
 
 
-    @Override
-    protected ActionConditionResult checkSpecificConditions(LivingEntity user, IStandPower power, ActionTarget target) {
-        if(user instanceof PlayerEntity){
-            return super.checkSpecificConditions(user, power, target);
-
-        }
-        return ActionConditionResult.NEGATIVE;
-    }
 
     @Override
     public boolean enabledInHudDefault() {

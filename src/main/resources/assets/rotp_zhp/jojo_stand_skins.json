@@ -20,6 +20,10 @@
       "stand_type": "rotp_zhp:hermito_purple",
       "color" : "0xF070D0"
     },
+    "rotp_zhp:jonathan_passion": {
+      "stand_type": "rotp_zhp:hermito_purple",
+      "color" : "0xF070D0"
+    },
     "rotp_zhp:skine": {
       "stand_type": "rotp_zhp:hermito_purple",
       "color" : "0x9A66DF"
@@ -35,6 +39,10 @@
     "rotp_zhp:skinh": {
       "stand_type": "rotp_zhp:hermito_purple",
       "color" : "0x262626"
+    },
+    "rotp_zhp:jonathan": {
+      "stand_type": "rotp_zhp:hermito_purple",
+      "color" : "0xF070D0"
     },
     "rotp_zhp:spider_man": {
       "stand_type": "rotp_zhp:hermito_purple",

@@ -1,6 +1,7 @@
 package com.zeml.rotp_zhp.power.impl.stand.type;
 
 import com.github.standobyte.jojo.action.stand.StandAction;
+import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.init.ModStatusEffects;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
@@ -12,9 +13,11 @@ import com.github.standobyte.jojo.power.impl.stand.stats.StandStats;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 import com.github.standobyte.jojo.power.impl.stand.type.StandType;
 import com.github.standobyte.jojo.util.mc.MCUtil;
+import com.github.standobyte.jojo.util.mc.OstSoundList;
 import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
+import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
 import com.zeml.rotp_zhp.network.ModNetwork;
 import com.zeml.rotp_zhp.network.packets.CanLeapPacket;
@@ -39,6 +42,7 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
     protected HermitPurpleStandType(EntityStandType.AbstractBuilder<?, T> builder) {
         super(builder);
     }
+
 
 
     @Override
@@ -83,6 +87,25 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
 
 
 
+
+    /* THIS CAUSES CRASH
+    public OstSoundList getOst(@Nullable LivingEntity user) {
+        String standoSkin =
+        IStandPower.getStandPowerOptional(user).map(power -> power.getStandInstance()
+                .flatMap(StandSkinsManager.getInstance()::getStandSkin).map(standSkin -> standSkin.resLoc).toString()).orElse("");
+        if(standoSkin.contains("spider_man")){
+            return InitSounds.SPIDER_OST;
+        }
+        if(standoSkin.contains("jonathan")){
+            return InitSounds.JONATHAN_OST;
+        }
+
+        return super.getOst(user);
+    }
+
+
+     */
+
     @Override
     public boolean canLeap() {
         return leapUnlocked;
@@ -103,6 +126,7 @@ public class HermitPurpleStandType<T extends StandStats> extends EntityStandType
         public HermitPurpleStandType<T> build() {
             return new HermitPurpleStandType<>(this);
         }
+        
 
     }
 

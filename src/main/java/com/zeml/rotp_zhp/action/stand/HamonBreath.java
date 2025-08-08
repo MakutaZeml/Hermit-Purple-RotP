@@ -7,13 +7,17 @@ import com.github.standobyte.jojo.action.stand.StandEntityAction;
 import com.github.standobyte.jojo.client.ClientUtil;
 import com.github.standobyte.jojo.client.playeranim.anim.ModPlayerAnimations;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
+import com.github.standobyte.jojo.entity.stand.StandEntityTask;
+import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
+import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonActions;
 import com.github.standobyte.jojo.init.power.non_stand.hamon.ModHamonSkills;
 import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.action.stand.projectile.HPGrabCommand;
 import com.zeml.rotp_zhp.client.sound.ModClientTickingSoundsHelper;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
+import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -97,5 +101,17 @@ public class HamonBreath extends StandEntityAction {
                 standEntity.playSound(sound, 1.0F, 1.0F, ClientUtil.getClientPlayer());
             }
         }
+    }
+
+
+    @Override
+    public void playSound(StandEntity standEntity, IStandPower standPower, Phase phase, StandEntityTask task) {
+        if(standEntity.getStandSkin().isPresent()){
+            if(standEntity.getStandSkin().toString().contains("jonathan")){
+                playSoundAtStand(standEntity.level,standEntity, ModSounds.BREATH_JONATHAN.get(),standPower,Phase.PERFORM);
+                playSoundAtStand(standEntity.level,standEntity, ModSounds.HAMON_CONCENTRATION.get(),standPower,Phase.PERFORM);
+            }
+        }
+        super.playSound(standEntity, standPower, phase, task);
     }
 }

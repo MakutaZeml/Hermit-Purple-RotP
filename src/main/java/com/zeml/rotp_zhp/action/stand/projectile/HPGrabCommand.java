@@ -3,6 +3,7 @@ package com.zeml.rotp_zhp.action.stand.projectile;
 import com.github.standobyte.jojo.action.Action;
 import com.github.standobyte.jojo.action.ActionTarget;
 import com.github.standobyte.jojo.action.stand.StandEntityAction;
+import com.github.standobyte.jojo.client.standskin.StandSkinsManager;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityTask;
 import com.github.standobyte.jojo.init.power.non_stand.ModPowers;
@@ -12,9 +13,11 @@ import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
 import com.zeml.rotp_zhp.entity.damaging.projectile.HPVineGrabEntity;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
+import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.init.InitStands;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -100,4 +103,27 @@ public class HPGrabCommand extends StandEntityAction {
             if(standPower.getUser() instanceof PlayerEntity) AddonPlayerAnimations.grab.stopAnim((PlayerEntity) standPower.getUser());
         }
     }
+
+    @Override
+    protected SoundEvent getShout(LivingEntity user, IStandPower power, ActionTarget target, boolean wasActive){
+        if(power.getStandInstance()
+                .flatMap(StandSkinsManager.getInstance()::getStandSkin).map(standSkin -> standSkin.resLoc).isPresent()){
+            if(power.getStandInstance()
+                    .flatMap(StandSkinsManager.getInstance()::getStandSkin).map(standSkin -> standSkin.resLoc).get().toString().contains("jonathan")){
+                return InitSounds.JONATHAN_THROW.get();
+            }
+        }
+        return super.getShout(user,power,target,wasActive);
+    }
+
+    @Override
+    public void playSound(StandEntity standEntity, IStandPower standPower, Phase phase, StandEntityTask task) {
+        if(standEntity.getStandSkin().isPresent()){
+            if(standEntity.getStandSkin().toString().contains("spider_man")){
+                playSoundAtStand(standEntity.level,standEntity, InitSounds.WEB_SLINGER.get(),standPower,Phase.PERFORM);
+            }
+        }
+        super.playSound(standEntity, standPower, phase, task);
+    }
+
 }

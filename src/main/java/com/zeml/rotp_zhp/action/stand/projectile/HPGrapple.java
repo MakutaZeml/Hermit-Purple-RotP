@@ -55,7 +55,13 @@ public class HPGrapple extends StandEntityAction {
                             hamon.hamonPointsFromAction(BaseHamonSkill.HamonStat.CONTROL,cost);
                             float hamonEfficiency = hamon.getActionEfficiency(cost, true);
                             user.playSound(ModSounds.HAMON_CONCENTRATION.get(),1,1);
-                            JojoModUtil.sayVoiceLine(userPower.getUser(), InitSounds.USER_OVER.get());
+                            if ((hamon.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get())) && ipower.getEnergy()>0){
+                                if(standEntity.getStandSkin().toString().contains("jonathan")){
+                                    JojoModUtil.sayVoiceLine(userPower.getUser(), InitSounds.JONATHAN_OVER.get());
+                                }else {
+                                    JojoModUtil.sayVoiceLine(userPower.getUser(), InitSounds.USER_OVER.get());
+                                }
+                            }
                             vine.isCharged(true);
                             vine.setHamonDamageOnHit(hamonEfficiency,cost);
                         }
@@ -91,6 +97,16 @@ public class HPGrapple extends StandEntityAction {
     public void clHeldStopAnim(PlayerEntity user) {
         AddonPlayerAnimations.grab.stopAnim(user);
         AddonPlayerAnimations.grabCommand.stopAnim(user);
+    }
+
+    @Override
+    public void playSound(StandEntity standEntity, IStandPower standPower, Phase phase, StandEntityTask task) {
+        if(standEntity.getStandSkin().isPresent()){
+            if(standEntity.getStandSkin().toString().contains("spider_man")){
+                playSoundAtStand(standEntity.level,standEntity, InitSounds.WEB_SLINGER.get(),standPower,Phase.PERFORM);
+            }
+        }
+        super.playSound(standEntity, standPower, phase, task);
     }
 
 }

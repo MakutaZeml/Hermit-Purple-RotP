@@ -28,6 +28,10 @@ public class InitSounds {
     public static final RegistryObject<SoundEvent> HERMITO_PURPLE_SPARK = SOUNDS.register("hp_spark",
             () -> new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_spark")));
 
+    public static final RegistryObject<SoundEvent> USER_THROW = SOUNDS.register("joseph_throw",
+            () -> new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "joseph_throw")));
+
+
     public static final RegistryObject<SoundEvent> VOID =SOUNDS.register("void",
             ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"void")));
 
@@ -56,4 +60,32 @@ public class InitSounds {
     );
 
     static final OstSoundList JOSEPH_OST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hp_ost"), SOUNDS);
+
+
+    //------------------------------------------------ Jonathan------------------------------------------------------------
+
+    public static final RegistryObject<SoundEvent> JONATHAN_OVER_DRIVE = SOUNDS.register("jonathan_over_drive",
+            ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "jonathan_over_drive"))
+    );
+    public static final RegistryObject<SoundEvent> JONATHAN_THROW = SOUNDS.register("jonathan_throw",
+            () -> new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "jonathan_throw")));
+
+    public static final RegistryObject<SoundEvent> JONATHAN_OVER = SOUNDS.register("jonathan_at",
+            ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "jonathan_at"))
+    );
+
+    //Sadly, this generated a crash
+
+    public static final OstSoundList JONATHAN_OST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "jonathan_ost"), SOUNDS);
+
+    //----------------------------------------------- Spider-Man -----------------------------------------------------------
+
+    public static final RegistryObject<SoundEvent> WEB_SLINGER = SOUNDS.register("web_sling",
+            ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "web_sling"))
+    );
+
+
+    //Sadly, this generated a crash
+    public static final OstSoundList SPIDER_OST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "spidy_ost"), SOUNDS);
+
 }

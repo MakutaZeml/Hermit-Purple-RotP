@@ -88,4 +88,24 @@ public class InitSounds {
     //Sadly, this generated a crash
     public static final OstSoundList SPIDER_OST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "spidy_ost"), SOUNDS);
 
+    // ======================================== The Emperor ========================================
+
+    public static final RegistryObject<SoundEvent> EMPEROR_SUMMON = SOUNDS.register("emp_summon",
+            ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"emp_summon")));
+
+    public static final RegistryObject<SoundEvent> EMPEROR_UNSUMMON = SOUNDS.register("emp_unsummon",
+            ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"emp_unsummon")));
+
+
+    public static final RegistryObject<SoundEvent> USER_EMPEROR = SOUNDS.register("hol_emp",
+            ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "hol_emp"))
+    );
+
+    public static final RegistryObject<SoundEvent> EMP_SHOT =SOUNDS.register("emp_shot",
+            ()->new SoundEvent(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID,"emp_shot")));
+
+
+    static final OstSoundList HOL_OSST = new OstSoundList(new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "emp_ost"), SOUNDS);
+
+
 }

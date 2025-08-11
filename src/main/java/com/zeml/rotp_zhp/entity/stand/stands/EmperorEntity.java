@@ -4,12 +4,18 @@ package com.zeml.rotp_zhp.entity.stand.stands;
 import com.github.standobyte.jojo.entity.stand.StandEntity;
 import com.github.standobyte.jojo.entity.stand.StandEntityType;
 import com.github.standobyte.jojo.entity.stand.StandRelativeOffset;
+import com.zeml.rotp_zhp.capability.LivingDataProvider;
 import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
+import com.zeml.rotp_zhp.init.InitItems;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
@@ -75,6 +81,20 @@ public class EmperorEntity extends StandEntity {
         if(this.level.isClientSide && this.getUser() instanceof PlayerEntity){
             AddonPlayerAnimations.summon_emp.setWindupAnim((PlayerEntity) this.getUser());
         }
+        if(!this.level.isClientSide && this.getUser() != null && !(this.getUser() instanceof PlayerEntity)){
+            LivingEntity user = this.getUser();
+
+            ItemStack hand = user.getItemInHand(Hand.MAIN_HAND);
+            if(!hand.isEmpty()){
+                ItemEntity ent = new ItemEntity(user.level,user.getX(),user.getY(),user.getZ(),hand);
+                user.level.addFreshEntity(ent);
+            }
+            ItemStack itemStack = new ItemStack(InitItems.EMPEROR.get());
+            user.getCapability(LivingDataProvider.CAPABILITY).ifPresent(livingData ->{
+                itemStack.getOrCreateTag().putInt("mode",livingData.getMode());
+            });
+            user.setItemInHand(Hand.MAIN_HAND,itemStack);
+        }
     }
 
     @Override
@@ -82,6 +102,15 @@ public class EmperorEntity extends StandEntity {
         super.onRemovedFromWorld();
         if(this.level.isClientSide && this.getUser() instanceof PlayerEntity){
             AddonPlayerAnimations.summon_emp.stopAnim((PlayerEntity) this.getUser());
+        }
+        if(!this.level.isClientSide && this.getUser() != null && !(this.getUser() instanceof PlayerEntity)){
+            LivingEntity user = this.getUser();
+            if(user.getMainHandItem().getItem() == InitItems.EMPEROR.get()){
+                user.setItemInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
+            }
+            if(user.getOffhandItem().getItem() == InitItems.EMPEROR.get()){
+                user.setItemInHand(Hand.OFF_HAND,ItemStack.EMPTY);
+            }
         }
     }
 

@@ -17,9 +17,6 @@
     "actions.MixinHamonOverdriveBeatInstance",
     "actions.MixinHamonScarletOverdrive$MixinInstance",
     "actions.MixinHamonSunlightYellowOverdrive$Instance",
-    "actions.MixinHamonSunlightYellowOverdriveBarrage$MixinInstance",
-    "actions.interfaces.HamonOverdriveBeatInstanceAccesor",
-    "actions.interfaces.HamonSunlightYellowOverdriveAccesor",
-    "actions.interfaces.HamonSunlightYellowOverdriveBarrageAccessor"
+    "actions.MixinHamonSunlightYellowOverdriveBarrage$MixinInstance"
   ]
 }

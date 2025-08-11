@@ -7,6 +7,8 @@ import com.github.standobyte.jojo.init.ModSounds;
 import com.github.standobyte.jojo.power.impl.stand.type.EntityStandType;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.action.stand.*;
+import com.zeml.rotp_zhp.action.stand.mobs.BarrageShootEntityAction;
+import com.zeml.rotp_zhp.action.stand.mobs.ShootEntity;
 import com.zeml.rotp_zhp.action.stand.projectile.*;
 import com.zeml.rotp_zhp.entity.stand.stands.EmperorEntity;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
@@ -186,6 +188,13 @@ public class InitStands {
             ()-> new RemoveStandTarget(new StandEntityAction.Builder())
     );
 
+    public static final RegistryObject<StandEntityAction> SHOOT_ENTITY = ACTIONS.register("shoot_entity",
+            ()-> new ShootEntity(new StandEntityAction.Builder().cooldown(10).staminaCost(35).resolveLevelToUnlock(0)));
+
+    public static final RegistryObject<StandEntityAction> SHOOT_BARRAGE_ENTITY = ACTIONS.register("barrage_shoot_entity",
+            ()-> new BarrageShootEntityAction(new StandEntityAction.Builder().cooldown(65).resolveLevelToUnlock(0).holdType(11)));
+
+
     public static final EntityStandRegistryObject<EntityStandType<StandStats>, StandEntityType<EmperorEntity>> STAND_EMPEROR =
             new EntityStandRegistryObject<>("the_emperor",
                     STANDS,
@@ -194,7 +203,9 @@ public class InitStands {
                             .storyPartName(ModStandsInit.PART_3_NAME)
                             .leftClickHotbar(
                                     TRAGET.get(),
-                                    STAND_TARGET.get()
+                                    STAND_TARGET.get(),
+                                    SHOOT_ENTITY.get(),
+                                    SHOOT_BARRAGE_ENTITY.get()
 
                             )
                             .rightClickHotbar(

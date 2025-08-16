@@ -39,15 +39,17 @@ public class HPGrabCommand extends StandEntityAction {
                 .map(ipower->ipower.getTypeSpecificData(ModPowers.HAMON.get())
                         .map(hamonData -> hamonData.isSkillLearned(ModHamonSkills.HEALING_TOUCH.get())
                                 && hamonData.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get())).orElse(false)).orElse(false);
-        HermitPurpleEntity HP = (HermitPurpleEntity) power.getStandManifestation();
-        if(HP != null && getLandedVineStand(power.getUser()).isPresent() ){
-            if(yellow){
-                if(heal){
-                    return !power.getUser().isShiftKeyDown()? InitStands.HP_GRAB_OVERDRIVE.get(): InitStands.HP_HEAL_VINE.get();
+        if(power.getStandManifestation() instanceof HermitPurpleEntity){
+            HermitPurpleEntity HP = (HermitPurpleEntity) power.getStandManifestation();
+            if(HP != null && getLandedVineStand(power.getUser()).isPresent() ){
+                if(yellow){
+                    if(heal){
+                        return !power.getUser().isShiftKeyDown()? InitStands.HP_GRAB_OVERDRIVE.get(): InitStands.HP_HEAL_VINE.get();
+                    }
+                    return InitStands.HP_GRAB_OVERDRIVE.get();
+                } else if (heal) {
+                    return InitStands.HP_HEAL_VINE.get();
                 }
-                return InitStands.HP_GRAB_OVERDRIVE.get();
-            } else if (heal) {
-                return InitStands.HP_HEAL_VINE.get();
             }
         }
         return replaceActionKostyl(power,target);

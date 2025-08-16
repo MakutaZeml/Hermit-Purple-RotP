@@ -1,7 +1,6 @@
 package com.zeml.rotp_zhp.mixin.actions;
 
 import com.github.standobyte.jojo.action.ActionTarget;
-import com.github.standobyte.jojo.action.non_stand.HamonSunlightYellowOverdrive;
 import com.github.standobyte.jojo.action.non_stand.HamonSunlightYellowOverdriveBarrage;
 import com.github.standobyte.jojo.action.player.ContinuousActionInstance;
 import com.github.standobyte.jojo.capability.entity.PlayerUtilCap;
@@ -22,8 +21,6 @@ import com.github.standobyte.jojo.util.mc.reflection.CommonReflection;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
 import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
-import com.zeml.rotp_zhp.mixin.actions.interfaces.HamonSunlightYellowOverdriveAccesor;
-import com.zeml.rotp_zhp.mixin.actions.interfaces.HamonSunlightYellowOverdriveBarrageAccessor;
 import com.zeml.rotp_zhp.util.StandHamonDamage;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;

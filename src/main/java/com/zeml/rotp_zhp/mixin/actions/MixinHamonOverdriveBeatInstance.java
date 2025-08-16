@@ -14,13 +14,13 @@ import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.zeml.rotp_zhp.HermitConfig;
 import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.entity.stand.stands.HermitPurpleEntity;
-import com.zeml.rotp_zhp.mixin.actions.interfaces.HamonOverdriveBeatInstanceAccesor;
 import com.zeml.rotp_zhp.util.StandHamonDamage;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -29,6 +29,8 @@ import static com.github.standobyte.jojo.action.non_stand.HamonAction.addPointsF
 
 @Mixin(value = HamonOverdriveBeat.Instance.class, remap = false)
 public class MixinHamonOverdriveBeatInstance extends ContinuousActionInstance<HamonOverdriveBeat, INonStandPower> {
+
+    @Shadow private HamonData userHamon;
 
     public MixinHamonOverdriveBeatInstance(LivingEntity user, PlayerUtilCap userCap, INonStandPower playerPower, HamonOverdriveBeat action) {
         super(user, userCap, playerPower, action);
@@ -49,7 +51,7 @@ public class MixinHamonOverdriveBeatInstance extends ContinuousActionInstance<Ha
                         float damage = 3.0f;
                         float cost = hamonAction.getEnergyCost(playerPower, new ActionTarget(target));
 
-                        HamonData userHamon = ((HamonOverdriveBeatInstanceAccesor)( HamonOverdriveBeat.Instance)(Object) this).getUserHamon();
+                        HamonData userHamon = this.userHamon;
 
                         float efficiency = userHamon.getActionEfficiency(cost, true, hamonAction.getUnlockingSkill());
 

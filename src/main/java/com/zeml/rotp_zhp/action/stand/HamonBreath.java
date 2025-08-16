@@ -37,9 +37,11 @@ public class HamonBreath extends StandEntityAction {
                 .map(ipower->ipower.getTypeSpecificData(ModPowers.HAMON.get())
                         .map(hamonData -> hamonData.isSkillLearned(ModHamonSkills.SCARLET_OVERDRIVE.get())
                                 && hamonData.isSkillLearned(ModHamonSkills.THROWABLES_INFUSION.get())).orElse(false)).orElse(false);
-        HermitPurpleEntity HP = (HermitPurpleEntity) power.getStandManifestation();
-        if(HP != null && scarlet && HPGrabCommand.getLandedVineStand(power.getUser()).isPresent()){
-            return InitStands.HP_GRAB_SCARLET.get();
+        if(power.getStandManifestation() instanceof HermitPurpleEntity){
+            HermitPurpleEntity HP = (HermitPurpleEntity) power.getStandManifestation();
+            if(HP != null && scarlet && HPGrabCommand.getLandedVineStand(power.getUser()).isPresent()){
+                return InitStands.HP_GRAB_SCARLET.get();
+            }
         }
         return this;
     }

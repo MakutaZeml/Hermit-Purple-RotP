@@ -76,4 +76,11 @@ public class HPAttachBarrier extends StandEntityAction {
     }
 
 
+    @Override
+    public boolean isLegalInHud(IStandPower power) {
+        INonStandPower.getNonStandPowerOptional(power.getUser())
+                .map(ipower->ipower.getTypeSpecificData(ModPowers.HAMON.get())
+                        .map(hamonData -> hamonData.isSkillLearned(ModHamonSkills.ROPE_TRAP.get())));
+        return super.isLegalInHud(power);
+    }
 }

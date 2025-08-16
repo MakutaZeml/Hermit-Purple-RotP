@@ -52,7 +52,6 @@ public class MixinHamonOverdriveBeatInstance extends ContinuousActionInstance<Ha
                         float cost = hamonAction.getEnergyCost(playerPower, new ActionTarget(target));
                         HamonData userHamon = this.userHamon;
                         float efficiency = userHamon.getActionEfficiency(cost, true, hamonAction.getUnlockingSkill());
-
                         if (StandHamonDamage.dealHamonDamage(target, damage * efficiency, user, null, standPower,1,1)) {
                             world.playSound(null, target.getX(), target.getEyeY(), target.getZ(), ModSounds.HAMON_SYO_PUNCH.get(), target.getSoundSource(), 1F, 1.5F);
                             target.knockback(1.25F, user.getX() - target.getX(), user.getZ() - target.getZ());

@@ -11,6 +11,7 @@ public class AddonPlayerAnimations {
     public static WindupAttackAnim grab;
     public static WindupAttackAnim doxx;
     public static WindupAttackAnim vine;
+    public static WindupAttackAnim summon_emp;
 
 
     public static void init(){
@@ -31,6 +32,10 @@ public class AddonPlayerAnimations {
         vine = PlayerAnimationHandler.getPlayerAnimator().registerAnimLayer(
                 "com.zeml.rotp_zhp.client.playeranim.anim.kosmimpl.KosmxVineHandler",
                 new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "vine"), 1,
+                WindupAttackAnim.NoPlayerAnimator::new);
+        summon_emp = PlayerAnimationHandler.getPlayerAnimator().registerAnimLayer(
+                "com.zeml.rotp_zhp.client.playeranim.anim.kosmimpl.KosmXSummonEmperorHandler",
+                new ResourceLocation(RotpHermitPurpleAddon.MOD_ID, "summon_emp"), 1,
                 WindupAttackAnim.NoPlayerAnimator::new);
 
 

@@ -73,5 +73,22 @@
 
   "void":{
     "sounds": [ "rotp_zhp:void"]
+  },
+
+  "hol_emp": {
+    "subtitle": "rotp_zhp.subtitle.emp_user",
+    "sounds": [ "rotp_zhp:user/hol_0","rotp_zhp:user/hol_1"]
+  },
+  "emp_shot": {
+    "subtitle": "rotp_zhp.subtitle.emp_shot",
+    "sounds": ["rotp_zhp:stand/shot_1","rotp_zhp:stand/shot_2"]
+  },
+  "emp_summon": {
+    "subtitle": "rotp_zhp.subtitle.emp_summon",
+    "sounds": ["rotp_zhp:stand/summon"]
+  },
+  "emp_unsummon": {
+    "subtitle": "rotp_zhp.subtitle.emp_umsummon",
+    "sounds": ["rotp_zhp:stand/unsummon"]
   }
 }

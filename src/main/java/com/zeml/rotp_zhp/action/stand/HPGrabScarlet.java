@@ -80,6 +80,7 @@ public class HPGrabScarlet extends StandEntityAction {
     }
 
 
+    /*
     @Override
     protected SoundEvent getShout(LivingEntity user, IStandPower power, ActionTarget target, boolean wasActive){
         if(power.getStandInstance()
@@ -91,4 +92,6 @@ public class HPGrabScarlet extends StandEntityAction {
         }
         return super.getShout(user,power,target,wasActive);
     }
+
+     */
 }

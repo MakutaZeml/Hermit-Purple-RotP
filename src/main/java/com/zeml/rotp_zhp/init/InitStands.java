@@ -125,11 +125,11 @@ public class InitStands {
 
 
     public static final RegistryObject<StandEntityAction> HP_TARGET =ACTIONS.register("hp_target",
-            ()-> new HPTargetSelection(new StandEntityAction.Builder()
+            ()-> new HPTargetSelection(new StandEntityAction.Builder().resolveLevelToUnlock(0)
             ));
 
     public static final RegistryObject<StandEntityAction> BEAT = ACTIONS.register("hp_beat",
-            ()->new BeatFollowUp(new StandEntityAction.Builder()));
+            ()->new BeatFollowUp(new StandEntityAction.Builder().resolveLevelToUnlock(1)));
 
     public static final EntityStandRegistryObject<HermitPurpleStandType<StandStats>, StandEntityType<HermitPurpleEntity>> STAND_HERMITO_PURPLE =
             new EntityStandRegistryObject<>("hermito_purple",

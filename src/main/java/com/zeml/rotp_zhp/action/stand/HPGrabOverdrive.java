@@ -13,6 +13,7 @@ import com.github.standobyte.jojo.power.impl.nonstand.INonStandPower;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.HamonData;
 import com.github.standobyte.jojo.power.impl.nonstand.type.hamon.skill.BaseHamonSkill;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
+import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
 import com.zeml.rotp_zhp.action.stand.projectile.HPGrabCommand;
 import com.zeml.rotp_zhp.init.InitSounds;
 import com.zeml.rotp_zhp.util.StandHamonDamage;
@@ -30,21 +31,14 @@ public class HPGrabOverdrive extends StandEntityAction {
 
     @Override
     protected ActionConditionResult checkSpecificConditions(LivingEntity user, IStandPower power, ActionTarget target) {
-        Optional<Boolean> overdrive = INonStandPower.getNonStandPowerOptional(user).map(ipower ->{
-            boolean returning = false;
-            Optional<HamonData> hamonOp = ipower.getTypeSpecificData(ModPowers.HAMON.get());
-            if(hamonOp.isPresent()){
-                HamonData hamon = hamonOp.get();
-                returning = hamon.isSkillLearned(ModHamonSkills.SUNLIGHT_YELLOW_OVERDRIVE.get());
-            }
-            return returning;
-        });
-        boolean condition = overdrive.orElse(false);
+        boolean condition =INonStandPower.getNonStandPowerOptional(user).map(ipower->ipower.getTypeSpecificData(ModPowers.HAMON.get()).map(hamonData -> hamonData.isSkillLearned(ModHamonSkills.SUNLIGHT_YELLOW_OVERDRIVE.get())).orElse(false)).orElse(false);
+        System.out.println("ño"+condition);
         return condition?ActionConditionResult.POSITIVE:ActionConditionResult.NEGATIVE;
     }
 
     @Override
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
+        RotpHermitPurpleAddon.LOGGER.debug("ñ{} {}",HPGrabCommand.getLandedVineStand(userPower.getUser()).get().getEntityAttachedTo(), world.isClientSide);
         if (!world.isClientSide()) {
             if(HPGrabCommand.getLandedVineStand(userPower.getUser()).isPresent()){
                 LivingEntity target = HPGrabCommand.getLandedVineStand(userPower.getUser()).get().getEntityAttachedTo();
@@ -63,6 +57,8 @@ public class HPGrabOverdrive extends StandEntityAction {
         }
     }
 
+
+    /*
     @Override
     protected SoundEvent getShout(LivingEntity user, IStandPower power, ActionTarget target, boolean wasActive){
         if(power.getStandInstance()
@@ -75,6 +71,6 @@ public class HPGrabOverdrive extends StandEntityAction {
         return super.getShout(user,power,target,wasActive);
     }
 
-
+*/
 
 }

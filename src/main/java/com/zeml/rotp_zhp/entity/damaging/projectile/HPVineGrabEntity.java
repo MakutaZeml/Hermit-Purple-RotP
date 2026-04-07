@@ -9,6 +9,8 @@ import com.github.standobyte.jojo.init.power.stand.ModStandsInit;
 import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.github.standobyte.jojo.util.mc.MCUtil;
 import com.github.standobyte.jojo.util.mod.JojoModUtil;
+import com.zeml.rotp_zhp.RotpHermitPurpleAddon;
+import com.zeml.rotp_zhp.action.stand.projectile.HPGrabCommand;
 import com.zeml.rotp_zhp.client.playeranim.anim.AddonPlayerAnimations;
 import com.zeml.rotp_zhp.init.InitEntities;
 import com.zeml.rotp_zhp.init.InitSounds;
@@ -50,6 +52,7 @@ public class HPVineGrabEntity extends OwnerBoundProjectileEntity {
     @Override
     public void tick() {
         super.tick();
+        System.out.println("ñ"+level.isClientSide+" "+ HPGrabCommand.getLandedVineStand(getOwner()));
         if (!isAlive()) {
             return;
         }

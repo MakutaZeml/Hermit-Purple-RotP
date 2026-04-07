@@ -52,7 +52,6 @@ public class HPVineGrabEntity extends OwnerBoundProjectileEntity {
     @Override
     public void tick() {
         super.tick();
-        System.out.println("ñ"+level.isClientSide+" "+ HPGrabCommand.getLandedVineStand(getOwner()));
         if (!isAlive()) {
             return;
         }

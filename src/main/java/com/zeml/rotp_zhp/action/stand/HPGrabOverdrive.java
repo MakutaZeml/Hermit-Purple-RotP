@@ -32,13 +32,11 @@ public class HPGrabOverdrive extends StandEntityAction {
     @Override
     protected ActionConditionResult checkSpecificConditions(LivingEntity user, IStandPower power, ActionTarget target) {
         boolean condition =INonStandPower.getNonStandPowerOptional(user).map(ipower->ipower.getTypeSpecificData(ModPowers.HAMON.get()).map(hamonData -> hamonData.isSkillLearned(ModHamonSkills.SUNLIGHT_YELLOW_OVERDRIVE.get())).orElse(false)).orElse(false);
-        System.out.println("ño"+condition);
         return condition?ActionConditionResult.POSITIVE:ActionConditionResult.NEGATIVE;
     }
 
     @Override
     public void standPerform(World world, StandEntity standEntity, IStandPower userPower, StandEntityTask task) {
-        RotpHermitPurpleAddon.LOGGER.debug("ñ{} {}",HPGrabCommand.getLandedVineStand(userPower.getUser()).get().getEntityAttachedTo(), world.isClientSide);
         if (!world.isClientSide()) {
             if(HPGrabCommand.getLandedVineStand(userPower.getUser()).isPresent()){
                 LivingEntity target = HPGrabCommand.getLandedVineStand(userPower.getUser()).get().getEntityAttachedTo();
